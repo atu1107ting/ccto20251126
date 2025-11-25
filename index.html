@@ -37,10 +37,59 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* 新增：頂部全域行情列 */
+        .top-ticker-bar {
+            height: 36px;
+            background-color: #121214;
+            border-bottom: 1px solid var(--ios-border);
+            display: flex;
+            align-items: center;
+            padding: calc(var(--safe-top) + 2px) 16px 2px 16px; /* 避開劉海 */
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 20px;
+            flex-shrink: 0;
+            font-size: 12px;
+            /* 隱藏捲軸 */
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        .top-ticker-bar::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ticker-name {
+            font-weight: 700;
+            color: var(--ios-text-secondary);
+        }
+
+        .ticker-val {
+            font-family: "SF Mono", monospace;
+            color: var(--ios-text-primary);
+        }
+
+        .ticker-pct {
+            font-size: 11px;
+        }
+
+        .fng-label {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #000; /* 文字反白 */
+            font-size: 11px;
+        }
+
         /* 頂部導航列 */
         header {
             height: 44px;
-            padding: calc(var(--safe-top) + 8px) 16px 8px 16px;
+            padding: 0 16px;
             background-color: var(--ios-nav-bg);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -67,6 +116,1065 @@
             color: var(--ios-text-primary);
             letter-spacing: -0.5px;
         }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--ios-green);
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
+        }
+        
+        .segmented-control {
+            display: flex;
+            background-color: rgba(118, 118, 128, 0.24);
+            border-radius: 8px;
+            padding: 2px;
+            height: 32px;
+            box-sizing: border-box;
+        }
+
+        .coin-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--ios-text-primary);
+            padding: 0 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            flex: 1;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+        }
+
+        .coin-btn.active {
+            background-color: #636366;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
+            font-weight: 600;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chart-section {
+            flex: 40; 
+            position: relative;
+            background-color: #131722;
+            border-right: 0.5px solid var(--ios-border);
+        }
+
+        .analysis-section {
+            flex: 60; 
+            display: flex;
+            flex-direction: column;
+            background-color: var(--ios-bg);
+            overflow-y: auto;
+            min-width: 340px; 
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: var(--safe-bottom);
+        }
+
+        .section-header {
+            padding: 16px 20px 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ios-text-primary);
+            letter-spacing: 0.3px;
+        }
+
+        .section-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--ios-text-secondary);
+            font-weight: 600;
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .timer-badge {
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            font-size: 12px;
+            color: var(--ios-text-tertiary);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 24px; 
+        }
+
+        .refresh-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 8px; 
+            color: var(--ios-text-primary);
+            padding: 0 14px; 
+            height: 32px; 
+            font-size: 13px; 
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .refresh-btn:hover {
+            background-color: var(--ios-blue); 
+            transform: translateY(-1px);
+        }
+
+        .refresh-btn:active {
+            background-color: rgba(10, 132, 255, 0.8);
+            transform: scale(0.96); 
+        }
+
+        .refresh-hint {
+            font-size: 10px;
+            color: var(--ios-text-tertiary);
+            margin-top: 4px;
+        }
+
+        .ios-card {
+            background-color: var(--ios-card-bg);
+            margin: 10px 20px 20px 20px;
+            border-radius: 16px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: -10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
+        }
+
+        .card-label {
+            font-size: 13px;
+            color: var(--ios-text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .last-updated {
+            font-size: 11px;
+            color: var(--ios-text-tertiary);
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            font-weight: 400;
+        }
+
+        .card-refresh-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--ios-blue);
+            cursor: pointer;
+            font-size: 14px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .card-refresh-btn:hover {
+            background-color: rgba(10, 132, 255, 0.2);
+            transform: rotate(15deg);
+        }
+
+        .card-refresh-btn:active {
+            transform: rotate(180deg);
+            transition: transform 0.3s;
+        }
+
+        .price-display {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .price-label {
+            font-size: 13px;
+            color: var(--ios-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .price-value-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        .current-price {
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--ios-text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .price-change {
+            font-size: 17px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
+        .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background-color: rgba(84, 84, 88, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(44, 44, 46, 1);
+            padding: 14px 16px;
+        }
+
+        .data-label {
+            font-size: 15px;
+            color: var(--ios-text-primary);
+        }
+
+        .data-value {
+            font-size: 15px;
+            font-weight: 600;
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            color: var(--ios-text-secondary);
+        }
+
+        .txt-red { color: var(--ios-red) !important; }
+        .txt-green { color: var(--ios-green) !important; }
+        .txt-orange { color: var(--ios-orange) !important; }
+
+        .analysis-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .analysis-badge {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--ios-text-secondary);
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .analysis-content {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--ios-text-secondary);
+        }
+
+        .pattern-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .pattern-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .pattern-item:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .tf-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tf-tag {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ios-text-primary);
+            background: rgba(255,255,255,0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: 36px;
+            text-align: center;
+        }
+
+        .candle-timer {
+            font-size: 11px;
+            color: var(--ios-text-tertiary);
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .pattern-result {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ios-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: right;
+        }
+        
+        .trend-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .trend-bull { background: rgba(48, 209, 88, 0.2); color: var(--ios-green); }
+        .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
+        .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
+
+        .tip-section {
+            padding: 0 20px 20px 20px;
+            font-size: 12px;
+            color: var(--ios-text-tertiary);
+            line-height: 1.4;
+        }
+        
+        .global-hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--ios-orange);
+            padding: 10px 20px 30px 20px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .header-left h1 { display: none; }
+            .main-container { flex-direction: column; }
+            .chart-section {
+                flex: none;
+                height: 35vh; 
+                border-right: none;
+                border-bottom: 0.5px solid var(--ios-border);
+            }
+            .analysis-section {
+                flex: 1; 
+                min-width: 100%;
+                background-color: var(--ios-bg);
+            }
+            .ios-card {
+                margin: 0 16px 20px 16px;
+                padding: 20px 16px;
+            }
+            .current-price { font-size: 30px; }
+            .section-title { font-size: 18px; }
+            .analysis-badge { font-size: 24px; }
+            .header-left { flex: 1; }
+            .coin-nav { width: 100%; }
+            .segmented-control { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 新增：頂部全域行情列 -->
+    <div class="top-ticker-bar">
+        <div class="ticker-item">
+            <span class="ticker-name">BTC</span>
+            <span class="ticker-val" id="top-btc-val">--</span>
+            <span class="ticker-pct" id="top-btc-pct">--%</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-name">ETH</span>
+            <span class="ticker-val" id="top-eth-val">--</span>
+            <span class="ticker-pct" id="top-eth-pct">--%</span>
+        </div>
+        <div class="ticker-item" style="border-left: 1px solid #333; padding-left: 20px;">
+            <span class="ticker-name">恐懼貪婪</span>
+            <span id="top-fng-val" class="fng-label" style="background: #555;">--</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>戰情室</h1>
+            <div class="coin-nav">
+                <div class="segmented-control">
+                    <button class="coin-btn active" onclick="changeCoin('BTC')">BTC</button>
+                    <button class="coin-btn" onclick="changeCoin('ETH')">ETH</button>
+                    <button class="coin-btn" onclick="changeCoin('SOL')">SOL</button>
+                    <button class="coin-btn" onclick="changeCoin('XRP')">XRP</button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <div class="status-dot" id="connection-dot"></div>
+            <span class="update-time" id="ai-status">連線正常</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="chart-section">
+            <div class="tradingview-widget-container" style="height:100%;width:100%">
+                <div id="tradingview_chart" style="height:100%;width:100%"></div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            
+            <div class="section-header">
+                <div class="section-title">盤面解析</div>
+                <div class="section-right">
+                    <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
+                    <div class="timer-container">
+                        <div class="timer-badge" id="analysis-timer">
+                            <span>⏳</span> --:--
+                        </div>
+                        <button class="refresh-btn" onclick="manualRefresh()">
+                            🔄 立即刷新
+                        </button>
+                    </div>
+                    <div class="refresh-hint">數據每 5 分鐘更新</div>
+                </div>
+            </div>
+            
+            <!-- 卡片 1: 價格與點位 -->
+            <div class="ios-card">
+                <div class="card-header-row">
+                    <div class="card-label">即時價格與點位 (Pivot)</div>
+                    <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新價格與點位">↻</button>
+                </div>
+                <div class="price-display">
+                    <div class="price-label">最新成交價 (即時)</div>
+                    <div class="price-value-row">
+                        <div class="current-price" id="current-price">---.--</div>
+                        <div class="price-change" id="price-change">--%</div>
+                    </div>
+                </div>
+
+                <div class="data-grid">
+                    <div class="data-row">
+                        <span class="data-label">壓力位 R2</span>
+                        <span class="data-value txt-red" id="val-r2">--</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">壓力位 R1</span>
+                        <span class="data-value txt-red" id="val-r1">--</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">多空分界</span>
+                        <span class="data-value txt-orange" id="val-pp">--</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">支撐位 S1</span>
+                        <span class="data-value txt-green" id="val-s1">--</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">支撐位 S2</span>
+                        <span class="data-value txt-green" id="val-s2">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卡片 2: AI 策略 -->
+            <div class="ios-card" style="margin-top: 0;">
+                <div class="card-header-row">
+                    <div class="card-label">AI 主策略</div>
+                    <div class="card-header-actions">
+                        <div class="last-updated" id="ai-update-time">--:--:--</div>
+                        <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新策略">↻</button>
+                    </div>
+                </div>
+                <div class="analysis-box">
+                    <div class="analysis-header">
+                        <span class="analysis-badge" id="ai-badge">LOADING</span>
+                    </div>
+                    <div class="analysis-content" id="ai-text">
+                        正在分析市場結構與動能...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卡片 3: 全時區型態學 -->
+            <div class="ios-card" style="margin-top: 0;">
+                <div class="card-header-row">
+                    <div class="card-label">全時區型態偵測</div>
+                    <div class="card-header-actions">
+                        <div class="last-updated" id="pattern-update-time">--:--:--</div>
+                        <button class="card-refresh-btn" onclick="fetchPatternData()" title="刷新型態">↻</button>
+                    </div>
+                </div>
+                <div class="pattern-list">
+                    <!-- 5分鐘 -->
+                    <div class="pattern-item">
+                        <div class="tf-info">
+                            <span class="tf-tag">5m</span>
+                            <span class="candle-timer" id="timer-5m">--:--</span>
+                        </div>
+                        <span class="pattern-result" id="pat-5m">
+                            掃描中...
+                        </span>
+                    </div>
+                    <!-- 15分鐘 -->
+                    <div class="pattern-item">
+                        <div class="tf-info">
+                            <span class="tf-tag">15m</span>
+                            <span class="candle-timer" id="timer-15m">--:--</span>
+                        </div>
+                        <span class="pattern-result" id="pat-15m">
+                            掃描中...
+                        </span>
+                    </div>
+                    <!-- 1小時 -->
+                    <div class="pattern-item">
+                        <div class="tf-info">
+                            <span class="tf-tag">1H</span>
+                            <span class="candle-timer" id="timer-1h">--:--</span>
+                        </div>
+                        <span class="pattern-result" id="pat-1h">
+                            掃描中...
+                        </span>
+                    </div>
+                    <!-- 4小時 -->
+                    <div class="pattern-item">
+                        <div class="tf-info">
+                            <span class="tf-tag">4H</span>
+                            <span class="candle-timer" id="timer-4h">--:--</span>
+                        </div>
+                        <span class="pattern-result" id="pat-4h">
+                            掃描中...
+                        </span>
+                    </div>
+                    <!-- 日線 -->
+                    <div class="pattern-item">
+                        <div class="tf-info">
+                            <span class="tf-tag">1D</span>
+                            <span class="candle-timer" id="timer-1d">--:--</span>
+                        </div>
+                        <span class="pattern-result" id="pat-1d">
+                            掃描中...
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-section">
+                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。
+            </div>
+            
+            <div class="global-hint">
+                ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+        const COINS = {
+            'BTC': { tv: 'BINANCE:BTCUSDT', binance: 'BTCUSDT', ws: 'btcusdt' },
+            'ETH': { tv: 'BINANCE:ETHUSDT', binance: 'ETHUSDT', ws: 'ethusdt' },
+            'SOL': { tv: 'BINANCE:SOLUSDT', binance: 'SOLUSDT', ws: 'solusdt' },
+            'XRP': { tv: 'BINANCE:XRPUSDT', binance: 'XRPUSDT', ws: 'xrpusdt' }
+        };
+
+        let currentCoin = 'BTC'; 
+        let ws = null; 
+        let topTickerWs = null; // 新增頂部行情 WS
+        let analysisCountdown = 300; 
+        let analysisTimerInterval;
+        let candleTimerInterval; 
+
+        // 全局變數儲存 Pivot 數據
+        let g_pp = 0, g_r1 = 0, g_r2 = 0, g_s1 = 0, g_s2 = 0;
+
+        function changeCoin(coin) {
+            if (currentCoin === coin) return; 
+            currentCoin = coin;
+
+            document.querySelectorAll('.coin-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText === coin) btn.classList.add('active');
+            });
+
+            document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
+
+            renderMainChart();
+            resetAnalysisTimer(); 
+            fetchAllData(); // 立即抓取一次數據
+            startWebSocket();
+        }
+
+        function renderMainChart() {
+            const isMobile = window.innerWidth <= 768;
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": COINS[currentCoin].tv,
+                "interval": "60",
+                "timezone": "Asia/Taipei",
+                "theme": "dark",
+                "style": "1",
+                "locale": "zh_TW",
+                "toolbar_bg": "#f1f3f6",
+                "enable_publishing": false,
+                "withdateranges": true,
+                "hide_side_toolbar": isMobile,
+                "allow_symbol_change": true,
+                "details": false, 
+                "studies": [
+                    "RSI@tv-basicstudies",
+                    "MASimple@tv-basicstudies" 
+                ],
+                "container_id": "tradingview_chart"
+            });
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(renderMainChart, 200);
+        });
+
+        let currentPrice = 0;
+
+        // === 統一抓取入口 ===
+        function fetchAllData() {
+            fetchTickerData();
+            fetchPatternData();
+            fetchMarketOverview(); // 抓取頂部全域行情 (初始)
+        }
+
+        // === 抓取頂部全域行情 (初始載入 + 每日 F&G) ===
+        async function fetchMarketOverview() {
+            try {
+                // 1. Initial Fetch for prices (before WS connects)
+                const [btcRes, ethRes] = await Promise.all([
+                    fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'),
+                    fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT')
+                ]);
+                
+                const btcData = await btcRes.json();
+                const ethData = await ethRes.json();
+                
+                updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
+                updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
+
+                // 2. Fear & Greed Index
+                const fngRes = await fetch('https://api.alternative.me/fng/');
+                const fngData = await fngRes.json();
+                updateFng(fngData.data[0]);
+
+            } catch (e) {
+                console.error("Market Overview Error:", e);
+            }
+        }
+
+        // === 啟動頂部行情 WebSocket (BTC/ETH) ===
+        function startTopTickerWebSocket() {
+            if (topTickerWs) topTickerWs.close();
+
+            // 使用 Binance 組合 stream
+            const wsUrl = "wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker";
+            topTickerWs = new WebSocket(wsUrl);
+
+            topTickerWs.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                const data = message.data; // Ticker Payload
+                const stream = message.stream;
+
+                // data.c = Current Price, data.P = Price Change Percent
+                const price = parseFloat(data.c);
+                const pct = parseFloat(data.P);
+
+                if (stream === 'btcusdt@ticker') {
+                    updateTopTicker('top-btc', price, pct);
+                } else if (stream === 'ethusdt@ticker') {
+                    updateTopTicker('top-eth', price, pct);
+                }
+            };
+        }
+
+        function updateTopTicker(prefix, price, pct) {
+            const valEl = document.getElementById(`${prefix}-val`);
+            const pctEl = document.getElementById(`${prefix}-pct`);
+            
+            valEl.innerText = "$" + Math.floor(price).toLocaleString();
+            pctEl.innerText = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
+            
+            pctEl.style.color = pct >= 0 ? "var(--ios-green)" : "var(--ios-red)";
+        }
+
+        function updateFng(data) {
+            const val = parseInt(data.value);
+            const el = document.getElementById('top-fng-val');
+            let text = "";
+            let color = "#555";
+            let textColor = "#fff";
+
+            if (val >= 75) { text = "極度貪婪"; color = "var(--ios-green)"; textColor = "#000"; }
+            else if (val >= 55) { text = "貪婪"; color = "rgba(48, 209, 88, 0.6)"; textColor = "#fff"; }
+            else if (val >= 45) { text = "中立"; color = "var(--ios-text-tertiary)"; textColor = "#fff"; }
+            else if (val >= 25) { text = "恐懼"; color = "rgba(255, 69, 58, 0.6)"; textColor = "#fff"; }
+            else { text = "極度恐懼"; color = "var(--ios-red)"; textColor = "#000"; }
+
+            el.innerText = `${val} ${text}`;
+            el.style.backgroundColor = color;
+            el.style.color = textColor;
+        }
+
+        // === 1. 抓取 Ticker (價格, Pivot, 策略) ===
+        async function fetchTickerData() {
+            const symbol = COINS[currentCoin].binance;
+            
+            document.getElementById('ai-update-time').innerText = "更新中...";
+            document.getElementById('ai-badge').innerText = "UPDATING";
+            
+            try {
+                const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
+                const tickerData = await tickerRes.json();
+                
+                currentPrice = parseFloat(tickerData.lastPrice);
+                
+                const priceEl = document.getElementById('current-price');
+                if (currentPrice < 10) priceEl.innerText = currentPrice.toFixed(4);
+                else if (currentPrice < 1000) priceEl.innerText = currentPrice.toFixed(2);
+                else priceEl.innerText = Math.floor(currentPrice).toLocaleString();
+
+                const h = parseFloat(tickerData.highPrice);
+                const l = parseFloat(tickerData.lowPrice);
+                const c = parseFloat(tickerData.prevClosePrice); 
+                calculatePivotPoints(h, l, c);
+
+                if (currentPrice > 0) updateAnalysisText();
+                
+                document.getElementById('ai-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
+
+            } catch (e) {
+                console.error("Ticker Error:", e);
+                document.getElementById('ai-text').innerText = "數據抓取失敗";
+            }
+        }
+
+        // === 2. 抓取 K 線 (型態學) ===
+        async function fetchPatternData() {
+            const symbol = COINS[currentCoin].binance;
+            document.getElementById('pattern-update-time').innerText = "更新中...";
+            
+            ['5m', '15m', '1h', '4h', '1d'].forEach(tf => {
+                document.getElementById(`pat-${tf}`).innerText = "掃描中...";
+            });
+
+            const timeframes = ['5m', '15m', '1h', '4h', '1d'];
+            const requests = timeframes.map(tf => 
+                fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=5`).then(res => {
+                    if(!res.ok) throw new Error('Network response was not ok');
+                    return res.json();
+                })
+            );
+            
+            const results = await Promise.allSettled(requests);
+            
+            results.forEach((result, index) => {
+                const tf = timeframes[index];
+                if(result.status === 'fulfilled') {
+                    analyzePatterns(result.value, tf);
+                } else {
+                    console.error(`Kline ${tf} Error:`, result.reason);
+                    document.getElementById(`pat-${tf}`).innerText = "暫無數據";
+                    document.getElementById(`pat-${tf}`).style.color = "var(--ios-text-tertiary)";
+                }
+            });
+            
+            document.getElementById('pattern-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
+        }
+
+        // === 手動刷新功能 (直接重整頁面) ===
+        function manualRefresh() {
+            location.reload(); 
+        }
+
+        // === 計算 Pivot 並更新 DOM 數值 ===
+        function calculatePivotPoints(high, low, close) {
+            if(!high) return;
+
+            g_pp = (high + low + close) / 3;
+            g_r1 = (2 * g_pp) - low;
+            g_s1 = (2 * g_pp) - high;
+            g_r2 = g_pp + (high - low);
+            g_s2 = g_pp - (high - low);
+
+            let decimals = 2;
+            if (currentCoin === 'XRP') decimals = 4;
+            if (currentCoin === 'SOL') decimals = 3;
+            if (currentCoin === 'BTC') decimals = 0;
+
+            document.getElementById('val-r2').innerText = g_r2.toFixed(decimals);
+            document.getElementById('val-r1').innerText = g_r1.toFixed(decimals);
+            document.getElementById('val-pp').innerText = g_pp.toFixed(decimals);
+            document.getElementById('val-s1').innerText = g_s1.toFixed(decimals);
+            document.getElementById('val-s2').innerText = g_s2.toFixed(decimals);
+        }
+
+        // === 更新 AI 策略文字 (與 WebSocket 解耦) ===
+        function updateAnalysisText() {
+            const badge = document.getElementById('ai-badge');
+            const text = document.getElementById('ai-text');
+            const coin = currentCoin;
+            
+            let decimals = 2;
+            if (currentCoin === 'BTC') decimals = 0;
+            
+            const fR1 = g_r1.toFixed(decimals);
+            const fS1 = g_s1.toFixed(decimals);
+            const fPP = g_pp.toFixed(decimals);
+
+            if (currentPrice > g_r1) {
+                setBadge(badge, "強勢突破", "var(--ios-green)");
+                text.innerText = `${coin} 價格已突破 R1 壓力位 ${fR1}，多頭動能強勁。請留意 R2 是否出現獲利了結賣壓，若持續站穩 R1 則看漲趨勢不變。`;
+            } else if (currentPrice > g_pp) {
+                setBadge(badge, "偏多震盪", "var(--ios-blue)");
+                text.innerText = `${coin} 目前位於多空分界 ${fPP} 之上，整體趨勢偏多。只要不跌破分界點，回調皆可視為潛在機會，上方目標看向 R1。`;
+            } else if (currentPrice < g_s1) {
+                setBadge(badge, "弱勢探底", "var(--ios-red)");
+                text.innerText = `${coin} 已跌破 S1 支撐 ${fS1}，空頭主導市場。請勿輕易進場，下方 S2 支撐需密切關注是否有止跌訊號。`;
+            } else {
+                setBadge(badge, "偏空震盪", "var(--ios-orange)");
+                text.innerText = `${coin} 位於多空分界 ${fPP} 之下，短期承受賣壓。反彈若無法站回分界點，則趨勢仍以調節為主，下方目標 S1。`;
+            }
+        }
+
+        // === WebSocket 僅更新價格 DOM (主圖表價格) ===
+        function startWebSocket() {
+            if (ws) ws.close();
+
+            const streamName = COINS[currentCoin].ws;
+            ws = new WebSocket(`wss://stream.binance.com:9443/ws/${streamName}@ticker`);
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const price = parseFloat(data.c);
+                const change = parseFloat(data.P);
+                currentPrice = price; 
+                
+                const priceEl = document.getElementById('current-price');
+                if (price < 10) priceEl.innerText = price.toFixed(4);
+                else if (price < 1000) priceEl.innerText = price.toFixed(2);
+                else priceEl.innerText = Math.floor(price).toLocaleString();
+                
+                const changeEl = document.getElementById('price-change');
+                const sign = change >= 0 ? '+' : '';
+                changeEl.innerText = `${sign}${change}%`;
+                
+                if (change >= 0) {
+                    changeEl.className = 'price-change bg-green';
+                } else {
+                    changeEl.className = 'price-change bg-red';
+                }
+            };
+            
+            ws.onopen = () => { 
+                document.getElementById('ai-status').innerText = "連線正常"; 
+                document.getElementById('connection-dot').style.backgroundColor = "#30D158";
+            };
+            ws.onerror = () => { 
+                document.getElementById('ai-status').innerText = "連線中斷"; 
+                document.getElementById('connection-dot').style.backgroundColor = "#FF453A";
+            };
+        }
+
+        // === 型態學分析邏輯 ===
+        function analyzePatterns(klines, tf) {
+            const last = klines.length - 1; 
+            const prev = last - 1; 
+
+            const oNow = parseFloat(klines[last][1]);
+            const hNow = parseFloat(klines[last][2]);
+            const lNow = parseFloat(klines[last][3]);
+            const cNow = parseFloat(klines[last][4]);
+            
+            const oPrev = parseFloat(klines[prev][1]);
+            const cPrev = parseFloat(klines[prev][4]);
+
+            const bodySize = Math.abs(cNow - oNow);
+            const upperWick = hNow - Math.max(oNow, cNow);
+            const lowerWick = Math.min(oNow, cNow) - lNow;
+            const totalRange = hNow - lNow;
+
+            const element = document.getElementById(`pat-${tf}`);
+            
+            let patternName = "盤整中";
+            let color = "var(--ios-text-secondary)";
+            let glow = "none";
+            let trend = "中性";
+            let trendClass = "trend-neutral";
+
+            if (cPrev < oPrev && cNow > oNow && cNow > oPrev && oNow < cPrev) {
+                patternName = "多頭吞噬"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "看漲"; trendClass = "trend-bull";
+            } else if (cPrev > oPrev && cNow < oNow && cNow < oPrev && oNow > cPrev) {
+                patternName = "空頭吞噬"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "看跌"; trendClass = "trend-bear";
+            } else if (lowerWick > bodySize * 2 && upperWick < bodySize * 0.5) {
+                patternName = "錘頭線"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "看漲"; trendClass = "trend-bull";
+            } else if (upperWick > bodySize * 2 && lowerWick < bodySize * 0.5) {
+                patternName = "流星線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "看跌"; trendClass = "trend-bear";
+            } else if (bodySize < totalRange * 0.1) {
+                patternName = "十字星"; color = "var(--ios-purple)"; glow = "0 0 10px rgba(191, 90, 242, 0.4)"; trend = "變盤"; trendClass = "trend-neutral";
+            } else if (cNow > oNow && bodySize > totalRange * 0.8) {
+                patternName = "大陽線"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "強漲"; trendClass = "trend-bull";
+            } else if (cNow < oNow && bodySize > totalRange * 0.8) {
+                patternName = "大陰線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "強跌"; trendClass = "trend-bear";
+            }
+
+            element.innerHTML = `${patternName} <span class="trend-tag ${trendClass}">${trend}</span>`;
+            element.style.color = color;
+            element.style.textShadow = glow;
+        }
+
+        function setBadge(element, title, colorVar) {
+            element.innerText = title;
+            element.style.color = colorVar;
+            element.style.textShadow = `0 0 20px ${colorVar}`;
+        }
+
+        // === 5分鐘倒數計時器 (控制 fetchAllData) ===
+        function startAnalysisTimer() {
+            clearInterval(analysisTimerInterval);
+            updateTimerDisplay();
+
+            analysisTimerInterval = setInterval(() => {
+                analysisCountdown--;
+                updateTimerDisplay();
+
+                if (analysisCountdown <= 0) {
+                    resetAnalysisTimer();
+                    fetchAllData(); 
+                }
+            }, 1000);
+        }
+
+        function resetAnalysisTimer() {
+            analysisCountdown = 300; 
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(analysisCountdown / 60);
+            const s = analysisCountdown % 60;
+            const displayTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            document.getElementById('analysis-timer').innerHTML = `<span>⏳</span> ${displayTime}`;
+        }
+        
+        // === K線收盤倒數 (基於 UTC) ===
+        function startCandleTimers() {
+            if (candleTimerInterval) clearInterval(candleTimerInterval);
+            
+            candleTimerInterval = setInterval(() => {
+                const now = Date.now(); 
+                updateSingleTimer('timer-5m', 5 * 60 * 1000, now);
+                updateSingleTimer('timer-15m', 15 * 60 * 1000, now);
+                updateSingleTimer('timer-1h', 60 * 60 * 1000, now);
+                updateSingleTimer('timer-4h', 4 * 60 * 60 * 1000, now);
+                updateSingleTimer('timer-1d', 24 * 60 * 60 * 1000, now);
+            }, 1000);
+        }
+
+        function updateSingleTimer(elementId, intervalMs, nowMs) {
+            const timeLeft = intervalMs - (nowMs % intervalMs);
+            const totalSeconds = Math.floor(timeLeft / 1000);
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+            let display = h > 0 ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            document.getElementById(elementId).innerText = display;
+        }
+
+        initApp = () => {
+            renderMainChart();
+            fetchAllData();
+            startWebSocket();
+            startTopTickerWebSocket(); // 啟動頂部行情 WS
+            startAnalysisTimer();
+            startCandleTimers(); 
+        }
+        
+        initApp();
+
+    </script>
+
+</body>
+</html>
+
 
         .status-dot {
             width: 8px;
@@ -903,5 +2011,6 @@
 
 </body>
 </html>
+
 
 
