@@ -153,10 +153,31 @@
             letter-spacing: 0.3px;
         }
 
+        .section-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
         .section-subtitle {
             font-size: 13px;
             color: var(--ios-text-secondary);
-            font-weight: 400;
+            font-weight: 600;
+        }
+
+        /* 倒數計時器樣式 */
+        .timer-badge {
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            font-size: 12px;
+            color: var(--ios-text-tertiary);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* iOS 風格卡片 */
@@ -362,7 +383,13 @@
             
             <div class="section-header">
                 <div class="section-title">盤面解析</div>
-                <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
+                <div class="section-right">
+                    <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
+                    <!-- 倒數計時工具 -->
+                    <div class="timer-badge" id="analysis-timer">
+                        <span>⏳</span> --:--
+                    </div>
+                </div>
             </div>
             
             <div class="ios-card">
@@ -429,6 +456,10 @@
 
         let currentCoin = 'BTC'; 
         let ws = null; 
+        
+        // === 倒數計時變數 ===
+        let analysisCountdown = 300; // 5分鐘 = 300秒
+        let analysisTimerInterval;
 
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
@@ -443,6 +474,7 @@
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
 
             renderMainChart();
+            resetAnalysisTimer(); // 切換幣種時重置計時
             fetchDailyData();
             startWebSocket();
         }
@@ -485,8 +517,10 @@
 
         async function fetchDailyData() {
             try {
-                document.getElementById('ai-text').innerText = '正在更新數據...';
-                document.getElementById('ai-badge').innerText = 'UPDATING';
+                // UI 顯示為讀取中
+                document.getElementById('ai-badge').innerText = "UPDATING";
+                document.getElementById('ai-badge').style.color = "var(--ios-text-secondary)";
+                document.getElementById('ai-badge').style.textShadow = "none";
 
                 const symbol = COINS[currentCoin].binance;
                 const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
@@ -587,14 +621,6 @@
             const fS1 = s1.toFixed(decimals);
             const fPP = pp.toFixed(decimals);
 
-            // 設定光暈的函數
-            const setGlow = (colorVar) => {
-                // 使用 computed style 來獲取變數的真實顏色
-                const color = getComputedStyle(document.documentElement).getPropertyValue(colorVar);
-                // 簡單模擬光暈，實際瀏覽器可直接解析變數
-                badge.style.textShadow = `0 0 15px ${colorVar}`;
-            };
-
             // 移除 Emoji，改用純文字描述
             if (currentPrice > r1) {
                 badge.innerText = "強勢突破";
@@ -619,14 +645,44 @@
             }
         }
 
+        // === 計時器邏輯 ===
+        function startAnalysisTimer() {
+            clearInterval(analysisTimerInterval);
+            updateTimerDisplay(); // 初始顯示
+
+            analysisTimerInterval = setInterval(() => {
+                analysisCountdown--;
+                updateTimerDisplay();
+
+                if (analysisCountdown <= 0) {
+                    resetAnalysisTimer();
+                    fetchDailyData(); // 時間到，觸發數據刷新
+                }
+            }, 1000);
+        }
+
+        function resetAnalysisTimer() {
+            analysisCountdown = 300; // 重置為5分鐘
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(analysisCountdown / 60);
+            const s = analysisCountdown % 60;
+            // 格式化為 MM:SS
+            const displayTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            document.getElementById('analysis-timer').innerHTML = `<span>⏳</span> ${displayTime}`;
+        }
+
         initApp = () => {
             renderMainChart();
             fetchDailyData();
             startWebSocket();
+            startAnalysisTimer(); // 啟動計時
         }
         
         initApp();
-        setInterval(fetchDailyData, 600000); // 每10分鐘更新一次Pivot
+        // 原本的 setInterval(fetchDailyData, 600000) 已被計時器取代，移除。
 
     </script>
 
