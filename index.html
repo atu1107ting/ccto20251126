@@ -185,13 +185,25 @@
             gap: 20px;
         }
         
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: -10px;
+        }
+
         .card-label {
             font-size: 13px;
             color: var(--ios-text-secondary);
             text-transform: uppercase;
             font-weight: 600;
             letter-spacing: 0.5px;
-            margin-bottom: -10px;
+        }
+
+        .last-updated {
+            font-size: 11px;
+            color: var(--ios-text-tertiary);
+            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
         }
 
         .price-display {
@@ -479,7 +491,10 @@
 
             <!-- 卡片 2: AI 策略 -->
             <div class="ios-card" style="margin-top: 0;">
-                <div class="card-label">AI 主策略 (日內 Pivot)</div>
+                <div class="card-header-row">
+                    <div class="card-label">AI 主策略 (日內 Pivot)</div>
+                    <div class="last-updated" id="ai-update-time">--:--:--</div>
+                </div>
                 <div class="analysis-box">
                     <div class="analysis-header">
                         <span class="analysis-badge" id="ai-badge">LOADING</span>
@@ -492,7 +507,10 @@
 
             <!-- 卡片 3: 全時區型態學 -->
             <div class="ios-card" style="margin-top: 0;">
-                <div class="card-label">全時區型態偵測 (Multi-Timeframe)</div>
+                <div class="card-header-row">
+                    <div class="card-label">全時區型態偵測 (Multi-Timeframe)</div>
+                    <div class="last-updated" id="pattern-update-time">--:--:--</div>
+                </div>
                 <div class="pattern-list">
                     <!-- 15分鐘 -->
                     <div class="pattern-item">
@@ -643,6 +661,12 @@
                 results.forEach((klineData, index) => {
                     analyzePatterns(klineData, timeframes[index]);
                 });
+                
+                // 更新最後更新時間
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString();
+                document.getElementById('ai-update-time').innerText = timeStr;
+                document.getElementById('pattern-update-time').innerText = timeStr;
 
             } catch (e) {
                 console.error(e);
