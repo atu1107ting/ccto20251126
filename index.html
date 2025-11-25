@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>加密貨幣戰情室</title>
+    <title>加密貨幣戰情室 Pro Max</title>
     <style>
         /* === iOS 風格變數 === */
         :root {
@@ -190,6 +190,8 @@
             justify-content: space-between;
             align-items: baseline;
             margin-bottom: -10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
         }
 
         .card-label {
@@ -204,6 +206,7 @@
             font-size: 11px;
             color: var(--ios-text-tertiary);
             font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
+            font-weight: 400;
         }
 
         .price-display {
@@ -455,10 +458,10 @@
                 </div>
             </div>
             
-            <!-- 卡片 1: 價格與點位 -->
+            <!-- 卡片 1: 價格與點位 (Pivot值每5分更新，價格實時) -->
             <div class="ios-card">
                 <div class="price-display">
-                    <div class="price-label">最新成交價</div>
+                    <div class="price-label">最新成交價 (即時)</div>
                     <div class="price-value-row">
                         <div class="current-price" id="current-price">---.--</div>
                         <div class="price-change" id="price-change">--%</div>
@@ -508,7 +511,7 @@
             <!-- 卡片 3: 全時區型態學 -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
-                    <div class="card-label">全時區型態偵測 (Multi-Timeframe)</div>
+                    <div class="card-label">全時區型態偵測</div>
                     <div class="last-updated" id="pattern-update-time">--:--:--</div>
                 </div>
                 <div class="pattern-list">
@@ -556,7 +559,7 @@
             </div>
 
             <div class="tip-section">
-                數據來自 Binance API。倒數計時代表該根 K 線的收盤時間。型態確認需等待收盤，盤中訊號僅供參考。
+                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。
             </div>
 
         </div>
@@ -575,7 +578,10 @@
         let ws = null; 
         let analysisCountdown = 300; 
         let analysisTimerInterval;
-        let candleTimerInterval; // 新增 K 線倒數計時器
+        let candleTimerInterval; 
+
+        // 全局變數儲存 Pivot 數據 (避免每次 WebSocket 都重算)
+        let g_pp = 0, g_r1 = 0, g_r2 = 0, g_s1 = 0, g_s2 = 0;
 
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
@@ -590,7 +596,7 @@
 
             renderMainChart();
             resetAnalysisTimer(); 
-            fetchAllData(); 
+            fetchAllData(); // 立即抓取一次數據
             startWebSocket();
         }
 
@@ -625,32 +631,36 @@
         });
 
         let currentPrice = 0;
-        let dayHigh = 0;
-        let dayLow = 0;
-        let dayClose = 0;
 
+        // === 核心數據抓取 (每5分鐘執行) ===
         async function fetchAllData() {
-            document.getElementById('ai-badge').innerText = "UPDATING";
-            document.getElementById('ai-badge').style.color = "var(--ios-text-secondary)";
-            document.getElementById('ai-badge').style.textShadow = "none";
+            // UI 狀態: 更新中
+            const loadingTime = "更新中...";
+            document.getElementById('ai-update-time').innerText = loadingTime;
+            document.getElementById('pattern-update-time').innerText = loadingTime;
             
+            // 清除舊狀態顯示
             ['15m', '1h', '4h', '1d'].forEach(tf => {
-                document.getElementById(`pat-${tf}`).innerHTML = "掃描中...";
+                const el = document.getElementById(`pat-${tf}`);
+                el.innerHTML = "掃描中...";
+                el.style.color = "var(--ios-text-secondary)";
+                el.style.textShadow = "none";
             });
 
             const symbol = COINS[currentCoin].binance;
 
             try {
-                // Pivot Data
+                // 1. Pivot Data (24hr ticker)
                 const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
                 const tickerData = await tickerRes.json();
                 
-                dayHigh = parseFloat(tickerData.highPrice);
-                dayLow = parseFloat(tickerData.lowPrice);
-                dayClose = parseFloat(tickerData.prevClosePrice); 
-                calculatePivotPoints();
+                // 計算 Pivot 並存入全局變數
+                const h = parseFloat(tickerData.highPrice);
+                const l = parseFloat(tickerData.lowPrice);
+                const c = parseFloat(tickerData.prevClosePrice); 
+                calculatePivotPoints(h, l, c);
 
-                // Multi-Timeframe Klines
+                // 2. Multi-Timeframe Klines (型態學)
                 const timeframes = ['15m', '1h', '4h', '1d'];
                 const requests = timeframes.map(tf => 
                     fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=5`).then(res => res.json())
@@ -662,11 +672,17 @@
                     analyzePatterns(klineData, timeframes[index]);
                 });
                 
-                // 更新最後更新時間
+                // 3. 更新時間戳記
                 const now = new Date();
-                const timeStr = now.toLocaleTimeString();
+                const timeStr = "更新於 " + now.toLocaleTimeString();
                 document.getElementById('ai-update-time').innerText = timeStr;
                 document.getElementById('pattern-update-time').innerText = timeStr;
+
+                // 4. 根據當前價格(快照) 更新一次 AI 策略文字
+                // 注意：這裡只在5分鐘週期更新文字，避免文字跳動
+                if (currentPrice > 0) {
+                    updateAnalysisText(); 
+                }
 
             } catch (e) {
                 console.error(e);
@@ -674,6 +690,101 @@
             }
         }
 
+        // === 計算 Pivot 並更新 DOM 數值 ===
+        function calculatePivotPoints(high, low, close) {
+            if(!high) return;
+
+            g_pp = (high + low + close) / 3;
+            g_r1 = (2 * g_pp) - low;
+            g_s1 = (2 * g_pp) - high;
+            g_r2 = g_pp + (high - low);
+            g_s2 = g_pp - (high - low);
+
+            let decimals = 2;
+            if (currentCoin === 'XRP') decimals = 4;
+            if (currentCoin === 'SOL') decimals = 3;
+            if (currentCoin === 'BTC') decimals = 0;
+
+            document.getElementById('val-r2').innerText = g_r2.toFixed(decimals);
+            document.getElementById('val-r1').innerText = g_r1.toFixed(decimals);
+            document.getElementById('val-pp').innerText = g_pp.toFixed(decimals);
+            document.getElementById('val-s1').innerText = g_s1.toFixed(decimals);
+            document.getElementById('val-s2').innerText = g_s2.toFixed(decimals);
+        }
+
+        // === 更新 AI 策略文字 (與 WebSocket 解耦) ===
+        function updateAnalysisText() {
+            const badge = document.getElementById('ai-badge');
+            const text = document.getElementById('ai-text');
+            const coin = currentCoin;
+            
+            let decimals = 2;
+            if (currentCoin === 'BTC') decimals = 0;
+            
+            const fR1 = g_r1.toFixed(decimals);
+            const fS1 = g_s1.toFixed(decimals);
+            const fPP = g_pp.toFixed(decimals);
+
+            // 使用此函數被呼叫時的 currentPrice 快照
+            if (currentPrice > g_r1) {
+                setBadge(badge, "強勢突破", "var(--ios-green)");
+                text.innerText = `${coin} 價格已突破 R1 壓力位 ${fR1}，多頭動能強勁。請留意 R2 是否出現獲利了結賣壓，若持續站穩 R1 則看漲趨勢不變。`;
+            } else if (currentPrice > g_pp) {
+                setBadge(badge, "偏多震盪", "var(--ios-blue)");
+                text.innerText = `${coin} 目前位於多空分界 ${fPP} 之上，整體趨勢偏多。只要不跌破分界點，回調皆可視為潛在機會，上方目標看向 R1。`;
+            } else if (currentPrice < g_s1) {
+                setBadge(badge, "弱勢探底", "var(--ios-red)");
+                text.innerText = `${coin} 已跌破 S1 支撐 ${fS1}，空頭主導市場。請勿輕易進場，下方 S2 支撐需密切關注是否有止跌訊號。`;
+            } else {
+                setBadge(badge, "偏空震盪", "var(--ios-orange)");
+                text.innerText = `${coin} 位於多空分界 ${fPP} 之下，短期承受賣壓。反彈若無法站回分界點，則趨勢仍以調節為主，下方目標 S1。`;
+            }
+        }
+
+        // === WebSocket 僅更新價格 DOM ===
+        function startWebSocket() {
+            if (ws) ws.close();
+
+            const streamName = COINS[currentCoin].ws;
+            ws = new WebSocket(`wss://stream.binance.com:9443/ws/${streamName}@ticker`);
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const price = parseFloat(data.c);
+                const change = parseFloat(data.P);
+                currentPrice = price; // 更新全局價格變數
+                
+                // 僅更新價格數字 UI
+                const priceEl = document.getElementById('current-price');
+                if (price < 10) priceEl.innerText = price.toFixed(4);
+                else if (price < 1000) priceEl.innerText = price.toFixed(2);
+                else priceEl.innerText = Math.floor(price).toLocaleString();
+                
+                const changeEl = document.getElementById('price-change');
+                const sign = change >= 0 ? '+' : '';
+                changeEl.innerText = `${sign}${change}%`;
+                
+                if (change >= 0) {
+                    changeEl.className = 'price-change bg-green';
+                } else {
+                    changeEl.className = 'price-change bg-red';
+                }
+
+                // 注意：這裡不再呼叫 updateAnalysisText()
+                // 策略文字被鎖定在 5 分鐘一次的 fetchAllData() 中更新
+            };
+            
+            ws.onopen = () => { 
+                document.getElementById('ai-status').innerText = "連線正常"; 
+                document.getElementById('connection-dot').style.backgroundColor = "#30D158";
+            };
+            ws.onerror = () => { 
+                document.getElementById('ai-status').innerText = "連線中斷"; 
+                document.getElementById('connection-dot').style.backgroundColor = "#FF453A";
+            };
+        }
+
+        // === 型態學分析邏輯 ===
         function analyzePatterns(klines, tf) {
             const last = klines.length - 1; 
             const prev = last - 1; 
@@ -699,64 +810,23 @@
             let trend = "中性";
             let trendClass = "trend-neutral";
 
-            // 1. 多頭吞噬
+            // 簡易型態判斷邏輯
             if (cPrev < oPrev && cNow > oNow && cNow > oPrev && oNow < cPrev) {
-                patternName = "多頭吞噬";
-                color = "var(--ios-green)";
-                glow = "0 0 10px rgba(48, 209, 88, 0.4)";
-                trend = "看漲";
-                trendClass = "trend-bull";
-            }
-            // 2. 空頭吞噬
-            else if (cPrev > oPrev && cNow < oNow && cNow < oPrev && oNow > cPrev) {
-                patternName = "空頭吞噬";
-                color = "var(--ios-red)";
-                glow = "0 0 10px rgba(255, 69, 58, 0.4)";
-                trend = "看跌";
-                trendClass = "trend-bear";
-            }
-            // 3. 錘頭線
-            else if (lowerWick > bodySize * 2 && upperWick < bodySize * 0.5) {
-                patternName = "錘頭線";
-                color = "var(--ios-green)";
-                glow = "0 0 10px rgba(48, 209, 88, 0.4)";
-                trend = "看漲";
-                trendClass = "trend-bull";
-            }
-            // 4. 流星線
-            else if (upperWick > bodySize * 2 && lowerWick < bodySize * 0.5) {
-                patternName = "流星線";
-                color = "var(--ios-red)";
-                glow = "0 0 10px rgba(255, 69, 58, 0.4)";
-                trend = "看跌";
-                trendClass = "trend-bear";
-            }
-            // 5. 十字星
-            else if (bodySize < totalRange * 0.1) {
-                patternName = "十字星";
-                color = "var(--ios-purple)";
-                glow = "0 0 10px rgba(191, 90, 242, 0.4)";
-                trend = "變盤";
-                trendClass = "trend-neutral";
-            }
-            // 6. 大陽線
-            else if (cNow > oNow && bodySize > totalRange * 0.8) {
-                patternName = "大陽線";
-                color = "var(--ios-green)";
-                glow = "0 0 10px rgba(48, 209, 88, 0.4)";
-                trend = "強漲";
-                trendClass = "trend-bull";
-            }
-            // 7. 大陰線
-            else if (cNow < oNow && bodySize > totalRange * 0.8) {
-                patternName = "大陰線";
-                color = "var(--ios-red)";
-                glow = "0 0 10px rgba(255, 69, 58, 0.4)";
-                trend = "強跌";
-                trendClass = "trend-bear";
+                patternName = "多頭吞噬"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "看漲"; trendClass = "trend-bull";
+            } else if (cPrev > oPrev && cNow < oNow && cNow < oPrev && oNow > cPrev) {
+                patternName = "空頭吞噬"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "看跌"; trendClass = "trend-bear";
+            } else if (lowerWick > bodySize * 2 && upperWick < bodySize * 0.5) {
+                patternName = "錘頭線"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "看漲"; trendClass = "trend-bull";
+            } else if (upperWick > bodySize * 2 && lowerWick < bodySize * 0.5) {
+                patternName = "流星線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "看跌"; trendClass = "trend-bear";
+            } else if (bodySize < totalRange * 0.1) {
+                patternName = "十字星"; color = "var(--ios-purple)"; glow = "0 0 10px rgba(191, 90, 242, 0.4)"; trend = "變盤"; trendClass = "trend-neutral";
+            } else if (cNow > oNow && bodySize > totalRange * 0.8) {
+                patternName = "大陽線"; color = "var(--ios-green)"; glow = "0 0 10px rgba(48, 209, 88, 0.4)"; trend = "強漲"; trendClass = "trend-bull";
+            } else if (cNow < oNow && bodySize > totalRange * 0.8) {
+                patternName = "大陰線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "強跌"; trendClass = "trend-bear";
             }
 
-            // 更新 HTML
             element.innerHTML = `${patternName} <span class="trend-tag ${trendClass}">${trend}</span>`;
             element.style.color = color;
             element.style.textShadow = glow;
@@ -768,103 +838,7 @@
             element.style.textShadow = `0 0 20px ${colorVar}`;
         }
 
-        function calculatePivotPoints() {
-            if(dayHigh === 0) return;
-
-            const pp = (dayHigh + dayLow + dayClose) / 3;
-            const r1 = (2 * pp) - dayLow;
-            const s1 = (2 * pp) - dayHigh;
-            const r2 = pp + (dayHigh - dayLow);
-            const s2 = pp - (dayHigh - dayLow);
-
-            let decimals = 2;
-            if (currentCoin === 'XRP') decimals = 4;
-            if (currentCoin === 'SOL') decimals = 3;
-            if (currentCoin === 'BTC') decimals = 0;
-
-            document.getElementById('val-r2').innerText = r2.toFixed(decimals);
-            document.getElementById('val-r1').innerText = r1.toFixed(decimals);
-            document.getElementById('val-pp').innerText = pp.toFixed(decimals);
-            document.getElementById('val-s1').innerText = s1.toFixed(decimals);
-            document.getElementById('val-s2').innerText = s2.toFixed(decimals);
-
-            updateAnalysis(pp, r1, s1);
-        }
-
-        function startWebSocket() {
-            if (ws) ws.close();
-
-            const streamName = COINS[currentCoin].ws;
-            ws = new WebSocket(`wss://stream.binance.com:9443/ws/${streamName}@ticker`);
-            
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                const price = parseFloat(data.c);
-                const change = parseFloat(data.P);
-                currentPrice = price;
-                
-                const priceEl = document.getElementById('current-price');
-                if (price < 10) priceEl.innerText = price.toFixed(4);
-                else if (price < 1000) priceEl.innerText = price.toFixed(2);
-                else priceEl.innerText = Math.floor(price).toLocaleString();
-                
-                const changeEl = document.getElementById('price-change');
-                const sign = change >= 0 ? '+' : '';
-                changeEl.innerText = `${sign}${change}%`;
-                
-                if (change >= 0) {
-                    changeEl.className = 'price-change bg-green';
-                } else {
-                    changeEl.className = 'price-change bg-red';
-                }
-
-                const ppStr = document.getElementById('val-pp').innerText;
-                if (ppStr !== '--') {
-                    const pp = parseFloat(ppStr.replace(/,/g, ''));
-                    const r1 = parseFloat(document.getElementById('val-r1').innerText.replace(/,/g, ''));
-                    const s1 = parseFloat(document.getElementById('val-s1').innerText.replace(/,/g, ''));
-                    updateAnalysis(pp, r1, s1);
-                }
-            };
-            
-            ws.onopen = () => { 
-                document.getElementById('ai-status').innerText = "連線正常"; 
-                document.getElementById('connection-dot').style.backgroundColor = "#30D158";
-            };
-            ws.onerror = () => { 
-                document.getElementById('ai-status').innerText = "連線中斷"; 
-                document.getElementById('connection-dot').style.backgroundColor = "#FF453A";
-            };
-        }
-
-        function updateAnalysis(pp, r1, s1) {
-            const badge = document.getElementById('ai-badge');
-            const text = document.getElementById('ai-text');
-            const coin = currentCoin;
-            
-            let decimals = 2;
-            if (currentCoin === 'BTC') decimals = 0;
-            
-            const fR1 = r1.toFixed(decimals);
-            const fS1 = s1.toFixed(decimals);
-            const fPP = pp.toFixed(decimals);
-
-            if (currentPrice > r1) {
-                setBadge(badge, "強勢突破", "var(--ios-green)");
-                text.innerText = `${coin} 價格已突破 R1 壓力位 ${fR1}，多頭動能強勁。請留意 R2 是否出現獲利了結賣壓，若持續站穩 R1 則看漲趨勢不變。`;
-            } else if (currentPrice > pp) {
-                setBadge(badge, "偏多震盪", "var(--ios-blue)");
-                text.innerText = `${coin} 目前位於多空分界 ${fPP} 之上，整體趨勢偏多。只要不跌破分界點，回調皆可視為潛在機會，上方目標看向 R1。`;
-            } else if (currentPrice < s1) {
-                setBadge(badge, "弱勢探底", "var(--ios-red)");
-                text.innerText = `${coin} 已跌破 S1 支撐 ${fS1}，空頭主導市場。請勿輕易進場，下方 S2 支撐需密切關注是否有止跌訊號。`;
-            } else {
-                setBadge(badge, "偏空震盪", "var(--ios-orange)");
-                text.innerText = `${coin} 位於多空分界 ${fPP} 之下，短期承受賣壓。反彈若無法站回分界點，則趨勢仍以調節為主，下方目標 S1。`;
-            }
-        }
-
-        // === 全局分析計時器 (5分鐘更新) ===
+        // === 5分鐘倒數計時器 (控制 fetchAllData) ===
         function startAnalysisTimer() {
             clearInterval(analysisTimerInterval);
             updateTimerDisplay();
@@ -892,40 +866,26 @@
             document.getElementById('analysis-timer').innerHTML = `<span>⏳</span> ${displayTime}`;
         }
         
-        // === K線倒數計時器 (基於 UTC) ===
+        // === K線收盤倒數 (基於 UTC) ===
         function startCandleTimers() {
             if (candleTimerInterval) clearInterval(candleTimerInterval);
             
             candleTimerInterval = setInterval(() => {
-                const now = Date.now(); // UTC 毫秒數
-                
-                // 15m: 15 * 60 * 1000
+                const now = Date.now(); 
                 updateSingleTimer('timer-15m', 15 * 60 * 1000, now);
-                // 1h: 60 * 60 * 1000
                 updateSingleTimer('timer-1h', 60 * 60 * 1000, now);
-                // 4h: 4 * 60 * 60 * 1000
                 updateSingleTimer('timer-4h', 4 * 60 * 60 * 1000, now);
-                // 1d: 24 * 60 * 60 * 1000
                 updateSingleTimer('timer-1d', 24 * 60 * 60 * 1000, now);
-                
             }, 1000);
         }
 
         function updateSingleTimer(elementId, intervalMs, nowMs) {
             const timeLeft = intervalMs - (nowMs % intervalMs);
             const totalSeconds = Math.floor(timeLeft / 1000);
-            
             const h = Math.floor(totalSeconds / 3600);
             const m = Math.floor((totalSeconds % 3600) / 60);
             const s = totalSeconds % 60;
-            
-            let display = "";
-            if (h > 0) {
-                display = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            } else {
-                display = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }
-            
+            let display = h > 0 ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}` : `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             document.getElementById(elementId).innerText = display;
         }
 
@@ -934,7 +894,7 @@
             fetchAllData();
             startWebSocket();
             startAnalysisTimer();
-            startCandleTimers(); // 啟動 K 線倒數
+            startCandleTimers(); 
         }
         
         initApp();
@@ -943,4 +903,5 @@
 
 </body>
 </html>
+
 
