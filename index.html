@@ -44,47 +44,22 @@
             border-bottom: 1px solid var(--ios-border);
             display: flex;
             align-items: center;
-            padding: calc(var(--safe-top) + 2px) 16px 2px 16px; /* 避開劉海 */
+            padding: calc(var(--safe-top) + 2px) 16px 2px 16px; 
             overflow-x: auto;
             white-space: nowrap;
             gap: 20px;
             flex-shrink: 0;
             font-size: 12px;
-            /* 隱藏捲軸 */
             -ms-overflow-style: none; 
             scrollbar-width: none; 
         }
-        .top-ticker-bar::-webkit-scrollbar { 
-            display: none; 
-        }
+        .top-ticker-bar::-webkit-scrollbar { display: none; }
 
-        .ticker-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .ticker-name {
-            font-weight: 700;
-            color: var(--ios-text-secondary);
-        }
-
-        .ticker-val {
-            font-family: "SF Mono", monospace;
-            color: var(--ios-text-primary);
-        }
-
-        .ticker-pct {
-            font-size: 11px;
-        }
-
-        .fng-label {
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #000; /* 文字反白 */
-            font-size: 11px;
-        }
+        .ticker-item { display: flex; align-items: center; gap: 6px; }
+        .ticker-name { font-weight: 700; color: var(--ios-text-secondary); }
+        .ticker-val { font-family: "SF Mono", monospace; color: var(--ios-text-primary); }
+        .ticker-pct { font-size: 11px; }
+        .fng-label { padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #000; font-size: 11px; }
 
         /* 頂部導航列 */
         header {
@@ -103,451 +78,107 @@
             top: 0;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        h1 {
-            font-size: 17px;
-            font-weight: 600;
-            margin: 0;
-            color: var(--ios-text-primary);
-            letter-spacing: -0.5px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--ios-green);
-            display: inline-block;
-            box-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
-        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        h1 { font-size: 17px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: var(--ios-green); display: inline-block; box-shadow: 0 0 8px rgba(48, 209, 88, 0.4); }
         
-        .segmented-control {
-            display: flex;
-            background-color: rgba(118, 118, 128, 0.24);
-            border-radius: 8px;
-            padding: 2px;
-            height: 32px;
-            box-sizing: border-box;
-        }
+        .segmented-control { display: flex; background-color: rgba(118, 118, 128, 0.24); border-radius: 8px; padding: 2px; height: 32px; box-sizing: border-box; }
+        .coin-btn { background-color: transparent; border: none; color: var(--ios-text-primary); padding: 0 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; flex: 1; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; min-width: 48px; }
+        .coin-btn.active { background-color: #636366; background-color: rgba(255, 255, 255, 0.15); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04); font-weight: 600; }
 
-        .coin-btn {
-            background-color: transparent;
-            border: none;
-            color: var(--ios-text-primary);
-            padding: 0 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            flex: 1;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 48px;
-        }
-
-        .coin-btn.active {
-            background-color: #636366;
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
-            font-weight: 600;
-        }
-
-        .main-container {
-            display: flex;
-            flex: 1;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .chart-section {
-            flex: 40; 
-            position: relative;
-            background-color: #131722;
-            border-right: 0.5px solid var(--ios-border);
-        }
-
-        .analysis-section {
-            flex: 60; 
-            display: flex;
-            flex-direction: column;
-            background-color: var(--ios-bg);
-            overflow-y: auto;
-            min-width: 340px; 
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: var(--safe-bottom);
-        }
-
-        .section-header {
-            padding: 16px 20px 8px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--ios-text-primary);
-            letter-spacing: 0.3px;
-        }
-
-        .section-right {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 2px;
-        }
-
-        .section-subtitle {
-            font-size: 13px;
-            color: var(--ios-text-secondary);
-            font-weight: 600;
-        }
-
-        .timer-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .timer-badge {
-            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
-            font-size: 12px;
-            color: var(--ios-text-tertiary);
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 0 8px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            height: 24px; 
-        }
-
-        .refresh-btn {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: none;
-            border-radius: 8px; 
-            color: var(--ios-text-primary);
-            padding: 0 14px; 
-            height: 32px; 
-            font-size: 13px; 
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .refresh-btn:hover {
-            background-color: var(--ios-blue); 
-            transform: translateY(-1px);
-        }
-
-        .refresh-btn:active {
-            background-color: rgba(10, 132, 255, 0.8);
-            transform: scale(0.96); 
-        }
-
-        .refresh-hint {
-            font-size: 10px;
-            color: var(--ios-text-tertiary);
-            margin-top: 4px;
-        }
-
-        .ios-card {
-            background-color: var(--ios-card-bg);
-            margin: 10px 20px 20px 20px;
-            border-radius: 16px;
-            padding: 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .main-container { display: flex; flex: 1; height: 100%; overflow: hidden; }
         
-        .card-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: -10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 12px;
-        }
+        .chart-section { flex: 40; position: relative; background-color: #131722; border-right: 0.5px solid var(--ios-border); }
+        .analysis-section { flex: 60; display: flex; flex-direction: column; background-color: var(--ios-bg); overflow-y: auto; min-width: 340px; -webkit-overflow-scrolling: touch; padding-bottom: var(--safe-bottom); }
 
-        .card-label {
-            font-size: 13px;
-            color: var(--ios-text-secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+        .section-header { padding: 16px 20px 8px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .section-title { font-size: 20px; font-weight: 700; color: var(--ios-text-primary); letter-spacing: 0.3px; }
+        .section-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .section-subtitle { font-size: 13px; color: var(--ios-text-secondary); font-weight: 600; }
 
-        .card-header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .timer-container { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        .timer-badge { font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-size: 12px; color: var(--ios-text-tertiary); background-color: rgba(255, 255, 255, 0.1); padding: 0 8px; border-radius: 6px; display: flex; align-items: center; gap: 4px; height: 24px; }
+        
+        .refresh-btn { background-color: rgba(255, 255, 255, 0.15); border: none; border-radius: 8px; color: var(--ios-text-primary); padding: 0 14px; height: 32px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .refresh-btn:hover { background-color: var(--ios-blue); transform: translateY(-1px); }
+        .refresh-btn:active { background-color: rgba(10, 132, 255, 0.8); transform: scale(0.96); }
+        .refresh-hint { font-size: 10px; color: var(--ios-text-tertiary); margin-top: 4px; }
 
-        .last-updated {
-            font-size: 11px;
-            color: var(--ios-text-tertiary);
-            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
-            font-weight: 400;
-        }
+        .ios-card { background-color: var(--ios-card-bg); margin: 10px 20px 20px 20px; border-radius: 16px; padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
+        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: -10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .card-label { font-size: 13px; color: var(--ios-text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .card-header-actions { display: flex; align-items: center; gap: 8px; }
+        .last-updated { font-size: 11px; color: var(--ios-text-tertiary); font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-weight: 400; }
+        
+        .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 14px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
+        .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
-        .card-refresh-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: var(--ios-blue);
-            cursor: pointer;
-            font-size: 14px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .card-refresh-btn:hover {
-            background-color: rgba(10, 132, 255, 0.2);
-            transform: rotate(15deg);
-        }
-
-        .card-refresh-btn:active {
-            transform: rotate(180deg);
-            transition: transform 0.3s;
-        }
-
-        .price-display {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .price-label {
-            font-size: 13px;
-            color: var(--ios-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .price-value-row {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-        }
-
-        .current-price {
-            font-size: 34px;
-            font-weight: 700;
-            color: var(--ios-text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            letter-spacing: -0.5px;
-        }
-
-        .price-change {
-            font-size: 17px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            min-width: 60px;
-            text-align: center;
-        }
-
+        .price-display { display: flex; flex-direction: column; gap: 4px; }
+        .price-label { font-size: 13px; color: var(--ios-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
+        .current-price { font-size: 34px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
+        .price-change { font-size: 17px; font-weight: 600; padding: 4px 10px; border-radius: 20px; min-width: 60px; text-align: center; }
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
 
-        .data-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1px;
-            background-color: rgba(84, 84, 88, 0.3);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(44, 44, 46, 1);
-            padding: 14px 16px;
-        }
-
-        .data-label {
-            font-size: 15px;
-            color: var(--ios-text-primary);
-        }
-
-        .data-value {
-            font-size: 15px;
-            font-weight: 600;
-            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
-            color: var(--ios-text-secondary);
-        }
-
+        .data-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background-color: rgba(84, 84, 88, 0.3); border-radius: 12px; overflow: hidden; margin-top: 8px; }
+        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 14px 16px; }
+        .data-label { font-size: 15px; color: var(--ios-text-primary); }
+        .data-value { font-size: 15px; font-weight: 600; font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; color: var(--ios-text-secondary); }
         .txt-red { color: var(--ios-red) !important; }
         .txt-green { color: var(--ios-green) !important; }
         .txt-orange { color: var(--ios-orange) !important; }
 
-        .analysis-box {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .analysis-box { background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+        .analysis-header { display: flex; align-items: center; margin-bottom: 4px; }
+        .analysis-badge { font-size: 28px; font-weight: 800; letter-spacing: 0.5px; color: var(--ios-text-secondary); line-height: 1.2; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .analysis-content { font-size: 15px; line-height: 1.5; color: var(--ios-text-secondary); }
 
-        .analysis-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-        }
+        .pattern-list { display: flex; flex-direction: column; gap: 12px; background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px; }
+        .pattern-item { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; }
+        .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
-        .analysis-badge {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: var(--ios-text-secondary);
-            line-height: 1.2;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
+        .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        .tf-tag { font-size: 12px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 4px; text-align: center; }
+        .candle-timer { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; letter-spacing: 0.5px; }
 
-        .analysis-content {
-            font-size: 15px;
-            line-height: 1.5;
-            color: var(--ios-text-secondary);
-        }
+        /* 多空能量條樣式 */
+        .sentiment-wrapper { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+        .sentiment-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; display: flex; }
+        .bar-bull { height: 100%; background-color: var(--ios-green); transition: width 0.5s ease; }
+        .bar-bear { height: 100%; background-color: var(--ios-red); transition: width 0.5s ease; }
+        .sentiment-text { font-size: 10px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
 
-        .pattern-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 16px;
-        }
-
-        .pattern-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .pattern-item:last-child {
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .tf-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tf-tag {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--ios-text-primary);
-            background: rgba(255,255,255,0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
-            width: 36px;
-            text-align: center;
-        }
-
-        .candle-timer {
-            font-size: 11px;
-            color: var(--ios-text-tertiary);
-            font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .pattern-result {
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--ios-text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-align: right;
-        }
-        
-        .trend-tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 700;
-            display: inline-block;
-        }
-        
+        .pattern-result { font-size: 14px; font-weight: 500; color: var(--ios-text-primary); display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
+        .trend-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; }
         .trend-bull { background: rgba(48, 209, 88, 0.2); color: var(--ios-green); }
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
 
-        .tip-section {
-            padding: 0 20px 20px 20px;
-            font-size: 12px;
-            color: var(--ios-text-tertiary);
-            line-height: 1.4;
-        }
-        
-        .global-hint {
-            text-align: center;
-            font-size: 12px;
-            color: var(--ios-orange);
-            padding: 10px 20px 30px 20px;
-            opacity: 0.8;
-            font-weight: 500;
-        }
+        .tip-section { padding: 0 20px 20px 20px; font-size: 12px; color: var(--ios-text-tertiary); line-height: 1.4; }
+        .global-hint { text-align: center; font-size: 12px; color: var(--ios-orange); padding: 10px 20px 30px 20px; opacity: 0.8; font-weight: 500; }
 
         @media (max-width: 768px) {
             .header-left h1 { display: none; }
             .main-container { flex-direction: column; }
-            .chart-section {
-                flex: none;
-                height: 35vh; 
-                border-right: none;
-                border-bottom: 0.5px solid var(--ios-border);
-            }
-            .analysis-section {
-                flex: 1; 
-                min-width: 100%;
-                background-color: var(--ios-bg);
-            }
-            .ios-card {
-                margin: 0 16px 20px 16px;
-                padding: 20px 16px;
-            }
+            .chart-section { flex: none; height: 35vh; border-right: none; border-bottom: 0.5px solid var(--ios-border); }
+            .analysis-section { flex: 1; min-width: 100%; background-color: var(--ios-bg); }
+            .ios-card { margin: 0 16px 20px 16px; padding: 20px 16px; }
             .current-price { font-size: 30px; }
             .section-title { font-size: 18px; }
             .analysis-badge { font-size: 24px; }
             .header-left { flex: 1; }
             .coin-nav { width: 100%; }
             .segmented-control { width: 100%; }
+            /* 手機版調整 Grid */
+            .pattern-item { grid-template-columns: 60px 1fr 90px; font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 新增：頂部全域行情列 -->
+    <!-- 頂部全域行情列 -->
     <div class="top-ticker-bar">
         <div class="ticker-item">
             <span class="ticker-name">BTC</span>
@@ -654,6 +285,7 @@
                     <div class="card-label">AI 主策略</div>
                     <div class="card-header-actions">
                         <div class="last-updated" id="ai-update-time">--:--:--</div>
+                        <div class="refresh-hint" style="margin:0;">每5分鐘更新</div>
                         <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新策略">↻</button>
                     </div>
                 </div>
@@ -670,9 +302,10 @@
             <!-- 卡片 3: 全時區型態學 -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
-                    <div class="card-label">全時區型態偵測</div>
+                    <div class="card-label">全時區型態偵測 (3日數據)</div>
                     <div class="card-header-actions">
                         <div class="last-updated" id="pattern-update-time">--:--:--</div>
+                        <div class="refresh-hint" style="margin:0;">每5分鐘更新</div>
                         <button class="card-refresh-btn" onclick="fetchPatternData()" title="刷新型態">↻</button>
                     </div>
                 </div>
@@ -683,9 +316,21 @@
                             <span class="tf-tag">5m</span>
                             <span class="candle-timer" id="timer-5m">--:--</span>
                         </div>
-                        <span class="pattern-result" id="pat-5m">
-                            掃描中...
-                        </span>
+                        <!-- 新增：多空能量條 -->
+                        <div class="sentiment-wrapper">
+                            <div class="sentiment-text">
+                                <span style="color:var(--ios-green)">多</span>
+                                <span id="ratio-5m" style="color:var(--ios-text-primary)">--%</span>
+                                <span style="color:var(--ios-red)">空</span>
+                            </div>
+                            <div class="sentiment-bar">
+                                <div id="bar-bull-5m" class="bar-bull" style="width: 50%"></div>
+                                <div id="bar-bear-5m" class="bar-bear" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="pattern-result" id="pat-5m">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                     <!-- 15分鐘 -->
                     <div class="pattern-item">
@@ -693,9 +338,20 @@
                             <span class="tf-tag">15m</span>
                             <span class="candle-timer" id="timer-15m">--:--</span>
                         </div>
-                        <span class="pattern-result" id="pat-15m">
-                            掃描中...
-                        </span>
+                        <div class="sentiment-wrapper">
+                            <div class="sentiment-text">
+                                <span style="color:var(--ios-green)">多</span>
+                                <span id="ratio-15m" style="color:var(--ios-text-primary)">--%</span>
+                                <span style="color:var(--ios-red)">空</span>
+                            </div>
+                            <div class="sentiment-bar">
+                                <div id="bar-bull-15m" class="bar-bull" style="width: 50%"></div>
+                                <div id="bar-bear-15m" class="bar-bear" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="pattern-result" id="pat-15m">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                     <!-- 1小時 -->
                     <div class="pattern-item">
@@ -703,9 +359,20 @@
                             <span class="tf-tag">1H</span>
                             <span class="candle-timer" id="timer-1h">--:--</span>
                         </div>
-                        <span class="pattern-result" id="pat-1h">
-                            掃描中...
-                        </span>
+                        <div class="sentiment-wrapper">
+                            <div class="sentiment-text">
+                                <span style="color:var(--ios-green)">多</span>
+                                <span id="ratio-1h" style="color:var(--ios-text-primary)">--%</span>
+                                <span style="color:var(--ios-red)">空</span>
+                            </div>
+                            <div class="sentiment-bar">
+                                <div id="bar-bull-1h" class="bar-bull" style="width: 50%"></div>
+                                <div id="bar-bear-1h" class="bar-bear" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="pattern-result" id="pat-1h">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                     <!-- 4小時 -->
                     <div class="pattern-item">
@@ -713,9 +380,20 @@
                             <span class="tf-tag">4H</span>
                             <span class="candle-timer" id="timer-4h">--:--</span>
                         </div>
-                        <span class="pattern-result" id="pat-4h">
-                            掃描中...
-                        </span>
+                        <div class="sentiment-wrapper">
+                            <div class="sentiment-text">
+                                <span style="color:var(--ios-green)">多</span>
+                                <span id="ratio-4h" style="color:var(--ios-text-primary)">--%</span>
+                                <span style="color:var(--ios-red)">空</span>
+                            </div>
+                            <div class="sentiment-bar">
+                                <div id="bar-bull-4h" class="bar-bull" style="width: 50%"></div>
+                                <div id="bar-bear-4h" class="bar-bear" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="pattern-result" id="pat-4h">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                     <!-- 日線 -->
                     <div class="pattern-item">
@@ -723,15 +401,26 @@
                             <span class="tf-tag">1D</span>
                             <span class="candle-timer" id="timer-1d">--:--</span>
                         </div>
-                        <span class="pattern-result" id="pat-1d">
-                            掃描中...
-                        </span>
+                        <div class="sentiment-wrapper">
+                            <div class="sentiment-text">
+                                <span style="color:var(--ios-green)">多</span>
+                                <span id="ratio-1d" style="color:var(--ios-text-primary)">--%</span>
+                                <span style="color:var(--ios-red)">空</span>
+                            </div>
+                            <div class="sentiment-bar">
+                                <div id="bar-bull-1d" class="bar-bull" style="width: 50%"></div>
+                                <div id="bar-bear-1d" class="bar-bear" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="pattern-result" id="pat-1d">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="tip-section">
-                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。
+                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。3日多空比例統計該時區過去3天內收陽線與收陰線的數量佔比。
             </div>
             
             <div class="global-hint">
@@ -752,12 +441,11 @@
 
         let currentCoin = 'BTC'; 
         let ws = null; 
-        let topTickerWs = null; // 新增頂部行情 WS
+        let topTickerWs = null;
         let analysisCountdown = 300; 
         let analysisTimerInterval;
         let candleTimerInterval; 
 
-        // 全局變數儲存 Pivot 數據
         let g_pp = 0, g_r1 = 0, g_r2 = 0, g_s1 = 0, g_s2 = 0;
 
         function changeCoin(coin) {
@@ -773,7 +461,7 @@
 
             renderMainChart();
             resetAnalysisTimer(); 
-            fetchAllData(); // 立即抓取一次數據
+            fetchAllData(); 
             startWebSocket();
         }
 
@@ -809,17 +497,14 @@
 
         let currentPrice = 0;
 
-        // === 統一抓取入口 ===
         function fetchAllData() {
             fetchTickerData();
             fetchPatternData();
-            fetchMarketOverview(); // 抓取頂部全域行情 (初始)
+            fetchMarketOverview(); 
         }
 
-        // === 抓取頂部全域行情 (初始載入 + 每日 F&G) ===
         async function fetchMarketOverview() {
             try {
-                // 1. Initial Fetch for prices (before WS connects)
                 const [btcRes, ethRes] = await Promise.all([
                     fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'),
                     fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT')
@@ -831,7 +516,6 @@
                 updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
                 updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
 
-                // 2. Fear & Greed Index
                 const fngRes = await fetch('https://api.alternative.me/fng/');
                 const fngData = await fngRes.json();
                 updateFng(fngData.data[0]);
@@ -841,20 +525,15 @@
             }
         }
 
-        // === 啟動頂部行情 WebSocket (BTC/ETH) ===
         function startTopTickerWebSocket() {
             if (topTickerWs) topTickerWs.close();
-
-            // 使用 Binance 組合 stream
             const wsUrl = "wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker";
             topTickerWs = new WebSocket(wsUrl);
 
             topTickerWs.onmessage = (event) => {
                 const message = JSON.parse(event.data);
-                const data = message.data; // Ticker Payload
+                const data = message.data; 
                 const stream = message.stream;
-
-                // data.c = Current Price, data.P = Price Change Percent
                 const price = parseFloat(data.c);
                 const pct = parseFloat(data.P);
 
@@ -869,10 +548,8 @@
         function updateTopTicker(prefix, price, pct) {
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
-            
             valEl.innerText = "$" + Math.floor(price).toLocaleString();
             pctEl.innerText = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
-            
             pctEl.style.color = pct >= 0 ? "var(--ios-green)" : "var(--ios-red)";
         }
 
@@ -894,10 +571,8 @@
             el.style.color = textColor;
         }
 
-        // === 1. 抓取 Ticker (價格, Pivot, 策略) ===
         async function fetchTickerData() {
             const symbol = COINS[currentCoin].binance;
-            
             document.getElementById('ai-update-time').innerText = "更新中...";
             document.getElementById('ai-badge').innerText = "UPDATING";
             
@@ -906,7 +581,6 @@
                 const tickerData = await tickerRes.json();
                 
                 currentPrice = parseFloat(tickerData.lastPrice);
-                
                 const priceEl = document.getElementById('current-price');
                 if (currentPrice < 10) priceEl.innerText = currentPrice.toFixed(4);
                 else if (currentPrice < 1000) priceEl.innerText = currentPrice.toFixed(2);
@@ -918,7 +592,6 @@
                 calculatePivotPoints(h, l, c);
 
                 if (currentPrice > 0) updateAnalysisText();
-                
                 document.getElementById('ai-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
 
             } catch (e) {
@@ -927,7 +600,6 @@
             }
         }
 
-        // === 2. 抓取 K 線 (型態學) ===
         async function fetchPatternData() {
             const symbol = COINS[currentCoin].binance;
             document.getElementById('pattern-update-time').innerText = "更新中...";
@@ -936,9 +608,18 @@
                 document.getElementById(`pat-${tf}`).innerText = "掃描中...";
             });
 
+            // 計算 3 日內的 K 線數量限制
+            const limitMap = {
+                '5m': 864, // 3*24*12 = 864
+                '15m': 288, // 3*24*4 = 288
+                '1h': 72,   // 3*24 = 72
+                '4h': 18,   // 3*6 = 18
+                '1d': 3     // 3
+            };
+
             const timeframes = ['5m', '15m', '1h', '4h', '1d'];
             const requests = timeframes.map(tf => 
-                fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=5`).then(res => {
+                fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=${limitMap[tf]}`).then(res => {
                     if(!res.ok) throw new Error('Network response was not ok');
                     return res.json();
                 })
@@ -960,15 +641,12 @@
             document.getElementById('pattern-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
         }
 
-        // === 手動刷新功能 (直接重整頁面) ===
         function manualRefresh() {
             location.reload(); 
         }
 
-        // === 計算 Pivot 並更新 DOM 數值 ===
         function calculatePivotPoints(high, low, close) {
             if(!high) return;
-
             g_pp = (high + low + close) / 3;
             g_r1 = (2 * g_pp) - low;
             g_s1 = (2 * g_pp) - high;
@@ -987,7 +665,6 @@
             document.getElementById('val-s2').innerText = g_s2.toFixed(decimals);
         }
 
-        // === 更新 AI 策略文字 (與 WebSocket 解耦) ===
         function updateAnalysisText() {
             const badge = document.getElementById('ai-badge');
             const text = document.getElementById('ai-text');
@@ -1015,10 +692,8 @@
             }
         }
 
-        // === WebSocket 僅更新價格 DOM (主圖表價格) ===
         function startWebSocket() {
             if (ws) ws.close();
-
             const streamName = COINS[currentCoin].ws;
             ws = new WebSocket(`wss://stream.binance.com:9443/ws/${streamName}@ticker`);
             
@@ -1054,8 +729,28 @@
             };
         }
 
-        // === 型態學分析邏輯 ===
+        // === 型態學 + 多空比例分析 ===
         function analyzePatterns(klines, tf) {
+            // 1. 多空比例計算 (3日內)
+            let bullCount = 0;
+            let bearCount = 0;
+            klines.forEach(k => {
+                const open = parseFloat(k[1]);
+                const close = parseFloat(k[4]);
+                if (close >= open) bullCount++;
+                else bearCount++;
+            });
+            
+            const total = bullCount + bearCount;
+            const bullPct = total > 0 ? Math.round((bullCount / total) * 100) : 0;
+            const bearPct = 100 - bullPct;
+
+            // 更新 UI 能量條
+            document.getElementById(`ratio-${tf}`).innerText = `${bullPct}%`;
+            document.getElementById(`bar-bull-${tf}`).style.width = `${bullPct}%`;
+            document.getElementById(`bar-bear-${tf}`).style.width = `${bearPct}%`;
+
+            // 2. 型態學偵測 (只看最後兩根)
             const last = klines.length - 1; 
             const prev = last - 1; 
 
@@ -1096,7 +791,7 @@
                 patternName = "大陰線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "強跌"; trendClass = "trend-bear";
             }
 
-            element.innerHTML = `${patternName} <span class="trend-tag ${trendClass}">${trend}</span>`;
+            element.innerHTML = `<div style="display:flex;flex-direction:column;align-items:flex-end"><span>${patternName}</span><span class="trend-tag ${trendClass}">${trend}</span></div>`;
             element.style.color = color;
             element.style.textShadow = glow;
         }
@@ -1107,15 +802,12 @@
             element.style.textShadow = `0 0 20px ${colorVar}`;
         }
 
-        // === 5分鐘倒數計時器 (控制 fetchAllData) ===
         function startAnalysisTimer() {
             clearInterval(analysisTimerInterval);
             updateTimerDisplay();
-
             analysisTimerInterval = setInterval(() => {
                 analysisCountdown--;
                 updateTimerDisplay();
-
                 if (analysisCountdown <= 0) {
                     resetAnalysisTimer();
                     fetchAllData(); 
@@ -1135,10 +827,8 @@
             document.getElementById('analysis-timer').innerHTML = `<span>⏳</span> ${displayTime}`;
         }
         
-        // === K線收盤倒數 (基於 UTC) ===
         function startCandleTimers() {
             if (candleTimerInterval) clearInterval(candleTimerInterval);
-            
             candleTimerInterval = setInterval(() => {
                 const now = Date.now(); 
                 updateSingleTimer('timer-5m', 5 * 60 * 1000, now);
@@ -1163,7 +853,7 @@
             renderMainChart();
             fetchAllData();
             startWebSocket();
-            startTopTickerWebSocket(); // 啟動頂部行情 WS
+            startTopTickerWebSocket();
             startAnalysisTimer();
             startCandleTimers(); 
         }
