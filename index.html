@@ -88,9 +88,9 @@
 
         .main-container { display: flex; flex: 1; height: 100%; overflow: hidden; }
         
-        /* 左側圖表區 - 調整回 70% */
+        /* 左側圖表區 */
         .chart-section { flex: 70; position: relative; background-color: #131722; border-right: 0.5px solid var(--ios-border); }
-        /* 右側分析區 - 調整回 30% */
+        /* 右側分析區 */
         .analysis-section { flex: 30; display: flex; flex-direction: column; background-color: var(--ios-bg); overflow-y: auto; min-width: 340px; -webkit-overflow-scrolling: touch; padding-bottom: var(--safe-bottom); }
 
         .section-header { padding: 16px 20px 8px 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -125,9 +125,12 @@
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
 
         .data-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background-color: rgba(84, 84, 88, 0.3); border-radius: 12px; overflow: hidden; margin-top: 8px; }
-        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 14px 16px; }
-        .data-label { font-size: 15px; color: var(--ios-text-primary); }
-        .data-value { font-size: 15px; font-weight: 600; font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; color: var(--ios-text-secondary); }
+        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 16px 16px; } /* 增加 padding */
+        
+        /* 放大支撐壓力字體 */
+        .data-label { font-size: 17px; font-weight: 600; color: var(--ios-text-primary); } /* 字體加大加粗 */
+        .data-value { font-size: 18px; font-weight: 700; font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; color: var(--ios-text-secondary); } /* 數值加大加粗 */
+        
         .txt-red { color: var(--ios-red) !important; }
         .txt-green { color: var(--ios-green) !important; }
         .txt-orange { color: var(--ios-orange) !important; }
@@ -138,6 +141,19 @@
         .analysis-content { font-size: 15px; line-height: 1.5; color: var(--ios-text-secondary); }
 
         .pattern-list { display: flex; flex-direction: column; gap: 12px; background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px; }
+        
+        /* 新增：型態列表表頭 */
+        .pattern-header {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            color: var(--ios-text-tertiary);
+            font-weight: 600;
+        }
+
         .pattern-item { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; }
         .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
@@ -172,6 +188,8 @@
             .header-left { flex: 1; }
             .coin-nav { width: 100%; }
             .segmented-control { width: 100%; }
+            /* 手機版調整 Grid */
+            .pattern-header { grid-template-columns: 60px 1fr 90px; }
             .pattern-item { grid-template-columns: 60px 1fr 90px; font-size: 12px; }
         }
     </style>
@@ -244,7 +262,7 @@
             <!-- 卡片 1: 價格與點位 -->
             <div class="ios-card">
                 <div class="card-header-row">
-                    <div class="card-label">即時價格與點位 (Pivot)</div>
+                    <div class="card-label">即時價格與點位</div> <!-- 移除 (Pivot) -->
                     <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新價格與點位">↻</button>
                 </div>
                 <div class="price-display">
@@ -310,6 +328,13 @@
                     </div>
                 </div>
                 <div class="pattern-list">
+                    <!-- 新增：欄位標題 -->
+                    <div class="pattern-header">
+                        <span>時區</span>
+                        <span style="text-align: center;">多空比例</span>
+                        <span style="text-align: right;">型態分析</span>
+                    </div>
+
                     <!-- 5分鐘 -->
                     <div class="pattern-item">
                         <div class="tf-info">
