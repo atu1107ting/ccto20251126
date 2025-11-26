@@ -57,7 +57,7 @@
             font-size: 11px;
             -ms-overflow-style: none; 
             scrollbar-width: none; 
-            justify-content: center; /* 幣種置中 */
+            justify-content: center; 
         }
         .top-ticker-bar::-webkit-scrollbar { display: none; }
 
@@ -77,6 +77,7 @@
         .fng-wrapper { display: flex; align-items: center; gap: 6px; }
         .fng-title { font-size: 11px; color: var(--ios-text-secondary); font-weight: 600; }
         .fng-label { padding: 1px 6px; border-radius: 3px; font-weight: 800; color: #000; font-size: 10px; }
+        .fng-date { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
 
         .funding-group { display: flex; align-items: center; gap: 12px; }
         .funding-item { display: flex; align-items: center; gap: 6px; }
@@ -102,7 +103,7 @@
             z-index: 1000;
         }
 
-        .header-left { display: flex; align-items: center; gap: 12px; width: auto; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+        .header-left { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
         .header-left::-webkit-scrollbar { display: none; } 
 
         h1 { font-size: 15px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
@@ -136,7 +137,6 @@
         .section-subtitle { font-size: 12px; color: var(--ios-text-secondary); font-weight: 600; }
 
         .timer-container { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
-        .timer-badge { font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-size: 11px; color: var(--ios-text-tertiary); background-color: rgba(255, 255, 255, 0.1); padding: 0 6px; border-radius: 4px; display: flex; align-items: center; gap: 4px; height: 20px; }
         
         .refresh-btn { background-color: rgba(255, 255, 255, 0.15); border: none; border-radius: 4px; color: var(--ios-text-primary); padding: 0 10px; height: 20px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
         .refresh-hint { font-size: 10px; color: var(--ios-text-tertiary); margin-top: 2px; }
@@ -155,19 +155,34 @@
         .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: -4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
         .card-label { font-size: 12px; color: var(--ios-text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
         .card-header-actions { display: flex; align-items: center; gap: 6px; }
-        .last-updated { font-size: 10px; color: var(--ios-text-tertiary); }
+        .last-updated { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
         
-        .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        /* 刷新按鈕樣式 */
+        .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
+        .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
         .price-display { display: flex; flex-direction: column; gap: 1px; }
         .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
-        .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
+        .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; }
         .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
         
-        .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+        /* 行情統計網格 (3列布局) */
+        .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        /* 新增：短線動能網格 (2列布局) */
+        .momentum-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-top: 6px; 
+            padding-top: 8px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+        }
+        
         .stat-item { display: flex; flex-direction: column; gap: 2px; }
-        .stat-label { font-size: 11px; color: var(--ios-text-tertiary); font-weight: 500; }
-        .stat-val { font-size: 13px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
+        .stat-label { font-size: 10px; color: var(--ios-text-tertiary); font-weight: 500; text-transform: uppercase; }
+        .stat-val { font-size: 12px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -189,10 +204,9 @@
 
         .pattern-list { display: flex; flex-direction: column; gap: 4px; background-color: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 8px; }
         
-        /* 型態列表：調整欄位比例 (電腦版置中優化) */
         .pattern-header {
             display: grid;
-            grid-template-columns: 70px 1.5fr 1fr; /* 加寬中間比例條 */
+            grid-template-columns: 70px 1.5fr 1fr; 
             padding-bottom: 4px;
             margin-bottom: 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -203,7 +217,7 @@
 
         .pattern-item { 
             display: grid; 
-            grid-template-columns: 70px 1.5fr 1fr; /* 對應 Header */
+            grid-template-columns: 70px 1.5fr 1fr; 
             align-items: center; 
             padding-bottom: 6px; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
@@ -212,19 +226,17 @@
         .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
         .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
-        /* 時區標籤放大 */
         .tf-tag { font-size: 13px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 4px; text-align: center; min-width: 36px; }
         .candle-timer { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
 
-        .sentiment-wrapper { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-        .sentiment-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; display: flex; }
+        .sentiment-wrapper { display: flex; flex-direction: column; gap: 1px; width: 100%; }
+        .sentiment-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; display: flex; }
         .bar-bull { height: 100%; background-color: var(--ios-green); transition: width 0.5s ease; }
         .bar-bear { height: 100%; background-color: var(--ios-red); transition: width 0.5s ease; }
-        /* 多空比例文字放大 */
         .sentiment-text { font-size: 12px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; font-weight: 600; }
 
         .pattern-result { 
-            font-size: 18px; /* 文字放大 */
+            font-size: 18px; 
             font-weight: 700; 
             color: var(--ios-text-primary); 
             display: flex; 
@@ -240,10 +252,6 @@
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
 
-        .tip-section { padding: 8px 16px; font-size: 10px; color: var(--ios-text-tertiary); line-height: 1.3; }
-        .global-hint { text-align: center; font-size: 10px; color: var(--ios-orange); padding: 5px 16px 10px 16px; opacity: 0.8; font-weight: 500; }
-
-        /* 手機版適配 */
         @media (max-width: 768px) {
             .header-left { width: 100%; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
@@ -290,13 +298,11 @@
 
     <!-- 第二層：資金費率 (左：F&G，右：費率) -->
     <div class="funding-bar">
-        <!-- 左側：恐懼貪婪 -->
         <div class="fng-wrapper">
             <span class="fng-title">情緒</span>
             <span id="funding-fng-val" class="fng-label" style="background: #555;">--</span>
+            <span id="funding-fng-date" class="fng-date">更新於 --/--</span>
         </div>
-
-        <!-- 右側：資金費率群組 -->
         <div class="funding-group">
             <div class="funding-item">
                 <span class="funding-label">費率</span>
@@ -323,7 +329,7 @@
         </div>
         
         <!-- 連線狀態置右 -->
-        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap;">
+        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap; margin-right: 16px;">
             <div class="status-dot" id="connection-dot"></div>
             <span class="update-time" id="ai-status" style="font-size: 12px; color: #30D158;">連線正常</span>
         </div>
@@ -343,15 +349,6 @@
                 <div class="section-title">盤面解析</div>
                 <div class="section-right">
                     <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
-                    <div class="timer-container">
-                        <div class="timer-badge" id="analysis-timer">
-                            <span>⏳</span> --:--
-                        </div>
-                        <button class="refresh-btn" onclick="manualRefresh()">
-                            🔄 立即刷新
-                        </button>
-                    </div>
-                    <div class="refresh-hint">數據每 5 分鐘更新</div>
                 </div>
             </div>
             
@@ -359,7 +356,6 @@
             <div class="ios-card">
                 <div class="card-header-row">
                     <div class="card-label">即時行情</div>
-                    <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新價格">↻</button>
                 </div>
                 <div class="price-display">
                     <div class="price-value-row">
@@ -367,6 +363,19 @@
                         <div class="price-change" id="price-change">--%</div>
                     </div>
                 </div>
+                
+                <!-- 新增：短線動能數據 (1m/5m) -->
+                <div class="momentum-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">1分鐘漲跌</span>
+                        <span class="stat-val" id="change-1m">--%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">5分鐘漲跌</span>
+                        <span class="stat-val" id="change-5m">--%</span>
+                    </div>
+                </div>
+
                 <!-- 24h 統計數據 -->
                 <div class="ticker-stats-grid">
                     <div class="stat-item">
@@ -384,13 +393,13 @@
                 </div>
             </div>
 
-            <!-- 卡片 2: AI 策略 -->
+            <!-- 卡片 2: AI 策略 (5分鐘更新 + 手動) -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
                     <div class="card-label">AI 主策略</div>
                     <div class="card-header-actions">
-                        <div class="last-updated" id="ai-update-time">--:--:--</div>
-                        <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新策略">↻</button>
+                        <div class="last-updated" id="ai-update-time">--:--</div>
+                        <button class="card-refresh-btn" onclick="fetchAIStrategy()" title="手動刷新">↻</button>
                     </div>
                 </div>
                 <div class="analysis-box">
@@ -403,11 +412,14 @@
                 </div>
             </div>
 
-            <!-- 卡片 3: 支撐壓力位 -->
+            <!-- 卡片 3: 支撐壓力位 (1小時更新 + 手動) -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
                     <div class="card-label">關鍵點位</div>
-                    <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新點位">↻</button>
+                    <div class="card-header-actions">
+                        <div class="last-updated" id="pivot-update-time">--:--</div>
+                        <button class="card-refresh-btn" onclick="fetchPivotPoints()" title="手動刷新">↻</button>
+                    </div>
                 </div>
                 <div class="data-grid">
                     <div class="data-row">
@@ -433,19 +445,19 @@
                 </div>
             </div>
 
-            <!-- 卡片 4: 全時區型態學 -->
+            <!-- 卡片 4: 全時區型態學 (5分鐘更新 + 手動刷新) -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
-                    <div class="card-label">全時區型態偵測 (3日數據)</div>
+                    <div class="card-label">全時區型態偵測</div>
                     <div class="card-header-actions">
-                        <div class="last-updated" id="pattern-update-time">--:--:--</div>
-                        <button class="card-refresh-btn" onclick="fetchPatternData()" title="刷新型態">↻</button>
+                        <div class="last-updated" id="pattern-update-time">--:--</div>
+                        <button class="card-refresh-btn" onclick="fetchPatternData()" title="手動刷新">↻</button>
                     </div>
                 </div>
                 <div class="pattern-list">
                     <div class="pattern-header">
                         <span>時區</span>
-                        <span style="text-align: center;">多空比例</span>
+                        <span style="text-align: center;">3日多空比例</span>
                         <span style="text-align: right;">型態分析</span>
                     </div>
 
@@ -506,15 +518,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="tip-section">
-                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。3日多空比例統計該時區過去3天內收陽線與收陰線的數量佔比。
-            </div>
-            
-            <div class="global-hint">
-                ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
-            </div>
-
         </div>
     </div>
 
@@ -532,12 +535,16 @@
         let currentCoin = 'BTC'; 
         let ws = null; 
         let topTickerWs = null;
-        let analysisCountdown = 300; 
-        let analysisTimerInterval;
         let candleTimerInterval; 
         let fundingTimerInterval;
+        
+        // Interval handles
+        let aiInterval;
+        let pivotInterval;
+        let patternInterval;
 
         let g_pp = 0, g_r1 = 0, g_r2 = 0, g_s1 = 0, g_s2 = 0;
+        let prevPriceTick = 0;
 
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
@@ -551,8 +558,8 @@
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
 
             renderMainChart();
-            resetAnalysisTimer(); 
-            fetchAllData(); 
+            startAutoUpdate(); // Fix: Use startAutoUpdate to reset timers
+            initDataFetch();
             startWebSocket();
         }
 
@@ -588,11 +595,27 @@
 
         let currentPrice = 0;
 
-        function fetchAllData() {
-            fetchTickerData();
-            fetchPatternData();
+        function initDataFetch() {
+            fetchTickerData(); 
+            fetchShortTermStats(); // New for 1m/5m
+            fetchAIStrategy(); 
+            fetchPivotPoints(); 
+            fetchPatternData(); 
             fetchMarketOverview(); 
             fetchFundingRate(); 
+        }
+        
+        function startAutoUpdate() {
+            if(aiInterval) clearInterval(aiInterval);
+            if(patternInterval) clearInterval(patternInterval);
+            if(pivotInterval) clearInterval(pivotInterval);
+
+            aiInterval = setInterval(() => fetchAIStrategy(), 300000);
+            patternInterval = setInterval(() => fetchPatternData(), 300000);
+            pivotInterval = setInterval(() => fetchPivotPoints(), 3600000);
+            
+            // Update short term stats every 30s
+            setInterval(fetchShortTermStats, 30000);
         }
 
         async function fetchMarketOverview() {
@@ -703,8 +726,11 @@
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
             
+            // BTC force 2 decimals everywhere
             let displayPrice;
-            if (price < 100) {
+            if (prefix === 'top-btc') {
+                displayPrice = "$" + price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            } else if (price < 100) {
                 displayPrice = "$" + price.toFixed(2);
             } else {
                 displayPrice = "$" + Math.floor(price).toLocaleString();
@@ -717,10 +743,16 @@
 
         function updateFng(data) {
             const val = parseInt(data.value);
-            const el = document.getElementById('funding-fng-val'); // Changed ID target
+            const el = document.getElementById('funding-fng-val'); 
             let text = "";
             let color = "#555";
             let textColor = "#fff";
+            
+            // Date Format: 更新於 11/26
+            const timestamp = parseInt(data.timestamp);
+            const dateObj = new Date(timestamp * 1000);
+            const dateStr = (dateObj.getMonth() + 1) + "/" + dateObj.getDate();
+            document.getElementById('funding-fng-date').innerText = "更新於 " + dateStr;
 
             if (val >= 75) { text = "極度貪婪"; color = "var(--ios-green)"; textColor = "#000"; }
             else if (val >= 55) { text = "貪婪"; color = "rgba(48, 209, 88, 0.6)"; textColor = "#fff"; }
@@ -733,11 +765,9 @@
             el.style.color = textColor;
         }
 
+        // Real-time Ticker (No manual refresh)
         async function fetchTickerData() {
             const symbol = COINS[currentCoin].binance;
-            document.getElementById('ai-update-time').innerText = "更新中...";
-            document.getElementById('ai-badge').innerText = "UPDATING";
-            
             try {
                 const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
                 const tickerData = await tickerRes.json();
@@ -749,11 +779,6 @@
                 else if (currentPrice < 1000) priceEl.innerText = currentPrice.toFixed(2);
                 else priceEl.innerText = Math.floor(currentPrice).toLocaleString();
 
-                const h = parseFloat(tickerData.highPrice);
-                const l = parseFloat(tickerData.lowPrice);
-                const c = parseFloat(tickerData.prevClosePrice); 
-                calculatePivotPoints(h, l, c);
-                
                 // Update 24h stats
                 document.getElementById('ticker-high').innerText = parseFloat(tickerData.highPrice).toLocaleString();
                 document.getElementById('ticker-low').innerText = parseFloat(tickerData.lowPrice).toLocaleString();
@@ -763,13 +788,125 @@
                 else volStr = (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
 
-                if (currentPrice > 0) updateAnalysisText();
-                document.getElementById('ai-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
-
             } catch (e) {
                 console.error("Ticker Error:", e);
-                document.getElementById('ai-text').innerText = "數據抓取失敗";
             }
+        }
+        
+        // New function for 1m/5m change
+        async function fetchShortTermStats() {
+            const symbol = COINS[currentCoin].binance;
+            try {
+                // Fetch 5m candle (last 1)
+                const kline5m = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=5m&limit=1`).then(r => r.json());
+                // Fetch 1m candle (last 1)
+                const kline1m = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=1`).then(r => r.json());
+                
+                if(kline5m.length > 0 && kline1m.length > 0) {
+                    const open5m = parseFloat(kline5m[0][1]);
+                    const close5m = parseFloat(kline5m[0][4]); // Current price basically
+                    const change5m = ((close5m - open5m) / open5m) * 100;
+                    
+                    const open1m = parseFloat(kline1m[0][1]);
+                    const close1m = parseFloat(kline1m[0][4]);
+                    const change1m = ((close1m - open1m) / open1m) * 100;
+                    
+                    const el5m = document.getElementById('change-5m');
+                    el5m.innerText = (change5m >= 0 ? "+" : "") + change5m.toFixed(2) + "%";
+                    el5m.style.color = change5m >= 0 ? "var(--ios-green)" : "var(--ios-red)";
+                    
+                    const el1m = document.getElementById('change-1m');
+                    el1m.innerText = (change1m >= 0 ? "+" : "") + change1m.toFixed(2) + "%";
+                    el1m.style.color = change1m >= 0 ? "var(--ios-green)" : "var(--ios-red)";
+                }
+            } catch(e) { console.error("Short Term Stats Error", e); }
+        }
+
+        async function fetchAIStrategy() {
+            document.getElementById('ai-badge').innerText = "UPDATING";
+            const symbol = COINS[currentCoin].binance;
+            try {
+                const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
+                const tickerData = await tickerRes.json();
+                const nowPrice = parseFloat(tickerData.lastPrice);
+                
+                const klineRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=4`); 
+                const klines = await klineRes.json();
+                let sum = 0;
+                for(let i=0; i<3; i++) sum += parseFloat(klines[i][4]); 
+                const sma3 = sum / 3;
+                const diff = (nowPrice - sma3) / sma3;
+                let trend = "neutral";
+                if (diff > 0.003) trend = "bull"; 
+                else if (diff < -0.003) trend = "bear";
+
+                const badge = document.getElementById('ai-badge');
+                const text = document.getElementById('ai-text');
+                const coin = currentCoin;
+                let analysisHTML = "";
+                
+                let decimals = 2;
+                if (currentCoin === 'BTC') decimals = 0;
+                
+                // 1. Point Analysis
+                if(g_r1 > 0) {
+                    const fR1 = g_r1.toFixed(decimals);
+                    const fS1 = g_s1.toFixed(decimals);
+                    const fPP = g_pp.toFixed(decimals);
+                    
+                    analysisHTML += `<div style="margin-bottom:6px;"><strong>【點位分析】</strong><br>`;
+                    if (nowPrice > g_r1) {
+                        analysisHTML += `價格突破 R1 (${fR1})，動能強勁。留意 R2 賣壓。`;
+                        setBadge(badge, "強勢突破", "var(--ios-green)");
+                    } else if (nowPrice > g_pp) {
+                        analysisHTML += `位於分界 ${fPP} 之上，偏多震盪。回調不破分界可視為買點，目標 R1。`;
+                        setBadge(badge, "偏多震盪", "var(--ios-blue)");
+                    } else if (nowPrice < g_s1) {
+                        analysisHTML += `跌破 S1 (${fS1})，空頭主導。勿輕易抄底，關注 S2 支撐。`;
+                        setBadge(badge, "弱勢探底", "var(--ios-red)");
+                    } else {
+                        analysisHTML += `位於分界 ${fPP} 之下，短期承壓。反彈若不過分界，趨勢偏空。`;
+                        setBadge(badge, "偏空震盪", "var(--ios-orange)");
+                    }
+                    analysisHTML += `</div>`;
+                }
+
+                // 2. Trend Filter
+                analysisHTML += `<strong>【趨勢濾網】</strong>`;
+                if (trend === "bull") analysisHTML += `3日均線向上，建議逢低做多。`;
+                else if (trend === "bear") analysisHTML += `3日均線向下，建議逢高做空。`;
+                else analysisHTML += `3日趨勢不明，建議保持觀望。`;
+
+                text.innerHTML = analysisHTML;
+
+                const now = new Date();
+                const h = now.getHours().toString().padStart(2,'0');
+                const m = now.getMinutes().toString().padStart(2,'0');
+                document.getElementById('ai-update-time').innerText = `更新於 ${h}:${m}`;
+                
+            } catch(e) { console.error(e); }
+        }
+
+        async function fetchPivotPoints() {
+            const symbol = COINS[currentCoin].binance;
+            try {
+                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=2`);
+                const data = await res.json();
+                const kline = data[0]; 
+                const h = parseFloat(kline[2]);
+                const l = parseFloat(kline[3]);
+                const c = parseFloat(kline[4]);
+                
+                calculatePivotPoints(h, l, c);
+                
+                const now = new Date();
+                const hh = now.getHours().toString().padStart(2,'0');
+                const mm = now.getMinutes().toString().padStart(2,'0');
+                document.getElementById('pivot-update-time').innerText = `更新於 ${hh}:${mm}`;
+                
+                fetchAIStrategy();
+
+            } catch(e) { console.error("Pivot Error", e); }
         }
 
         async function fetchPatternData() {
@@ -780,44 +917,27 @@
                 document.getElementById(`pat-${tf}`).innerText = "掃描中...";
             });
 
-            const limitMap = {
-                '5m': 864, 
-                '15m': 288, 
-                '1h': 72,   
-                '4h': 18,   
-                '1d': 3     
-            };
-
+            const limitMap = { '5m': 864, '15m': 288, '1h': 72, '4h': 18, '1d': 3 };
             const timeframes = ['5m', '15m', '1h', '4h', '1d'];
             const requests = timeframes.map(tf => 
-                fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=${limitMap[tf]}`).then(res => {
-                    if(!res.ok) throw new Error('Network response was not ok');
-                    return res.json();
-                })
+                fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=${limitMap[tf]}`).then(res => res.json())
             );
             
             const results = await Promise.allSettled(requests);
-            
             results.forEach((result, index) => {
                 const tf = timeframes[index];
                 if(result.status === 'fulfilled') {
                     analyzePatterns(result.value, tf);
-                } else {
-                    console.error(`Kline ${tf} Error:`, result.reason);
-                    document.getElementById(`pat-${tf}`).innerText = "暫無數據";
-                    document.getElementById(`pat-${tf}`).style.color = "var(--ios-text-tertiary)";
                 }
             });
             
-            document.getElementById('pattern-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
-        }
-
-        function manualRefresh() {
-            location.reload(); 
+            const now = new Date();
+            const h = now.getHours().toString().padStart(2,'0');
+            const m = now.getMinutes().toString().padStart(2,'0');
+            document.getElementById('pattern-update-time').innerText = `更新於 ${h}:${m}`;
         }
 
         function calculatePivotPoints(high, low, close) {
-            if(!high) return;
             g_pp = (high + low + close) / 3;
             g_r1 = (2 * g_pp) - low;
             g_s1 = (2 * g_pp) - high;
@@ -836,31 +956,10 @@
             document.getElementById('val-s2').innerText = g_s2.toFixed(decimals);
         }
 
-        function updateAnalysisText() {
-            const badge = document.getElementById('ai-badge');
-            const text = document.getElementById('ai-text');
-            const coin = currentCoin;
-            
-            let decimals = 2;
-            if (currentCoin === 'BTC') decimals = 0;
-            
-            const fR1 = g_r1.toFixed(decimals);
-            const fS1 = g_s1.toFixed(decimals);
-            const fPP = g_pp.toFixed(decimals);
-
-            if (currentPrice > g_r1) {
-                setBadge(badge, "強勢突破", "var(--ios-green)");
-                text.innerText = `${coin} 價格已突破 R1 壓力位 ${fR1}，多頭動能強勁。請留意 R2 是否出現獲利了結賣壓，若持續站穩 R1 則看漲趨勢不變。`;
-            } else if (currentPrice > g_pp) {
-                setBadge(badge, "偏多震盪", "var(--ios-blue)");
-                text.innerText = `${coin} 目前位於多空分界 ${fPP} 之上，整體趨勢偏多。只要不跌破分界點，回調皆可視為潛在機會，上方目標看向 R1。`;
-            } else if (currentPrice < g_s1) {
-                setBadge(badge, "弱勢探底", "var(--ios-red)");
-                text.innerText = `${coin} 已跌破 S1 支撐 ${fS1}，空頭主導市場。請勿輕易進場，下方 S2 支撐需密切關注是否有止跌訊號。`;
-            } else {
-                setBadge(badge, "偏空震盪", "var(--ios-orange)");
-                text.innerText = `${coin} 位於多空分界 ${fPP} 之下，短期承受賣壓。反彈若無法站回分界點，則趨勢仍以調節為主，下方目標 S1。`;
-            }
+        function setBadge(element, title, colorVar) {
+            element.innerText = title;
+            element.style.color = colorVar;
+            element.style.textShadow = `0 0 20px ${colorVar}`;
         }
 
         function startWebSocket() {
@@ -875,19 +974,31 @@
                 currentPrice = price; 
                 
                 const priceEl = document.getElementById('current-price');
-                if (price < 10) priceEl.innerText = price.toFixed(4);
-                else if (price < 1000) priceEl.innerText = price.toFixed(2);
-                else priceEl.innerText = Math.floor(price).toLocaleString();
+                
+                // Color logic
+                if (price > prevPriceTick) priceEl.style.color = "var(--ios-green)";
+                else if (price < prevPriceTick) priceEl.style.color = "var(--ios-red)";
+                else priceEl.style.color = "var(--ios-text-primary)";
+                prevPriceTick = price;
+                
+                // Value format
+                let displayPrice;
+                if (currentCoin === 'BTC') {
+                     displayPrice = price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                } else if (price < 10) {
+                    displayPrice = price.toFixed(4);
+                } else if (price < 1000) {
+                    displayPrice = price.toFixed(2);
+                } else {
+                    displayPrice = Math.floor(price).toLocaleString();
+                }
+                priceEl.innerText = displayPrice;
                 
                 const changeEl = document.getElementById('price-change');
                 const sign = change >= 0 ? '+' : '';
                 changeEl.innerText = `${sign}${change}%`;
-                
-                if (change >= 0) {
-                    changeEl.className = 'price-change bg-green';
-                } else {
-                    changeEl.className = 'price-change bg-red';
-                }
+                if (change >= 0) changeEl.className = 'price-change bg-green';
+                else changeEl.className = 'price-change bg-red';
 
                 // Update 24h stats
                 document.getElementById('ticker-high').innerText = parseFloat(data.h).toLocaleString();
@@ -918,7 +1029,6 @@
                 if (close >= open) bullCount++;
                 else bearCount++;
             });
-            
             const total = bullCount + bearCount;
             const bullPct = total > 0 ? Math.round((bullCount / total) * 100) : 0;
             const bearPct = 100 - bullPct;
@@ -929,20 +1039,17 @@
 
             const last = klines.length - 1; 
             const prev = last - 1; 
-
             const oNow = parseFloat(klines[last][1]);
             const hNow = parseFloat(klines[last][2]);
             const lNow = parseFloat(klines[last][3]);
             const cNow = parseFloat(klines[last][4]);
-            
             const oPrev = parseFloat(klines[prev][1]);
             const cPrev = parseFloat(klines[prev][4]);
-
+            
             const bodySize = Math.abs(cNow - oNow);
             const upperWick = hNow - Math.max(oNow, cNow);
             const lowerWick = Math.min(oNow, cNow) - lNow;
             const totalRange = hNow - lNow;
-
             const element = document.getElementById(`pat-${tf}`);
             
             let patternName = "盤整中";
@@ -971,37 +1078,6 @@
             element.style.color = color;
             element.style.textShadow = glow;
         }
-
-        function setBadge(element, title, colorVar) {
-            element.innerText = title;
-            element.style.color = colorVar;
-            element.style.textShadow = `0 0 20px ${colorVar}`;
-        }
-
-        function startAnalysisTimer() {
-            clearInterval(analysisTimerInterval);
-            updateTimerDisplay();
-            analysisTimerInterval = setInterval(() => {
-                analysisCountdown--;
-                updateTimerDisplay();
-                if (analysisCountdown <= 0) {
-                    resetAnalysisTimer();
-                    fetchAllData(); 
-                }
-            }, 1000);
-        }
-
-        function resetAnalysisTimer() {
-            analysisCountdown = 300; 
-            updateTimerDisplay();
-        }
-
-        function updateTimerDisplay() {
-            const m = Math.floor(analysisCountdown / 60);
-            const s = analysisCountdown % 60;
-            const displayTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            document.getElementById('analysis-timer').innerHTML = `<span>⏳</span> ${displayTime}`;
-        }
         
         function startCandleTimers() {
             if (candleTimerInterval) clearInterval(candleTimerInterval);
@@ -1027,10 +1103,10 @@
 
         initApp = () => {
             renderMainChart();
-            fetchAllData();
+            startAutoUpdate();
+            initDataFetch();
             startWebSocket();
             startTopTickerWebSocket();
-            startAnalysisTimer();
             startCandleTimers(); 
         }
         
