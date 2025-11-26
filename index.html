@@ -170,7 +170,7 @@
         /* 行情統計網格 (3列布局) */
         .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
         
-        /* 新增：短線動能網格 (2列布局) */
+        /* 短線動能網格 (2列布局) */
         .momentum-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -181,8 +181,9 @@
         }
         
         .stat-item { display: flex; flex-direction: column; gap: 2px; }
-        .stat-label { font-size: 10px; color: var(--ios-text-tertiary); font-weight: 500; text-transform: uppercase; }
-        .stat-val { font-size: 12px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
+        /* 標籤與數值字體放大 */
+        .stat-label { font-size: 13px; color: var(--ios-text-tertiary); font-weight: 600; text-transform: uppercase; }
+        .stat-val { font-size: 17px; font-weight: 700; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -549,16 +550,13 @@
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
             currentCoin = coin;
-
             document.querySelectorAll('.coin-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.innerText === coin) btn.classList.add('active');
             });
-
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
-
             renderMainChart();
-            startAutoUpdate(); // Fix: Use startAutoUpdate to reset timers
+            startAutoUpdate();
             initDataFetch();
             startWebSocket();
         }
