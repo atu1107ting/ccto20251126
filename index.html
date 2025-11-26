@@ -21,6 +21,11 @@
             --ios-text-tertiary: #EBEBF54D;
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
+            
+            /* Coinglass 風格色 */
+            --cg-long: #00b45a; 
+            --cg-short: #ff5a5a; 
+            --cg-bar-bg: #2c2c2e;
         }
 
         /* 全局設定 */
@@ -37,9 +42,9 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 頂部全域行情列 (第一層) */
+        /* 頂部全域行情列 */
         .top-ticker-bar {
-            height: 36px;
+            height: 32px;
             background-color: #121214;
             border-bottom: 1px solid #2c2c2e;
             display: flex;
@@ -49,204 +54,202 @@
             white-space: nowrap;
             gap: 20px;
             flex-shrink: 0;
-            font-size: 12px;
+            font-size: 11px;
             -ms-overflow-style: none; 
             scrollbar-width: none; 
         }
         .top-ticker-bar::-webkit-scrollbar { display: none; }
 
-        /* 資金費率數據列 (第二層 - New) */
+        /* 資金費率數據列 */
         .funding-bar {
-            height: 44px;
+            height: 36px;
             background-color: #161618;
             border-bottom: 1px solid var(--ios-border);
             display: flex;
             align-items: center;
             padding: 0 16px;
-            font-size: 13px;
-            justify-content: space-between; /* 左右分佈 */
+            font-size: 12px;
+            justify-content: space-between; 
             flex-shrink: 0;
         }
 
-        .funding-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .funding-label {
-            font-size: 11px;
-            color: var(--ios-text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .funding-val {
-            font-family: "SF Mono", monospace;
-            font-weight: 700;
-            font-size: 15px;
-            letter-spacing: -0.5px;
-        }
-
-        .funding-countdown {
-            font-family: "SF Mono", monospace;
-            font-size: 12px;
-            color: var(--ios-orange);
-            background: rgba(255, 159, 10, 0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        
-        .funding-apr {
-            font-size: 11px;
-            color: var(--ios-text-tertiary);
-        }
+        .funding-item { display: flex; align-items: center; gap: 8px; }
+        .funding-label { font-size: 11px; color: var(--ios-text-secondary); font-weight: 600; }
+        .funding-val { font-family: "SF Mono", monospace; font-weight: 700; font-size: 13px; }
+        .funding-countdown { font-family: "SF Mono", monospace; font-size: 11px; color: var(--ios-orange); background: rgba(255, 159, 10, 0.15); padding: 1px 5px; border-radius: 3px; }
 
         .ticker-item { display: flex; align-items: center; gap: 6px; }
         .ticker-name { font-weight: 700; color: var(--ios-text-secondary); }
         .ticker-val { font-family: "SF Mono", monospace; color: var(--ios-text-primary); }
         .ticker-pct { font-size: 11px; }
-        .fng-label { padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #000; font-size: 11px; }
+        .fng-label { padding: 1px 5px; border-radius: 3px; font-weight: bold; color: #000; font-size: 10px; }
 
         /* 頂部導航列 */
         header {
-            height: 44px;
+            height: 40px;
             padding: 0 16px;
             background-color: var(--ios-nav-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 0.5px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-shrink: 0;
             z-index: 1000;
-            position: sticky;
-            top: 0;
         }
 
         .header-left { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
         .header-left::-webkit-scrollbar { display: none; } 
 
-        h1 { font-size: 17px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
-        @media (min-width: 768px) { h1 { display: block; } }
+        h1 { font-size: 15px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
+        @media (min-width: 1024px) { h1 { display: block; } }
 
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: var(--ios-green); display: inline-block; box-shadow: 0 0 8px rgba(48, 209, 88, 0.4); flex-shrink: 0; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--ios-green); display: inline-block; flex-shrink: 0; }
         
-        .segmented-control { display: flex; background-color: rgba(118, 118, 128, 0.24); border-radius: 8px; padding: 2px; height: 32px; box-sizing: border-box; flex-shrink: 0; }
-        .coin-btn { background-color: transparent; border: none; color: var(--ios-text-primary); padding: 0 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; flex: 1; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; min-width: 48px; white-space: nowrap; }
-        .coin-btn.active { background-color: #636366; background-color: rgba(255, 255, 255, 0.15); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04); font-weight: 600; }
+        .segmented-control { display: flex; background-color: rgba(118, 118, 128, 0.24); border-radius: 6px; padding: 2px; height: 28px; box-sizing: border-box; flex-shrink: 0; }
+        .coin-btn { background-color: transparent; border: none; color: var(--ios-text-primary); padding: 0 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 500; flex: 1; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; min-width: 40px; white-space: nowrap; }
+        .coin-btn.active { background-color: #636366; background-color: rgba(255, 255, 255, 0.15); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); font-weight: 600; }
 
         .main-container { display: flex; flex: 1; height: 100%; overflow: hidden; }
         
-        /* 左側圖表區 */
+        /* 左側圖表區 - 70% */
         .chart-section { flex: 70; position: relative; background-color: #131722; border-right: 0.5px solid var(--ios-border); }
-        /* 右側分析區 */
-        .analysis-section { flex: 30; display: flex; flex-direction: column; background-color: var(--ios-bg); overflow-y: auto; min-width: 340px; -webkit-overflow-scrolling: touch; padding-bottom: var(--safe-bottom); }
-
-        .section-header { padding: 16px 20px 8px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .section-title { font-size: 20px; font-weight: 700; color: var(--ios-text-primary); letter-spacing: 0.3px; }
-        .section-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-        .section-subtitle { font-size: 13px; color: var(--ios-text-secondary); font-weight: 600; }
-
-        .timer-container { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-        .timer-badge { font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-size: 12px; color: var(--ios-text-tertiary); background-color: rgba(255, 255, 255, 0.1); padding: 0 8px; border-radius: 6px; display: flex; align-items: center; gap: 4px; height: 24px; }
         
-        .refresh-btn { background-color: rgba(255, 255, 255, 0.15); border: none; border-radius: 8px; color: var(--ios-text-primary); padding: 0 14px; height: 32px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .refresh-btn:hover { background-color: var(--ios-blue); transform: translateY(-1px); }
-        .refresh-btn:active { background-color: rgba(10, 132, 255, 0.8); transform: scale(0.96); }
-        .refresh-hint { font-size: 10px; color: var(--ios-text-tertiary); margin-top: 4px; }
+        /* 右側分析區 - 30% */
+        .analysis-section { 
+            flex: 30; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: var(--ios-bg); 
+            overflow-y: auto; 
+            min-width: 320px; 
+            padding-bottom: 10px;
+        }
 
-        .ios-card { background-color: var(--ios-card-bg); margin: 10px 20px 20px 20px; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-        
-        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: -8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
-        .card-label { font-size: 13px; color: var(--ios-text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .card-header-actions { display: flex; align-items: center; gap: 8px; }
-        .last-updated { font-size: 11px; color: var(--ios-text-tertiary); font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-weight: 400; }
-        
-        .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 14px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
-        .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
+        .section-header { padding: 10px 16px 5px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .section-title { font-size: 16px; font-weight: 700; color: var(--ios-text-primary); }
+        .section-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+        .section-subtitle { font-size: 12px; color: var(--ios-text-secondary); font-weight: 600; }
 
-        .price-display { display: flex; flex-direction: column; gap: 4px; }
-        .price-label { font-size: 13px; color: var(--ios-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .timer-container { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+        .timer-badge { font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; font-size: 11px; color: var(--ios-text-tertiary); background-color: rgba(255, 255, 255, 0.1); padding: 0 6px; border-radius: 4px; display: flex; align-items: center; gap: 4px; height: 20px; }
+        
+        .refresh-btn { background-color: rgba(255, 255, 255, 0.15); border: none; border-radius: 4px; color: var(--ios-text-primary); padding: 0 10px; height: 20px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+        .refresh-hint { font-size: 10px; color: var(--ios-text-tertiary); margin-top: 2px; }
+
+        .ios-card { 
+            background-color: var(--ios-card-bg); 
+            margin: 6px 12px 0 12px; 
+            border-radius: 12px; 
+            padding: 10px 14px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 6px; 
+            flex-shrink: 0; 
+        }
+        
+        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: -4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
+        .card-label { font-size: 12px; color: var(--ios-text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .card-header-actions { display: flex; align-items: center; gap: 6px; }
+        .last-updated { font-size: 10px; color: var(--ios-text-tertiary); }
+        
+        .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .price-display { display: flex; flex-direction: column; gap: 1px; }
         .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
-        
-        .current-price { font-size: 28px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
-        .price-change { font-size: 16px; font-weight: 600; padding: 4px 10px; border-radius: 20px; min-width: 60px; text-align: center; }
+        .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
+        .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
 
-        .data-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background-color: rgba(84, 84, 88, 0.3); border-radius: 12px; overflow: hidden; margin-top: 4px; }
-        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 16px 16px; }
+        .data-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background-color: rgba(84, 84, 88, 0.3); border-radius: 8px; overflow: hidden; margin-top: 4px; }
+        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 8px 12px; }
         
-        .data-label { font-size: 19px; font-weight: 700; color: var(--ios-text-primary); } 
-        .data-value { font-size: 21px; font-weight: 800; font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; color: var(--ios-text-secondary); letter-spacing: 0.5px; } 
+        /* 支撐壓力文字再次放大 */
+        .data-label { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); } 
+        .data-value { font-size: 26px; font-weight: 800; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); letter-spacing: 0.5px; } 
         
         .txt-red { color: var(--ios-red) !important; }
         .txt-green { color: var(--ios-green) !important; }
         .txt-orange { color: var(--ios-orange) !important; }
 
-        .analysis-box { background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .analysis-box { background-color: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; }
         .analysis-header { display: flex; align-items: center; margin-bottom: 0px; }
         
-        .analysis-badge { font-size: 32px; font-weight: 800; letter-spacing: 0.5px; color: var(--ios-text-secondary); line-height: 1.1; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .analysis-badge { font-size: 32px; font-weight: 800; letter-spacing: 0.5px; color: var(--ios-text-secondary); line-height: 1.1; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .analysis-content { font-size: 17px; line-height: 1.6; color: var(--ios-text-secondary); }
 
-        .pattern-list { display: flex; flex-direction: column; gap: 12px; background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px; }
+        .pattern-list { display: flex; flex-direction: column; gap: 4px; background-color: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 8px; }
         
         .pattern-header {
             display: grid;
-            grid-template-columns: 80px 1fr 100px;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
+            grid-template-columns: 50px 0.8fr 1.2fr; 
+            padding-bottom: 4px;
+            margin-bottom: 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 12px;
+            font-size: 15px; /* Header 放大 */
             color: var(--ios-text-tertiary);
             font-weight: 600;
         }
 
-        .pattern-item { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px; }
+        .pattern-item { 
+            display: grid; 
+            grid-template-columns: 50px 0.8fr 1.2fr; 
+            align-items: center; 
+            padding-bottom: 8px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            gap: 8px; 
+        }
         .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
-        .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-        .tf-tag { font-size: 12px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 4px; text-align: center; }
-        .candle-timer { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", SFMono-Regular, ui-monospace, monospace; letter-spacing: 0.5px; }
+        .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+        .tf-tag { font-size: 14px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 4px; text-align: center; min-width: 30px; }
+        .candle-timer { font-size: 11px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
 
-        .sentiment-wrapper { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-        .sentiment-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; display: flex; }
+        .sentiment-wrapper { display: flex; flex-direction: column; gap: 1px; width: 100%; }
+        .sentiment-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; display: flex; }
         .bar-bull { height: 100%; background-color: var(--ios-green); transition: width 0.5s ease; }
         .bar-bear { height: 100%; background-color: var(--ios-red); transition: width 0.5s ease; }
-        .sentiment-text { font-size: 10px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
+        .sentiment-text { font-size: 11px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
 
-        .pattern-result { font-size: 14px; font-weight: 500; color: var(--ios-text-primary); display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
-        .trend-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; }
+        /* 型態文字顯示調整：橫向排列 & 放大 */
+        .pattern-result { 
+            font-size: 20px; /* 字體顯著放大 */
+            font-weight: 700; 
+            color: var(--ios-text-primary); 
+            display: flex; 
+            flex-direction: row; /* 橫向 */
+            align-items: center; 
+            justify-content: flex-end; 
+            gap: 8px; 
+            text-align: right; 
+            white-space: nowrap;
+        }
+        .trend-tag { font-size: 11px; padding: 2px 5px; border-radius: 4px; font-weight: 700; display: inline-block; }
         .trend-bull { background: rgba(48, 209, 88, 0.2); color: var(--ios-green); }
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
 
-        .tip-section { padding: 0 20px 20px 20px; font-size: 12px; color: var(--ios-text-tertiary); line-height: 1.4; }
-        .global-hint { text-align: center; font-size: 12px; color: var(--ios-orange); padding: 10px 20px 30px 20px; opacity: 0.8; font-weight: 500; }
+        .tip-section { padding: 8px 16px; font-size: 10px; color: var(--ios-text-tertiary); line-height: 1.3; }
+        .global-hint { text-align: center; font-size: 10px; color: var(--ios-orange); padding: 5px 16px 10px 16px; opacity: 0.8; font-weight: 500; }
 
         @media (max-width: 768px) {
             .header-left { width: auto; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
             .chart-section { flex: none; height: 35vh; border-right: none; border-bottom: 0.5px solid var(--ios-border); }
             .analysis-section { flex: 1; min-width: 100%; background-color: var(--ios-bg); }
-            .ios-card { margin: 0 16px 20px 16px; padding: 20px 16px; }
-            .current-price { font-size: 30px; }
-            .section-title { font-size: 18px; }
-            .analysis-badge { font-size: 24px; }
+            .ios-card { margin: 8px 12px 0 12px; padding: 12px; }
+            .current-price { font-size: 26px; }
+            .section-title { font-size: 16px; }
+            .analysis-badge { font-size: 22px; }
             .header-left { flex: 1; }
             .segmented-control { width: auto; } 
-            .pattern-header { grid-template-columns: 60px 1fr 90px; }
-            .pattern-item { grid-template-columns: 60px 1fr 90px; font-size: 12px; }
-            /* 手機版調整資金費率列 */
+            .pattern-header { grid-template-columns: 50px 1fr 100px; }
+            .pattern-item { grid-template-columns: 50px 1fr 100px; font-size: 11px; }
             .funding-bar { padding: 0 10px; }
-            .funding-val { font-size: 13px; }
+            .funding-val { font-size: 12px; }
+            
+            /* 手機板型態文字微調回小一點以免溢出 */
+            .pattern-result { font-size: 14px; gap: 4px; }
         }
     </style>
 </head>
@@ -285,7 +288,7 @@
             <span class="funding-label">倒數</span>
             <span class="funding-countdown" id="funding-countdown">--:--:--</span>
         </div>
-        <div class="funding-item" style="display:none;"> <!-- 手機版空間不足可隱藏 -->
+        <div class="funding-item" style="display:none;">
              <span class="funding-apr" id="funding-apr">APR: --%</span>
         </div>
     </div>
@@ -373,7 +376,7 @@
             <!-- 卡片 3: 支撐壓力位 -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
-                    <div class="card-label">關鍵點位 (Pivot)</div>
+                    <div class="card-label">關鍵點位</div> <!-- 移除 (Pivot) -->
                     <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新點位">↻</button>
                 </div>
                 <div class="data-grid">
@@ -416,46 +419,60 @@
                         <span style="text-align: right;">型態分析</span>
                     </div>
 
-                    <!-- 5m - 1D Items -->
+                    <!-- 5m -->
                     <div class="pattern-item">
                         <div class="tf-info"><span class="tf-tag">5m</span><span class="candle-timer" id="timer-5m">--:--</span></div>
                         <div class="sentiment-wrapper">
                             <div class="sentiment-text"><span style="color:var(--ios-green)">多</span><span id="ratio-5m">--%</span><span style="color:var(--ios-red)">空</span></div>
                             <div class="sentiment-bar"><div id="bar-bull-5m" class="bar-bull" style="width:50%"></div><div id="bar-bear-5m" class="bar-bear" style="width:50%"></div></div>
                         </div>
-                        <div class="pattern-result" id="pat-5m"><span>掃描中...</span></div>
+                        <div class="pattern-result" id="pat-5m">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
+                    <!-- 15m -->
                     <div class="pattern-item">
                         <div class="tf-info"><span class="tf-tag">15m</span><span class="candle-timer" id="timer-15m">--:--</span></div>
                         <div class="sentiment-wrapper">
                             <div class="sentiment-text"><span style="color:var(--ios-green)">多</span><span id="ratio-15m">--%</span><span style="color:var(--ios-red)">空</span></div>
                             <div class="sentiment-bar"><div id="bar-bull-15m" class="bar-bull" style="width:50%"></div><div id="bar-bear-15m" class="bar-bear" style="width:50%"></div></div>
                         </div>
-                        <div class="pattern-result" id="pat-15m"><span>掃描中...</span></div>
+                        <div class="pattern-result" id="pat-15m">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
+                    <!-- 1H -->
                     <div class="pattern-item">
                         <div class="tf-info"><span class="tf-tag">1H</span><span class="candle-timer" id="timer-1h">--:--</span></div>
                         <div class="sentiment-wrapper">
                             <div class="sentiment-text"><span style="color:var(--ios-green)">多</span><span id="ratio-1h">--%</span><span style="color:var(--ios-red)">空</span></div>
                             <div class="sentiment-bar"><div id="bar-bull-1h" class="bar-bull" style="width:50%"></div><div id="bar-bear-1h" class="bar-bear" style="width:50%"></div></div>
                         </div>
-                        <div class="pattern-result" id="pat-1h"><span>掃描中...</span></div>
+                        <div class="pattern-result" id="pat-1h">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
+                    <!-- 4H -->
                     <div class="pattern-item">
                         <div class="tf-info"><span class="tf-tag">4H</span><span class="candle-timer" id="timer-4h">--:--</span></div>
                         <div class="sentiment-wrapper">
                             <div class="sentiment-text"><span style="color:var(--ios-green)">多</span><span id="ratio-4h">--%</span><span style="color:var(--ios-red)">空</span></div>
                             <div class="sentiment-bar"><div id="bar-bull-4h" class="bar-bull" style="width:50%"></div><div id="bar-bear-4h" class="bar-bear" style="width:50%"></div></div>
                         </div>
-                        <div class="pattern-result" id="pat-4h"><span>掃描中...</span></div>
+                        <div class="pattern-result" id="pat-4h">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
+                    <!-- 1D -->
                     <div class="pattern-item">
                         <div class="tf-info"><span class="tf-tag">1D</span><span class="candle-timer" id="timer-1d">--:--</span></div>
                         <div class="sentiment-wrapper">
                             <div class="sentiment-text"><span style="color:var(--ios-green)">多</span><span id="ratio-1d">--%</span><span style="color:var(--ios-red)">空</span></div>
                             <div class="sentiment-bar"><div id="bar-bull-1d" class="bar-bull" style="width:50%"></div><div id="bar-bear-1d" class="bar-bear" style="width:50%"></div></div>
                         </div>
-                        <div class="pattern-result" id="pat-1d"><span>掃描中...</span></div>
+                        <div class="pattern-result" id="pat-1d">
+                            <span>掃描中...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -545,7 +562,7 @@
             fetchTickerData();
             fetchPatternData();
             fetchMarketOverview(); 
-            fetchFundingRate(); // 新增：抓取資金費率
+            fetchFundingRate(); 
         }
 
         async function fetchMarketOverview() {
@@ -573,14 +590,11 @@
             }
         }
         
-        // === 抓取 COIN-M 資金費率 ===
         async function fetchFundingRate() {
-            const symbol = COINS[currentCoin].dapi; // 使用 COIN-M 代號
+            const symbol = COINS[currentCoin].dapi; 
             try {
                 const res = await fetch(`https://dapi.binance.com/dapi/v1/premiumIndex?symbol=${symbol}`);
                 const data = await res.json();
-                // data[0] if array or object depending on symbol param. Single symbol returns object or array of 1.
-                // dapi returns array for single symbol query? Let's check. Usually object if symbol param is present, but let's handle array just in case.
                 const info = Array.isArray(data) ? data[0] : data;
                 
                 if(info) {
@@ -588,7 +602,6 @@
                     const nextTime = parseInt(info.nextFundingTime);
                     updateFundingUI(rate, nextTime);
                 } else {
-                    // 可能是該幣種沒有 COIN-M 合約
                     document.getElementById('funding-rate').innerText = "N/A";
                     document.getElementById('funding-rate').style.color = "var(--ios-text-tertiary)";
                 }
@@ -607,13 +620,7 @@
             else if(rate < 0) el.style.color = "var(--ios-red)";
             else el.style.color = "var(--ios-text-primary)";
             
-            // 倒數計時
             startFundingTimer(nextTime);
-            
-            // 顯示 APR (x3 * 365 is rough annualization for crypto leverage arbitrage) 
-            // Funding happens every 8h, so rate * 3 * 365
-            const apr = ratePct * 3 * 365;
-            // document.getElementById('funding-apr').innerText = `APR: ${apr.toFixed(2)}%`;
         }
         
         function startFundingTimer(endTime) {
@@ -623,7 +630,7 @@
                 const now = Date.now();
                 const diff = endTime - now;
                 if(diff <= 0) {
-                    fetchFundingRate(); // 時間到重新抓取
+                    fetchFundingRate(); 
                     clearInterval(fundingTimerInterval);
                     return;
                 }
@@ -912,7 +919,7 @@
                 patternName = "大陰線"; color = "var(--ios-red)"; glow = "0 0 10px rgba(255, 69, 58, 0.4)"; trend = "強跌"; trendClass = "trend-bear";
             }
 
-            element.innerHTML = `<div style="display:flex;flex-direction:column;align-items:flex-end"><span>${patternName}</span><span class="trend-tag ${trendClass}">${trend}</span></div>`;
+            element.innerHTML = `<span>${patternName}</span><span class="trend-tag ${trendClass}">${trend}</span>`;
             element.style.color = color;
             element.style.textShadow = glow;
         }
