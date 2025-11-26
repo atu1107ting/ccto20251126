@@ -57,10 +57,11 @@
             font-size: 11px;
             -ms-overflow-style: none; 
             scrollbar-width: none; 
+            justify-content: center; /* 幣種置中 */
         }
         .top-ticker-bar::-webkit-scrollbar { display: none; }
 
-        /* 資金費率數據列 */
+        /* 第二層：資金費率與情緒列 */
         .funding-bar {
             height: 36px;
             background-color: #161618;
@@ -69,11 +70,37 @@
             align-items: center;
             padding: 0 16px;
             font-size: 12px;
-            justify-content: space-between; 
+            justify-content: space-between; /* 左右分佈 */
             flex-shrink: 0;
         }
 
-        .funding-item { display: flex; align-items: center; gap: 8px; }
+        /* 左側：恐懼貪婪 */
+        .fng-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .fng-title {
+            font-size: 11px;
+            color: var(--ios-text-secondary);
+            font-weight: 600;
+        }
+        .fng-label { 
+            padding: 1px 6px; 
+            border-radius: 3px; 
+            font-weight: 800; 
+            color: #000; 
+            font-size: 10px; 
+        }
+
+        /* 右側：資金費率群組 */
+        .funding-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .funding-item { display: flex; align-items: center; gap: 6px; }
         .funding-label { font-size: 11px; color: var(--ios-text-secondary); font-weight: 600; }
         .funding-val { font-family: "SF Mono", monospace; font-weight: 700; font-size: 13px; }
         .funding-countdown { font-family: "SF Mono", monospace; font-size: 11px; color: var(--ios-orange); background: rgba(255, 159, 10, 0.15); padding: 1px 5px; border-radius: 3px; }
@@ -82,7 +109,6 @@
         .ticker-name { font-weight: 700; color: var(--ios-text-secondary); }
         .ticker-val { font-family: "SF Mono", monospace; color: var(--ios-text-primary); }
         .ticker-pct { font-size: 11px; }
-        .fng-label { padding: 1px 5px; border-radius: 3px; font-weight: bold; color: #000; font-size: 10px; }
 
         /* 頂部導航列 */
         header {
@@ -158,15 +184,27 @@
         .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
         .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
         .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
+        
+        .ticker-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-item { display: flex; flex-direction: column; gap: 2px; }
+        .stat-label { font-size: 11px; color: var(--ios-text-tertiary); font-weight: 500; }
+        .stat-val { font-size: 13px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
+
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
 
         .data-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background-color: rgba(84, 84, 88, 0.3); border-radius: 8px; overflow: hidden; margin-top: 4px; }
-        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 8px 12px; }
+        .data-row { display: flex; justify-content: space-between; align-items: center; background-color: rgba(44, 44, 46, 1); padding: 6px 12px; }
         
-        /* 支撐壓力文字再次放大 */
-        .data-label { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); } 
-        .data-value { font-size: 26px; font-weight: 800; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); letter-spacing: 0.5px; } 
+        .data-label { font-size: 17px; font-weight: 600; color: var(--ios-text-primary); } 
+        .data-value { font-size: 18px; font-weight: 800; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); letter-spacing: 0.5px; } 
         
         .txt-red { color: var(--ios-red) !important; }
         .txt-green { color: var(--ios-green) !important; }
@@ -182,49 +220,48 @@
         
         .pattern-header {
             display: grid;
-            grid-template-columns: 50px 0.8fr 1.2fr; 
+            grid-template-columns: 45px 0.8fr 1.3fr; 
             padding-bottom: 4px;
             margin-bottom: 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 15px; /* Header 放大 */
+            font-size: 11px;
             color: var(--ios-text-tertiary);
             font-weight: 600;
         }
 
         .pattern-item { 
             display: grid; 
-            grid-template-columns: 50px 0.8fr 1.2fr; 
+            grid-template-columns: 45px 0.8fr 1.3fr; 
             align-items: center; 
-            padding-bottom: 8px; 
+            padding-bottom: 6px; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
             gap: 8px; 
         }
         .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
         .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
-        .tf-tag { font-size: 14px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 4px; text-align: center; min-width: 30px; }
-        .candle-timer { font-size: 11px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
+        .tf-tag { font-size: 11px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 4px; border-radius: 3px; text-align: center; min-width: 30px; }
+        .candle-timer { font-size: 9px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
 
         .sentiment-wrapper { display: flex; flex-direction: column; gap: 1px; width: 100%; }
         .sentiment-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; display: flex; }
         .bar-bull { height: 100%; background-color: var(--ios-green); transition: width 0.5s ease; }
         .bar-bear { height: 100%; background-color: var(--ios-red); transition: width 0.5s ease; }
-        .sentiment-text { font-size: 11px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
+        .sentiment-text { font-size: 9px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
 
-        /* 型態文字顯示調整：橫向排列 & 放大 */
         .pattern-result { 
-            font-size: 20px; /* 字體顯著放大 */
+            font-size: 15px; 
             font-weight: 700; 
             color: var(--ios-text-primary); 
             display: flex; 
-            flex-direction: row; /* 橫向 */
+            flex-direction: row; 
             align-items: center; 
             justify-content: flex-end; 
-            gap: 8px; 
+            gap: 6px; 
             text-align: right; 
             white-space: nowrap;
         }
-        .trend-tag { font-size: 11px; padding: 2px 5px; border-radius: 4px; font-weight: 700; display: inline-block; }
+        .trend-tag { font-size: 10px; padding: 1px 4px; border-radius: 3px; font-weight: 700; display: inline-block; }
         .trend-bull { background: rgba(48, 209, 88, 0.2); color: var(--ios-green); }
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
@@ -232,6 +269,7 @@
         .tip-section { padding: 8px 16px; font-size: 10px; color: var(--ios-text-tertiary); line-height: 1.3; }
         .global-hint { text-align: center; font-size: 10px; color: var(--ios-orange); padding: 5px 16px 10px 16px; opacity: 0.8; font-weight: 500; }
 
+        /* 手機版適配 */
         @media (max-width: 768px) {
             .header-left { width: auto; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
@@ -243,13 +281,13 @@
             .analysis-badge { font-size: 22px; }
             .header-left { flex: 1; }
             .segmented-control { width: auto; } 
-            .pattern-header { grid-template-columns: 50px 1fr 100px; }
-            .pattern-item { grid-template-columns: 50px 1fr 100px; font-size: 11px; }
+            .pattern-header { grid-template-columns: 50px 1fr 80px; }
+            .pattern-item { grid-template-columns: 50px 1fr 80px; font-size: 11px; }
             .funding-bar { padding: 0 10px; }
             .funding-val { font-size: 12px; }
-            
-            /* 手機板型態文字微調回小一點以免溢出 */
-            .pattern-result { font-size: 14px; gap: 4px; }
+            .pattern-result { font-size: 13px; gap: 4px; }
+            .top-ticker-bar { justify-content: flex-start; }
+            .stat-val { font-size: 12px; }
         }
     </style>
 </head>
@@ -272,24 +310,25 @@
             <span class="ticker-val" id="top-sol-val">--</span>
             <span class="ticker-pct" id="top-sol-pct">--%</span>
         </div>
-        <div class="ticker-item" style="border-left: 1px solid #333; padding-left: 20px;">
-            <span class="ticker-name">恐懼貪婪</span>
-            <span id="top-fng-val" class="fng-label" style="background: #555;">--</span>
-        </div>
     </div>
 
-    <!-- 第二層：資金費率 (COIN-M) -->
+    <!-- 第二層：資金費率 (左：F&G，右：費率) -->
     <div class="funding-bar">
-        <div class="funding-item">
-            <span class="funding-label">🪙 幣本位費率 (COIN-M)</span>
-            <span class="funding-val" id="funding-rate">--%</span>
+        <!-- 左側：恐懼貪婪 -->
+        <div class="fng-wrapper">
+            <span class="fng-title">情緒</span>
+            <span id="funding-fng-val" class="fng-label" style="background: #555;">--</span>
         </div>
-        <div class="funding-item">
-            <span class="funding-label">倒數</span>
-            <span class="funding-countdown" id="funding-countdown">--:--:--</span>
-        </div>
-        <div class="funding-item" style="display:none;">
-             <span class="funding-apr" id="funding-apr">APR: --%</span>
+
+        <!-- 右側：資金費率群組 -->
+        <div class="funding-group">
+            <div class="funding-item">
+                <span class="funding-label">費率</span>
+                <span class="funding-val" id="funding-rate">--%</span>
+            </div>
+            <div class="funding-item">
+                <span class="funding-countdown" id="funding-countdown">--:--:--</span>
+            </div>
         </div>
     </div>
 
@@ -352,6 +391,21 @@
                         <div class="price-change" id="price-change">--%</div>
                     </div>
                 </div>
+                <!-- 24h 統計數據 -->
+                <div class="ticker-stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">24h 高</span>
+                        <span class="stat-val" id="ticker-high">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">24h 低</span>
+                        <span class="stat-val" id="ticker-low">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">24h 量(U)</span>
+                        <span class="stat-val" id="ticker-vol">--</span>
+                    </div>
+                </div>
             </div>
 
             <!-- 卡片 2: AI 策略 -->
@@ -376,7 +430,7 @@
             <!-- 卡片 3: 支撐壓力位 -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
-                    <div class="card-label">關鍵點位</div> <!-- 移除 (Pivot) -->
+                    <div class="card-label">關鍵點位</div>
                     <button class="card-refresh-btn" onclick="fetchTickerData()" title="刷新點位">↻</button>
                 </div>
                 <div class="data-grid">
@@ -687,7 +741,7 @@
 
         function updateFng(data) {
             const val = parseInt(data.value);
-            const el = document.getElementById('top-fng-val');
+            const el = document.getElementById('funding-fng-val'); // Changed ID target
             let text = "";
             let color = "#555";
             let textColor = "#fff";
@@ -723,6 +777,15 @@
                 const l = parseFloat(tickerData.lowPrice);
                 const c = parseFloat(tickerData.prevClosePrice); 
                 calculatePivotPoints(h, l, c);
+                
+                // Update 24h stats
+                document.getElementById('ticker-high').innerText = parseFloat(tickerData.highPrice).toLocaleString();
+                document.getElementById('ticker-low').innerText = parseFloat(tickerData.lowPrice).toLocaleString();
+                const vol = parseFloat(tickerData.quoteVolume);
+                let volStr = "";
+                if(vol > 1000000000) volStr = (vol / 1000000000).toFixed(2) + "B";
+                else volStr = (vol / 1000000).toFixed(2) + "M";
+                document.getElementById('ticker-vol').innerText = volStr;
 
                 if (currentPrice > 0) updateAnalysisText();
                 document.getElementById('ai-update-time').innerText = "更新於 " + new Date().toLocaleTimeString();
@@ -849,6 +912,15 @@
                 } else {
                     changeEl.className = 'price-change bg-red';
                 }
+
+                // Update 24h stats
+                document.getElementById('ticker-high').innerText = parseFloat(data.h).toLocaleString();
+                document.getElementById('ticker-low').innerText = parseFloat(data.l).toLocaleString();
+                const vol = parseFloat(data.q);
+                let volStr = "";
+                if(vol > 1000000000) volStr = (vol / 1000000000).toFixed(2) + "B";
+                else volStr = (vol / 1000000).toFixed(2) + "M";
+                document.getElementById('ticker-vol').innerText = volStr;
             };
             
             ws.onopen = () => { 
