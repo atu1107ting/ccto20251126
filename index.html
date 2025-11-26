@@ -36,6 +36,7 @@
             background-color: var(--ios-bg);
             color: var(--ios-text-primary);
             height: 100vh;
+            height: 100dvh; /* Mobile Viewport Fix */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -128,7 +129,7 @@
             background-color: var(--ios-bg); 
             overflow-y: auto; 
             min-width: 320px; 
-            padding-bottom: 10px;
+            padding-bottom: 80px; /* 手機版增加底部間距，防止被遮擋 */
         }
 
         .section-header { padding: 10px 16px 5px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -157,33 +158,42 @@
         .card-header-actions { display: flex; align-items: center; gap: 6px; }
         .last-updated { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
         
-        /* 刷新按鈕樣式 */
         .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
-        .price-display { display: flex; flex-direction: column; gap: 1px; }
-        .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
-        .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; }
-        .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
-        
-        /* 行情統計網格 (3列布局) */
-        .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
-        
-        /* 短線動能網格 (2列布局) */
-        .momentum-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 8px; 
-            margin-top: 6px; 
-            padding-top: 8px; 
-            border-top: 1px solid rgba(255,255,255,0.05); 
+        /* 即時行情區塊重構：左右分佈 */
+        .market-overview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        /* 左側：價格與漲跌 */
+        .price-left-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+        }
+        .current-price { font-size: 28px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; line-height: 1; }
+        .price-change { font-size: 14px; font-weight: 600; padding: 2px 6px; border-radius: 4px; width: fit-content; margin-top: 2px; }
         
-        .stat-item { display: flex; flex-direction: column; gap: 2px; }
-        /* 標籤與數值字體放大 */
-        .stat-label { font-size: 13px; color: var(--ios-text-tertiary); font-weight: 600; text-transform: uppercase; }
-        .stat-val { font-size: 17px; font-weight: 700; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
+        /* 右側：24h 數據 (三列靠右) */
+        .stats-right-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+        }
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+        }
+        .stat-label { color: var(--ios-text-tertiary); font-weight: 500; }
+        .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -253,6 +263,19 @@
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
 
+        /* 短線動能網格 */
+        .momentum-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-top: 8px; 
+            padding-top: 8px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+        }
+        .mom-item { display: flex; flex-direction: column; gap: 1px; }
+        .mom-label { font-size: 10px; color: var(--ios-text-tertiary); text-transform: uppercase; }
+        .mom-val { font-size: 13px; font-weight: 700; font-family: "SF Mono", monospace; }
+
         @media (max-width: 768px) {
             .header-left { width: 100%; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
@@ -270,7 +293,6 @@
             .funding-val { font-size: 12px; }
             .pattern-result { font-size: 13px; gap: 4px; }
             .top-ticker-bar { justify-content: flex-start; }
-            .stat-val { font-size: 12px; }
             .tf-tag { font-size: 11px; min-width: 30px; }
             .sentiment-text { font-size: 10px; }
         }
@@ -353,43 +375,46 @@
                 </div>
             </div>
             
-            <!-- 卡片 1: 價格 -->
+            <!-- 卡片 1: 價格 (重構) -->
             <div class="ios-card">
                 <div class="card-header-row">
                     <div class="card-label">即時行情</div>
                 </div>
-                <div class="price-display">
-                    <div class="price-value-row">
+                
+                <!-- 價格與統計佈局 -->
+                <div class="market-overview-row">
+                    <!-- 左側：價格與漲跌 -->
+                    <div class="price-left-col">
                         <div class="current-price" id="current-price">---.--</div>
                         <div class="price-change" id="price-change">--%</div>
+                    </div>
+                    
+                    <!-- 右側：24H 統計 (三列) -->
+                    <div class="stats-right-col">
+                        <div class="stat-row">
+                            <span class="stat-label">24H 高</span>
+                            <span class="stat-val" id="ticker-high">--</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">24H 低</span>
+                            <span class="stat-val" id="ticker-low">--</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">24H 量(U)</span>
+                            <span class="stat-val" id="ticker-vol">--</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- 新增：短線動能數據 (1m/5m) -->
                 <div class="momentum-grid">
-                    <div class="stat-item">
-                        <span class="stat-label">1分鐘漲跌</span>
-                        <span class="stat-val" id="change-1m">--%</span>
+                    <div class="mom-item">
+                        <span class="mom-label">1分鐘漲跌</span>
+                        <span class="mom-val" id="change-1m">--%</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">5分鐘漲跌</span>
-                        <span class="stat-val" id="change-5m">--%</span>
-                    </div>
-                </div>
-
-                <!-- 24h 統計數據 -->
-                <div class="ticker-stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-label">24h 高</span>
-                        <span class="stat-val" id="ticker-high">--</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">24h 低</span>
-                        <span class="stat-val" id="ticker-low">--</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">24h 量(U)</span>
-                        <span class="stat-val" id="ticker-vol">--</span>
+                    <div class="mom-item">
+                        <span class="mom-label">5分鐘漲跌</span>
+                        <span class="mom-val" id="change-5m">--%</span>
                     </div>
                 </div>
             </div>
@@ -550,13 +575,16 @@
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
             currentCoin = coin;
+
             document.querySelectorAll('.coin-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.innerText === coin) btn.classList.add('active');
             });
+
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
+
             renderMainChart();
-            startAutoUpdate();
+            startAutoUpdate(); 
             initDataFetch();
             startWebSocket();
         }
@@ -595,7 +623,7 @@
 
         function initDataFetch() {
             fetchTickerData(); 
-            fetchShortTermStats(); // New for 1m/5m
+            fetchShortTermStats(); 
             fetchAIStrategy(); 
             fetchPivotPoints(); 
             fetchPatternData(); 
@@ -724,10 +752,9 @@
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
             
-            // BTC force 2 decimals everywhere
             let displayPrice;
             if (prefix === 'top-btc') {
-                displayPrice = "$" + price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                 displayPrice = "$" + Math.floor(price).toLocaleString(); // Top BTC no decimal
             } else if (price < 100) {
                 displayPrice = "$" + price.toFixed(2);
             } else {
@@ -746,7 +773,6 @@
             let color = "#555";
             let textColor = "#fff";
             
-            // Date Format: 更新於 11/26
             const timestamp = parseInt(data.timestamp);
             const dateObj = new Date(timestamp * 1000);
             const dateStr = (dateObj.getMonth() + 1) + "/" + dateObj.getDate();
@@ -763,7 +789,6 @@
             el.style.color = textColor;
         }
 
-        // Real-time Ticker (No manual refresh)
         async function fetchTickerData() {
             const symbol = COINS[currentCoin].binance;
             try {
@@ -773,17 +798,38 @@
                 currentPrice = parseFloat(tickerData.lastPrice);
                 const priceEl = document.getElementById('current-price');
                 
-                if (currentPrice < 10) priceEl.innerText = currentPrice.toFixed(4);
-                else if (currentPrice < 1000) priceEl.innerText = currentPrice.toFixed(2);
-                else priceEl.innerText = Math.floor(currentPrice).toLocaleString();
+                // BTC force 2 decimals everywhere in main card
+                if (currentCoin === 'BTC') {
+                     priceEl.innerText = currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                } else if (currentPrice < 10) {
+                    priceEl.innerText = currentPrice.toFixed(4);
+                } else if (currentPrice < 1000) {
+                    priceEl.innerText = currentPrice.toFixed(2);
+                } else {
+                    priceEl.innerText = Math.floor(currentPrice).toLocaleString();
+                }
 
-                // Update 24h stats
-                document.getElementById('ticker-high').innerText = parseFloat(tickerData.highPrice).toLocaleString();
-                document.getElementById('ticker-low').innerText = parseFloat(tickerData.lowPrice).toLocaleString();
+                // Update 24h stats with same formatting logic
+                const hVal = parseFloat(tickerData.highPrice);
+                const lVal = parseFloat(tickerData.lowPrice);
+                let hStr, lStr;
+                
+                if (currentCoin === 'BTC') {
+                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                } else if (hVal < 1000) {
+                    hStr = hVal.toFixed(2);
+                    lStr = lVal.toFixed(2);
+                } else {
+                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }
+                
+                document.getElementById('ticker-high').innerText = hStr;
+                document.getElementById('ticker-low').innerText = lStr;
+                
                 const vol = parseFloat(tickerData.quoteVolume);
-                let volStr = "";
-                if(vol > 1000000000) volStr = (vol / 1000000000).toFixed(2) + "B";
-                else volStr = (vol / 1000000).toFixed(2) + "M";
+                let volStr = vol > 1000000000 ? (vol / 1000000000).toFixed(2) + "B" : (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
 
             } catch (e) {
@@ -802,7 +848,7 @@
                 
                 if(kline5m.length > 0 && kline1m.length > 0) {
                     const open5m = parseFloat(kline5m[0][1]);
-                    const close5m = parseFloat(kline5m[0][4]); // Current price basically
+                    const close5m = parseFloat(kline5m[0][4]); 
                     const change5m = ((close5m - open5m) / open5m) * 100;
                     
                     const open1m = parseFloat(kline1m[0][1]);
@@ -979,7 +1025,7 @@
                 else priceEl.style.color = "var(--ios-text-primary)";
                 prevPriceTick = price;
                 
-                // Value format
+                // Value format (Force 2 decimals for BTC)
                 let displayPrice;
                 if (currentCoin === 'BTC') {
                      displayPrice = price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -999,8 +1045,8 @@
                 else changeEl.className = 'price-change bg-red';
 
                 // Update 24h stats
-                document.getElementById('ticker-high').innerText = parseFloat(data.h).toLocaleString();
-                document.getElementById('ticker-low').innerText = parseFloat(data.l).toLocaleString();
+                document.getElementById('ticker-high').innerText = parseFloat(data.h).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('ticker-low').innerText = parseFloat(data.l).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 const vol = parseFloat(data.q);
                 let volStr = "";
                 if(vol > 1000000000) volStr = (vol / 1000000000).toFixed(2) + "B";
