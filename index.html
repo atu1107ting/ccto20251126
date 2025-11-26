@@ -61,7 +61,7 @@
         }
         .top-ticker-bar::-webkit-scrollbar { display: none; }
 
-        /* 第二層：資金費率與情緒列 */
+        /* 資金費率數據列 */
         .funding-bar {
             height: 36px;
             background-color: #161618;
@@ -70,36 +70,15 @@
             align-items: center;
             padding: 0 16px;
             font-size: 12px;
-            justify-content: space-between; /* 左右分佈 */
+            justify-content: space-between; 
             flex-shrink: 0;
         }
 
-        /* 左側：恐懼貪婪 */
-        .fng-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .fng-title {
-            font-size: 11px;
-            color: var(--ios-text-secondary);
-            font-weight: 600;
-        }
-        .fng-label { 
-            padding: 1px 6px; 
-            border-radius: 3px; 
-            font-weight: 800; 
-            color: #000; 
-            font-size: 10px; 
-        }
+        .fng-wrapper { display: flex; align-items: center; gap: 6px; }
+        .fng-title { font-size: 11px; color: var(--ios-text-secondary); font-weight: 600; }
+        .fng-label { padding: 1px 6px; border-radius: 3px; font-weight: 800; color: #000; font-size: 10px; }
 
-        /* 右側：資金費率群組 */
-        .funding-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .funding-group { display: flex; align-items: center; gap: 12px; }
         .funding-item { display: flex; align-items: center; gap: 6px; }
         .funding-label { font-size: 11px; color: var(--ios-text-secondary); font-weight: 600; }
         .funding-val { font-family: "SF Mono", monospace; font-weight: 700; font-size: 13px; }
@@ -123,7 +102,7 @@
             z-index: 1000;
         }
 
-        .header-left { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+        .header-left { display: flex; align-items: center; gap: 12px; width: auto; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
         .header-left::-webkit-scrollbar { display: none; } 
 
         h1 { font-size: 15px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
@@ -185,14 +164,7 @@
         .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; }
         .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
         
-        .ticker-stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
+        .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
         .stat-item { display: flex; flex-direction: column; gap: 2px; }
         .stat-label { font-size: 11px; color: var(--ios-text-tertiary); font-weight: 500; }
         .stat-val { font-size: 13px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
@@ -212,56 +184,58 @@
 
         .analysis-box { background-color: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; }
         .analysis-header { display: flex; align-items: center; margin-bottom: 0px; }
-        
         .analysis-badge { font-size: 32px; font-weight: 800; letter-spacing: 0.5px; color: var(--ios-text-secondary); line-height: 1.1; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .analysis-content { font-size: 17px; line-height: 1.6; color: var(--ios-text-secondary); }
 
         .pattern-list { display: flex; flex-direction: column; gap: 4px; background-color: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 8px; }
         
+        /* 型態列表：調整欄位比例 (電腦版置中優化) */
         .pattern-header {
             display: grid;
-            grid-template-columns: 45px 0.8fr 1.3fr; 
+            grid-template-columns: 70px 1.5fr 1fr; /* 加寬中間比例條 */
             padding-bottom: 4px;
             margin-bottom: 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 11px;
+            font-size: 12px;
             color: var(--ios-text-tertiary);
             font-weight: 600;
         }
 
         .pattern-item { 
             display: grid; 
-            grid-template-columns: 45px 0.8fr 1.3fr; 
+            grid-template-columns: 70px 1.5fr 1fr; /* 對應 Header */
             align-items: center; 
             padding-bottom: 6px; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
-            gap: 8px; 
+            gap: 10px; 
         }
         .pattern-item:last-child { padding-bottom: 0; border-bottom: none; }
 
         .tf-info { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
-        .tf-tag { font-size: 11px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 4px; border-radius: 3px; text-align: center; min-width: 30px; }
-        .candle-timer { font-size: 9px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
+        /* 時區標籤放大 */
+        .tf-tag { font-size: 13px; font-weight: 700; color: var(--ios-text-primary); background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 4px; text-align: center; min-width: 36px; }
+        .candle-timer { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
 
-        .sentiment-wrapper { display: flex; flex-direction: column; gap: 1px; width: 100%; }
-        .sentiment-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; display: flex; }
+        .sentiment-wrapper { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+        .sentiment-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; display: flex; }
         .bar-bull { height: 100%; background-color: var(--ios-green); transition: width 0.5s ease; }
         .bar-bear { height: 100%; background-color: var(--ios-red); transition: width 0.5s ease; }
-        .sentiment-text { font-size: 9px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; }
+        /* 多空比例文字放大 */
+        .sentiment-text { font-size: 12px; color: var(--ios-text-secondary); display: flex; justify-content: space-between; font-weight: 600; }
 
         .pattern-result { 
-            font-size: 15px; 
+            font-size: 18px; /* 文字放大 */
             font-weight: 700; 
             color: var(--ios-text-primary); 
             display: flex; 
             flex-direction: row; 
             align-items: center; 
             justify-content: flex-end; 
-            gap: 6px; 
+            gap: 8px; 
             text-align: right; 
             white-space: nowrap;
         }
-        .trend-tag { font-size: 10px; padding: 1px 4px; border-radius: 3px; font-weight: 700; display: inline-block; }
+        .trend-tag { font-size: 10px; padding: 1px 5px; border-radius: 4px; font-weight: 700; display: inline-block; }
         .trend-bull { background: rgba(48, 209, 88, 0.2); color: var(--ios-green); }
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
@@ -271,7 +245,7 @@
 
         /* 手機版適配 */
         @media (max-width: 768px) {
-            .header-left { width: auto; overflow-x: auto; justify-content: flex-start; } 
+            .header-left { width: 100%; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
             .chart-section { flex: none; height: 35vh; border-right: none; border-bottom: 0.5px solid var(--ios-border); }
             .analysis-section { flex: 1; min-width: 100%; background-color: var(--ios-bg); }
@@ -288,6 +262,8 @@
             .pattern-result { font-size: 13px; gap: 4px; }
             .top-ticker-bar { justify-content: flex-start; }
             .stat-val { font-size: 12px; }
+            .tf-tag { font-size: 11px; min-width: 30px; }
+            .sentiment-text { font-size: 10px; }
         }
     </style>
 </head>
@@ -334,7 +310,6 @@
 
     <header>
         <div class="header-left">
-            <h1>戰情室</h1>
             <div class="coin-nav">
                 <div class="segmented-control">
                     <button class="coin-btn active" onclick="changeCoin('BTC')">BTC</button>
@@ -347,9 +322,10 @@
             </div>
         </div>
         
-        <div style="display: flex; align-items: center; gap: 6px;">
+        <!-- 連線狀態置右 -->
+        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap;">
             <div class="status-dot" id="connection-dot"></div>
-            <span class="update-time" id="ai-status">連線正常</span>
+            <span class="update-time" id="ai-status" style="font-size: 12px; color: #30D158;">連線正常</span>
         </div>
     </header>
 
@@ -481,7 +457,7 @@
                             <div class="sentiment-bar"><div id="bar-bull-5m" class="bar-bull" style="width:50%"></div><div id="bar-bear-5m" class="bar-bear" style="width:50%"></div></div>
                         </div>
                         <div class="pattern-result" id="pat-5m">
-                            <span>掃描中...</span>
+                            <span>盤整中</span>
                         </div>
                     </div>
                     <!-- 15m -->
@@ -492,7 +468,7 @@
                             <div class="sentiment-bar"><div id="bar-bull-15m" class="bar-bull" style="width:50%"></div><div id="bar-bear-15m" class="bar-bear" style="width:50%"></div></div>
                         </div>
                         <div class="pattern-result" id="pat-15m">
-                            <span>掃描中...</span>
+                            <span>盤整中</span>
                         </div>
                     </div>
                     <!-- 1H -->
@@ -503,7 +479,7 @@
                             <div class="sentiment-bar"><div id="bar-bull-1h" class="bar-bull" style="width:50%"></div><div id="bar-bear-1h" class="bar-bear" style="width:50%"></div></div>
                         </div>
                         <div class="pattern-result" id="pat-1h">
-                            <span>掃描中...</span>
+                            <span>盤整中</span>
                         </div>
                     </div>
                     <!-- 4H -->
@@ -514,7 +490,7 @@
                             <div class="sentiment-bar"><div id="bar-bull-4h" class="bar-bull" style="width:50%"></div><div id="bar-bear-4h" class="bar-bear" style="width:50%"></div></div>
                         </div>
                         <div class="pattern-result" id="pat-4h">
-                            <span>掃描中...</span>
+                            <span>盤整中</span>
                         </div>
                     </div>
                     <!-- 1D -->
@@ -525,14 +501,14 @@
                             <div class="sentiment-bar"><div id="bar-bull-1d" class="bar-bull" style="width:50%"></div><div id="bar-bear-1d" class="bar-bear" style="width:50%"></div></div>
                         </div>
                         <div class="pattern-result" id="pat-1d">
-                            <span>掃描中...</span>
+                            <span>盤整中</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="tip-section">
-                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。
+                為確保分析穩定性，支撐壓力數據與策略訊號每 5 分鐘更新一次。K 線倒數計時代表該時區收盤時間。3日多空比例統計該時區過去3天內收陽線與收陰線的數量佔比。
             </div>
             
             <div class="global-hint">
