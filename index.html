@@ -36,7 +36,6 @@
             background-color: var(--ios-bg);
             color: var(--ios-text-primary);
             height: 100vh;
-            height: 100dvh; /* Mobile Viewport Fix */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -129,7 +128,7 @@
             background-color: var(--ios-bg); 
             overflow-y: auto; 
             min-width: 320px; 
-            padding-bottom: 80px; /* 手機版增加底部間距，防止被遮擋 */
+            padding-bottom: 10px;
         }
 
         .section-header { padding: 10px 16px 5px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -162,38 +161,68 @@
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
-        /* 即時行情區塊重構：左右分佈 */
+        /* 即時行情佈局重構：左右分佈 */
         .market-overview-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* 上對齊 */
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 4px;
         }
 
-        /* 左側：價格與漲跌 */
-        .price-left-col {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 2px;
+        /* 左側：價格與漲跌 (現在是並排) */
+        .price-left-col { 
+            display: flex; 
+            flex-direction: row; /* 改為橫向 */
+            align-items: baseline; /* 基線對齊 */
+            gap: 8px; 
+            padding-top: 10px; /* 稍微置中 */
         }
-        .current-price { font-size: 28px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; line-height: 1; }
-        .price-change { font-size: 14px; font-weight: 600; padding: 2px 6px; border-radius: 4px; width: fit-content; margin-top: 2px; }
         
-        /* 右側：24h 數據 (三列靠右) */
-        .stats-right-col {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 3px;
+        .current-price { 
+            font-size: 32px; /* 再放大一點 */
+            font-weight: 700; 
+            color: var(--ios-text-primary); 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; 
+            letter-spacing: -0.5px; 
+            transition: color 0.3s ease; 
+            line-height: 1;
         }
-        .stat-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
+
+        .price-change { 
+            font-size: 16px; /* 字體放大 */
+            font-weight: 600; 
+            padding: 3px 8px; 
+            border-radius: 6px; 
+            width: fit-content; 
         }
-        .stat-label { color: var(--ios-text-tertiary); font-weight: 500; }
-        .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; }
+        
+        /* 右側：24H 統計 (三列靠右) */
+        .stats-right-col { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-end; 
+            gap: 4px; 
+            min-width: 100px;
+        }
+        .stat-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .stat-label { color: var(--ios-text-tertiary); font-weight: 500; font-size: 11px; }
+        .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; font-size: 13px; }
+
+        /* 短線動能網格 (2x2) */
+        .momentum-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px 12px; 
+            margin-top: 8px; 
+            padding-top: 8px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+        }
+        
+        .mom-item { display: flex; flex-direction: column; gap: 2px; }
+        .mom-label { font-size: 11px; color: var(--ios-text-tertiary); text-transform: uppercase; font-weight: 600; }
+        .mom-val { font-size: 18px; font-weight: 800; font-family: "SF Mono", monospace; }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -263,24 +292,22 @@
         .trend-bear { background: rgba(255, 69, 58, 0.2); color: var(--ios-red); }
         .trend-neutral { background: rgba(235, 235, 245, 0.2); color: var(--ios-text-secondary); }
 
-        /* 短線動能網格 */
-        .momentum-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 8px; 
-            margin-top: 8px; 
-            padding-top: 8px; 
-            border-top: 1px solid rgba(255,255,255,0.05); 
+        .tip-section { padding: 8px 16px; font-size: 10px; color: var(--ios-text-tertiary); line-height: 1.3; }
+        .global-hint { 
+            text-align: center; 
+            font-size: 10px; 
+            color: var(--ios-orange); 
+            padding: 20px 16px 30px 16px; 
+            opacity: 0.8; 
+            font-weight: 500; 
+            margin-top: auto; /* 置底 */
         }
-        .mom-item { display: flex; flex-direction: column; gap: 1px; }
-        .mom-label { font-size: 10px; color: var(--ios-text-tertiary); text-transform: uppercase; }
-        .mom-val { font-size: 13px; font-weight: 700; font-family: "SF Mono", monospace; }
 
         @media (max-width: 768px) {
             .header-left { width: 100%; overflow-x: auto; justify-content: flex-start; } 
             .main-container { flex-direction: column; }
             .chart-section { flex: none; height: 35vh; border-right: none; border-bottom: 0.5px solid var(--ios-border); }
-            .analysis-section { flex: 1; min-width: 100%; background-color: var(--ios-bg); }
+            .analysis-section { flex: 1; min-width: 100%; background-color: var(--ios-bg); padding-bottom: 80px; }
             .ios-card { margin: 8px 12px 0 12px; padding: 12px; }
             .current-price { font-size: 26px; }
             .section-title { font-size: 16px; }
@@ -293,8 +320,13 @@
             .funding-val { font-size: 12px; }
             .pattern-result { font-size: 13px; gap: 4px; }
             .top-ticker-bar { justify-content: flex-start; }
+            .stat-val { font-size: 12px; }
             .tf-tag { font-size: 11px; min-width: 30px; }
             .sentiment-text { font-size: 10px; }
+            
+            /* 手機版調整價格區塊 */
+            .market-overview-row { align-items: center; }
+            .price-left-col { flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 0; }
         }
     </style>
 </head>
@@ -375,7 +407,7 @@
                 </div>
             </div>
             
-            <!-- 卡片 1: 價格 (重構) -->
+            <!-- 卡片 1: 價格與動能 -->
             <div class="ios-card">
                 <div class="card-header-row">
                     <div class="card-label">即時行情</div>
@@ -389,7 +421,7 @@
                         <div class="price-change" id="price-change">--%</div>
                     </div>
                     
-                    <!-- 右側：24H 統計 (三列) -->
+                    <!-- 右側：24H 統計 (三列垂直) -->
                     <div class="stats-right-col">
                         <div class="stat-row">
                             <span class="stat-label">24H 高</span>
@@ -406,7 +438,7 @@
                     </div>
                 </div>
                 
-                <!-- 新增：短線動能數據 (1m/5m) -->
+                <!-- 新增：短線動能數據 (1m/5m/15m/1h) -->
                 <div class="momentum-grid">
                     <div class="mom-item">
                         <span class="mom-label">1分鐘漲跌</span>
@@ -415,6 +447,14 @@
                     <div class="mom-item">
                         <span class="mom-label">5分鐘漲跌</span>
                         <span class="mom-val" id="change-5m">--%</span>
+                    </div>
+                    <div class="mom-item">
+                        <span class="mom-label">15分鐘漲跌</span>
+                        <span class="mom-val" id="change-15m">--%</span>
+                    </div>
+                    <div class="mom-item">
+                        <span class="mom-label">1小時漲跌</span>
+                        <span class="mom-val" id="change-1h">--%</span>
                     </div>
                 </div>
             </div>
@@ -544,6 +584,12 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- 底部提示 -->
+            <div class="global-hint">
+                ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
+            </div>
+
         </div>
     </div>
 
@@ -575,16 +621,13 @@
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
             currentCoin = coin;
-
             document.querySelectorAll('.coin-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.innerText === coin) btn.classList.add('active');
             });
-
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
-
             renderMainChart();
-            startAutoUpdate(); 
+            startAutoUpdate();
             initDataFetch();
             startWebSocket();
         }
@@ -640,7 +683,6 @@
             patternInterval = setInterval(() => fetchPatternData(), 300000);
             pivotInterval = setInterval(() => fetchPivotPoints(), 3600000);
             
-            // Update short term stats every 30s
             setInterval(fetchShortTermStats, 30000);
         }
 
@@ -656,6 +698,7 @@
                 const ethData = await ethRes.json();
                 const solData = await solRes.json();
                 
+                // Top ticker: No decimals
                 updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
                 updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
                 updateTopTicker('top-sol', parseFloat(solData.lastPrice), parseFloat(solData.priceChangePercent));
@@ -663,10 +706,7 @@
                 const fngRes = await fetch('https://api.alternative.me/fng/');
                 const fngData = await fngRes.json();
                 updateFng(fngData.data[0]);
-
-            } catch (e) {
-                console.error("Market Overview Error:", e);
-            }
+            } catch (e) { console.error("Market Overview Error:", e); }
         }
         
         async function fetchFundingRate() {
@@ -704,24 +744,16 @@
         
         function startFundingTimer(endTime) {
             if(fundingTimerInterval) clearInterval(fundingTimerInterval);
-            
             const update = () => {
                 const now = Date.now();
                 const diff = endTime - now;
-                if(diff <= 0) {
-                    fetchFundingRate(); 
-                    clearInterval(fundingTimerInterval);
-                    return;
-                }
-                
+                if(diff <= 0) { fetchFundingRate(); clearInterval(fundingTimerInterval); return; }
                 const h = Math.floor(diff / (1000 * 60 * 60));
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((diff % (1000 * 60)) / 1000);
-                
                 document.getElementById('funding-countdown').innerText = 
                     `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             };
-            
             update();
             fundingTimerInterval = setInterval(update, 1000);
         }
@@ -730,21 +762,15 @@
             if (topTickerWs) topTickerWs.close();
             const wsUrl = "wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker/solusdt@ticker";
             topTickerWs = new WebSocket(wsUrl);
-
             topTickerWs.onmessage = (event) => {
                 const message = JSON.parse(event.data);
                 const data = message.data; 
                 const stream = message.stream;
                 const price = parseFloat(data.c);
                 const pct = parseFloat(data.P);
-
-                if (stream === 'btcusdt@ticker') {
-                    updateTopTicker('top-btc', price, pct);
-                } else if (stream === 'ethusdt@ticker') {
-                    updateTopTicker('top-eth', price, pct);
-                } else if (stream === 'solusdt@ticker') {
-                    updateTopTicker('top-sol', price, pct);
-                }
+                if (stream === 'btcusdt@ticker') updateTopTicker('top-btc', price, pct);
+                else if (stream === 'ethusdt@ticker') updateTopTicker('top-eth', price, pct);
+                else if (stream === 'solusdt@ticker') updateTopTicker('top-sol', price, pct);
             };
         }
 
@@ -752,14 +778,8 @@
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
             
-            let displayPrice;
-            if (prefix === 'top-btc') {
-                 displayPrice = "$" + Math.floor(price).toLocaleString(); // Top BTC no decimal
-            } else if (price < 100) {
-                displayPrice = "$" + price.toFixed(2);
-            } else {
-                displayPrice = "$" + Math.floor(price).toLocaleString();
-            }
+            // Top ticker always integer
+            let displayPrice = "$" + Math.floor(price).toLocaleString();
             
             valEl.innerText = displayPrice;
             pctEl.innerText = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
@@ -783,7 +803,6 @@
             else if (val >= 45) { text = "中立"; color = "var(--ios-text-tertiary)"; textColor = "#fff"; }
             else if (val >= 25) { text = "恐懼"; color = "rgba(255, 69, 58, 0.6)"; textColor = "#fff"; }
             else { text = "極度恐懼"; color = "var(--ios-red)"; textColor = "#000"; }
-
             el.innerText = `${val} ${text}`;
             el.style.backgroundColor = color;
             el.style.color = textColor;
@@ -798,7 +817,7 @@
                 currentPrice = parseFloat(tickerData.lastPrice);
                 const priceEl = document.getElementById('current-price');
                 
-                // BTC force 2 decimals everywhere in main card
+                // BTC force 2 decimals in MAIN card
                 if (currentCoin === 'BTC') {
                      priceEl.innerText = currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 } else if (currentPrice < 10) {
@@ -832,37 +851,37 @@
                 let volStr = vol > 1000000000 ? (vol / 1000000000).toFixed(2) + "B" : (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
 
-            } catch (e) {
-                console.error("Ticker Error:", e);
-            }
+            } catch (e) { console.error("Ticker Error:", e); }
         }
         
         // New function for 1m/5m change
         async function fetchShortTermStats() {
             const symbol = COINS[currentCoin].binance;
             try {
-                // Fetch 5m candle (last 1)
-                const kline5m = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=5m&limit=1`).then(r => r.json());
-                // Fetch 1m candle (last 1)
-                const kline1m = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=1`).then(r => r.json());
+                // Fetch 1m, 5m, 15m, 1h candles
+                const [kline1m, kline5m, kline15m, kline1h] = await Promise.all([
+                    fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1m&limit=1`).then(r => r.json()),
+                    fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=5m&limit=1`).then(r => r.json()),
+                    fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=15m&limit=1`).then(r => r.json()),
+                    fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1h&limit=1`).then(r => r.json())
+                ]);
                 
-                if(kline5m.length > 0 && kline1m.length > 0) {
-                    const open5m = parseFloat(kline5m[0][1]);
-                    const close5m = parseFloat(kline5m[0][4]); 
-                    const change5m = ((close5m - open5m) / open5m) * 100;
-                    
-                    const open1m = parseFloat(kline1m[0][1]);
-                    const close1m = parseFloat(kline1m[0][4]);
-                    const change1m = ((close1m - open1m) / open1m) * 100;
-                    
-                    const el5m = document.getElementById('change-5m');
-                    el5m.innerText = (change5m >= 0 ? "+" : "") + change5m.toFixed(2) + "%";
-                    el5m.style.color = change5m >= 0 ? "var(--ios-green)" : "var(--ios-red)";
-                    
-                    const el1m = document.getElementById('change-1m');
-                    el1m.innerText = (change1m >= 0 ? "+" : "") + change1m.toFixed(2) + "%";
-                    el1m.style.color = change1m >= 0 ? "var(--ios-green)" : "var(--ios-red)";
-                }
+                const updateChange = (id, kline) => {
+                    if(kline && kline.length > 0) {
+                        const open = parseFloat(kline[0][1]);
+                        const close = parseFloat(kline[0][4]);
+                        const change = ((close - open) / open) * 100;
+                        const el = document.getElementById(id);
+                        el.innerText = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+                        el.style.color = change >= 0 ? "var(--ios-green)" : "var(--ios-red)";
+                    }
+                };
+                
+                updateChange('change-1m', kline1m);
+                updateChange('change-5m', kline5m);
+                updateChange('change-15m', kline15m);
+                updateChange('change-1h', kline1h);
+                
             } catch(e) { console.error("Short Term Stats Error", e); }
         }
 
@@ -1025,7 +1044,7 @@
                 else priceEl.style.color = "var(--ios-text-primary)";
                 prevPriceTick = price;
                 
-                // Value format (Force 2 decimals for BTC)
+                // Value format
                 let displayPrice;
                 if (currentCoin === 'BTC') {
                      displayPrice = price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
