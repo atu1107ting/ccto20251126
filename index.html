@@ -157,6 +157,7 @@
         .card-header-actions { display: flex; align-items: center; gap: 6px; }
         .last-updated { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
         
+        /* 刷新按鈕樣式 */
         .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
@@ -222,7 +223,7 @@
         
         .mom-item { display: flex; flex-direction: column; gap: 2px; }
         .mom-label { font-size: 11px; color: var(--ios-text-tertiary); text-transform: uppercase; font-weight: 600; }
-        .mom-val { font-size: 18px; font-weight: 800; font-family: "SF Mono", monospace; }
+        .mom-val { font-size: 16px; font-weight: 800; font-family: "SF Mono", monospace; }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -407,7 +408,7 @@
                 </div>
             </div>
             
-            <!-- 卡片 1: 價格與動能 -->
+            <!-- 卡片 1: 價格 -->
             <div class="ios-card">
                 <div class="card-header-row">
                     <div class="card-label">即時行情</div>
@@ -617,17 +618,23 @@
 
         let g_pp = 0, g_r1 = 0, g_r2 = 0, g_s1 = 0, g_s2 = 0;
         let prevPriceTick = 0;
+        
+        // Trigger threshold for R2 breakout update
+        let lastR2TriggerTime = 0;
 
         function changeCoin(coin) {
             if (currentCoin === coin) return; 
             currentCoin = coin;
+
             document.querySelectorAll('.coin-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.innerText === coin) btn.classList.add('active');
             });
+
             document.getElementById('ai-coin-name').innerText = `${coin} / USDT`;
+
             renderMainChart();
-            startAutoUpdate();
+            startAutoUpdate(); 
             initDataFetch();
             startWebSocket();
         }
@@ -679,10 +686,13 @@
             if(patternInterval) clearInterval(patternInterval);
             if(pivotInterval) clearInterval(pivotInterval);
 
+            // 5 Minutes
             aiInterval = setInterval(() => fetchAIStrategy(), 300000);
             patternInterval = setInterval(() => fetchPatternData(), 300000);
-            pivotInterval = setInterval(() => fetchPivotPoints(), 3600000);
+            // 15 Minutes for Pivots
+            pivotInterval = setInterval(() => fetchPivotPoints(), 900000);
             
+            // Update short term stats every 30s
             setInterval(fetchShortTermStats, 30000);
         }
 
@@ -698,7 +708,6 @@
                 const ethData = await ethRes.json();
                 const solData = await solRes.json();
                 
-                // Top ticker: No decimals
                 updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
                 updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
                 updateTopTicker('top-sol', parseFloat(solData.lastPrice), parseFloat(solData.priceChangePercent));
@@ -828,25 +837,9 @@
                     priceEl.innerText = Math.floor(currentPrice).toLocaleString();
                 }
 
-                // Update 24h stats with same formatting logic
-                const hVal = parseFloat(tickerData.highPrice);
-                const lVal = parseFloat(tickerData.lowPrice);
-                let hStr, lStr;
-                
-                if (currentCoin === 'BTC') {
-                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                } else if (hVal < 1000) {
-                    hStr = hVal.toFixed(2);
-                    lStr = lVal.toFixed(2);
-                } else {
-                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                }
-                
-                document.getElementById('ticker-high').innerText = hStr;
-                document.getElementById('ticker-low').innerText = lStr;
-                
+                // Update 24h stats
+                document.getElementById('ticker-high').innerText = parseFloat(tickerData.highPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('ticker-low').innerText = parseFloat(tickerData.lowPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 const vol = parseFloat(tickerData.quoteVolume);
                 let volStr = vol > 1000000000 ? (vol / 1000000000).toFixed(2) + "B" : (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
@@ -1071,6 +1064,16 @@
                 if(vol > 1000000000) volStr = (vol / 1000000000).toFixed(2) + "B";
                 else volStr = (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
+
+                // Trigger R2 Breakout Logic
+                if (g_r2 > 0 && currentPrice > g_r2) {
+                    const now = Date.now();
+                    if (now - lastR2TriggerTime > 60000) { // Throttle 1 min
+                        fetchAIStrategy();
+                        fetchPivotPoints();
+                        lastR2TriggerTime = now;
+                    }
+                }
             };
             
             ws.onopen = () => { 
