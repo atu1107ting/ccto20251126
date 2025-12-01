@@ -161,27 +161,26 @@
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
-        /* 即時行情佈局重構：左右分佈 */
+        /* 即時行情佈局重構 */
         .market-overview-row {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start; /* 上對齊 */
+            align-items: flex-start; 
             padding-bottom: 8px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
             margin-bottom: 4px;
         }
 
-        /* 左側：價格與漲跌 (現在是並排) */
         .price-left-col { 
             display: flex; 
-            flex-direction: row; /* 改為橫向 */
-            align-items: baseline; /* 基線對齊 */
+            flex-direction: row; 
+            align-items: baseline; 
             gap: 8px; 
-            padding-top: 10px; /* 稍微置中 */
+            padding-top: 10px; 
         }
         
         .current-price { 
-            font-size: 32px; /* 再放大一點 */
+            font-size: 32px; 
             font-weight: 700; 
             color: var(--ios-text-primary); 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; 
@@ -191,14 +190,13 @@
         }
 
         .price-change { 
-            font-size: 16px; /* 字體放大 */
+            font-size: 16px; 
             font-weight: 600; 
             padding: 3px 8px; 
             border-radius: 6px; 
             width: fit-content; 
         }
         
-        /* 右側：24H 統計 (三列靠右) */
         .stats-right-col { 
             display: flex; 
             flex-direction: column; 
@@ -206,11 +204,11 @@
             gap: 4px; 
             min-width: 100px;
         }
-        .stat-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .stat-row { display: flex; align-items: center; gap: 6px; font-size: 11px; }
         .stat-label { color: var(--ios-text-tertiary); font-weight: 500; font-size: 11px; }
         .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; font-size: 13px; }
 
-        /* 短線動能網格 (2x2) */
+        /* 短線動能網格 */
         .momentum-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -603,7 +601,7 @@
             <div class="global-hint">
                 ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
             </div>
-            <div class="version-footer">Ver. 3.2 - 2025.12.02 | Data: Binance</div>
+            <div class="version-footer">Ver. 2025.12.02-2.1 | Data: Binance</div>
 
         </div>
     </div>
@@ -703,7 +701,6 @@
             patternInterval = setInterval(() => fetchPatternData(), 300000);
             pivotInterval = setInterval(() => fetchPivotPoints(), 3600000);
             
-            // Update short term stats every 30s
             setInterval(fetchShortTermStats, 30000);
         }
 
@@ -719,7 +716,7 @@
                 const ethData = await ethRes.json();
                 const solData = await solRes.json();
                 
-                // Top ticker: No decimals
+                // Top ticker: Integer for cleaner look
                 updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
                 updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
                 updateTopTicker('top-sol', parseFloat(solData.lastPrice), parseFloat(solData.priceChangePercent));
@@ -922,15 +919,33 @@
                     const fPP = g_pp.toFixed(decimals);
                     
                     analysisHTML += `<div style="margin-bottom:6px;"><strong>【點位分析】</strong><br>`;
-                    if (nowPrice > g_r1) {
-                        analysisHTML += `價格突破 R1 (${fR1})，動能強勁。留意 R2 賣壓。`;
+                    // Priority: Extreme levels (R3/S3) -> Standard levels
+                    // Check breakout upwards
+                    if (nowPrice > g_r3) {
+                        analysisHTML += `價格強勢突破 R3，多頭情緒極度高昂，注意超買回調風險。`;
+                        setBadge(badge, "極度強勢", "var(--ios-green)");
+                    } else if (nowPrice > g_r2) {
+                        analysisHTML += `價格突破 R2，上漲動能強勁，目標看向 R3。`;
                         setBadge(badge, "強勢突破", "var(--ios-green)");
-                    } else if (nowPrice > g_pp) {
-                        analysisHTML += `位於分界 ${fPP} 之上，偏多震盪。回調不破分界可視為買點，目標 R1。`;
-                        setBadge(badge, "偏多震盪", "var(--ios-blue)");
-                    } else if (nowPrice < g_s1) {
-                        analysisHTML += `跌破 S1 (${fS1})，空頭主導。勿輕易抄底，關注 S2 支撐。`;
+                    } else if (nowPrice > g_r1) {
+                        analysisHTML += `價格突破 R1 (${fR1})，動能轉強，留意 R2 壓力。`;
+                        setBadge(badge, "轉強", "var(--ios-green)");
+                    } 
+                    // Check breakdown downwards
+                    else if (nowPrice < g_s3) {
+                        analysisHTML += `價格跌破 S3，空頭情緒極度恐慌，可能出現超賣反彈或持續崩盤。`;
+                        setBadge(badge, "極度弱勢", "var(--ios-red)");
+                    } else if (nowPrice < g_s2) {
+                        analysisHTML += `價格跌破 S2，空頭動能強勁，下看 S3 支撐。`;
                         setBadge(badge, "弱勢探底", "var(--ios-red)");
+                    } else if (nowPrice < g_s1) {
+                        analysisHTML += `跌破 S1 (${fS1})，轉為弱勢，關注 S2 支撐防守情況。`;
+                        setBadge(badge, "轉弱", "var(--ios-red)");
+                    } 
+                    // Middle zone
+                    else if (nowPrice > g_pp) {
+                        analysisHTML += `位於分界 ${fPP} 之上，偏多震盪。回調不破分界可視為買點。`;
+                        setBadge(badge, "偏多震盪", "var(--ios-blue)");
                     } else {
                         analysisHTML += `位於分界 ${fPP} 之下，短期承壓。反彈若不過分界，趨勢偏空。`;
                         setBadge(badge, "偏空震盪", "var(--ios-orange)");
