@@ -157,6 +157,7 @@
         .card-header-actions { display: flex; align-items: center; gap: 6px; }
         .last-updated { font-size: 10px; color: var(--ios-text-tertiary); font-family: "SF Mono", monospace; }
         
+        /* 刷新按鈕樣式 */
         .card-refresh-btn { background: rgba(255,255,255,0.1); border: none; color: var(--ios-blue); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
@@ -206,7 +207,7 @@
             gap: 4px; 
             min-width: 100px;
         }
-        .stat-row { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        .stat-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
         .stat-label { color: var(--ios-text-tertiary); font-weight: 500; font-size: 11px; }
         .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; font-size: 13px; }
 
@@ -625,7 +626,6 @@
         let candleTimerInterval; 
         let fundingTimerInterval;
         
-        // Interval handles
         let aiInterval;
         let pivotInterval;
         let patternInterval;
@@ -793,10 +793,7 @@
         function updateTopTicker(prefix, price, pct) {
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
-            
-            // Top ticker always integer
             let displayPrice = "$" + Math.floor(price).toLocaleString();
-            
             valEl.innerText = displayPrice;
             pctEl.innerText = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
             pctEl.style.color = pct >= 0 ? "var(--ios-green)" : "var(--ios-red)";
@@ -833,36 +830,13 @@
                 currentPrice = parseFloat(tickerData.lastPrice);
                 const priceEl = document.getElementById('current-price');
                 
-                // BTC & ETH force 2 decimals in MAIN card
-                if (currentCoin === 'BTC' || currentCoin === 'ETH') {
-                     priceEl.innerText = currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                } else if (currentPrice < 10) {
-                    priceEl.innerText = currentPrice.toFixed(4);
-                } else if (currentPrice < 1000) {
-                    priceEl.innerText = currentPrice.toFixed(2);
-                } else {
-                    priceEl.innerText = Math.floor(currentPrice).toLocaleString();
-                }
+                if (currentPrice < 10) priceEl.innerText = currentPrice.toFixed(4);
+                else if (currentPrice < 1000) priceEl.innerText = currentPrice.toFixed(2);
+                else priceEl.innerText = Math.floor(currentPrice).toLocaleString();
 
-                // Update 24h stats with same formatting logic
-                const hVal = parseFloat(tickerData.highPrice);
-                const lVal = parseFloat(tickerData.lowPrice);
-                let hStr, lStr;
-                
-                if (currentCoin === 'BTC' || currentCoin === 'ETH') {
-                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                } else if (hVal < 1000) {
-                    hStr = hVal.toFixed(2);
-                    lStr = lVal.toFixed(2);
-                } else {
-                    hStr = hVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    lStr = lVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                }
-                
-                document.getElementById('ticker-high').innerText = hStr;
-                document.getElementById('ticker-low').innerText = lStr;
-                
+                // Update 24h stats
+                document.getElementById('ticker-high').innerText = parseFloat(tickerData.highPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('ticker-low').innerText = parseFloat(tickerData.lowPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 const vol = parseFloat(tickerData.quoteVolume);
                 let volStr = vol > 1000000000 ? (vol / 1000000000).toFixed(2) + "B" : (vol / 1000000).toFixed(2) + "M";
                 document.getElementById('ticker-vol').innerText = volStr;
@@ -925,21 +899,40 @@
                 let decimals = 2;
                 if (currentCoin === 'BTC') decimals = 0;
                 
+                // 1. Point Analysis
                 if(g_r1 > 0) {
                     const fR1 = g_r1.toFixed(decimals);
                     const fS1 = g_s1.toFixed(decimals);
                     const fPP = g_pp.toFixed(decimals);
                     
                     analysisHTML += `<div style="margin-bottom:6px;"><strong>【點位分析】</strong><br>`;
-                    if (nowPrice > g_r1) {
-                        analysisHTML += `價格突破 R1 (${fR1})，動能強勁。留意 R2 賣壓。`;
+                    // Priority: Extreme levels (R3/S3) -> Standard levels
+                    // Check breakout upwards
+                    if (nowPrice > g_r3) {
+                        analysisHTML += `價格強勢突破 R3，多頭情緒極度高昂，注意超買回調風險。`;
+                        setBadge(badge, "極度強勢", "var(--ios-green)");
+                    } else if (nowPrice > g_r2) {
+                        analysisHTML += `價格突破 R2，上漲動能強勁，目標看向 R3。`;
                         setBadge(badge, "強勢突破", "var(--ios-green)");
-                    } else if (nowPrice > g_pp) {
-                        analysisHTML += `位於分界 ${fPP} 之上，偏多震盪。回調不破分界可視為買點，目標 R1。`;
-                        setBadge(badge, "偏多震盪", "var(--ios-blue)");
-                    } else if (nowPrice < g_s1) {
-                        analysisHTML += `跌破 S1 (${fS1})，空頭主導。勿輕易抄底，關注 S2 支撐。`;
+                    } else if (nowPrice > g_r1) {
+                        analysisHTML += `價格突破 R1 (${fR1})，動能轉強，留意 R2 壓力。`;
+                        setBadge(badge, "轉強", "var(--ios-green)");
+                    } 
+                    // Check breakdown downwards
+                    else if (nowPrice < g_s3) {
+                        analysisHTML += `價格跌破 S3，空頭情緒極度恐慌，可能出現超賣反彈或持續崩盤。`;
+                        setBadge(badge, "極度弱勢", "var(--ios-red)");
+                    } else if (nowPrice < g_s2) {
+                        analysisHTML += `價格跌破 S2，空頭動能強勁，下看 S3 支撐。`;
                         setBadge(badge, "弱勢探底", "var(--ios-red)");
+                    } else if (nowPrice < g_s1) {
+                        analysisHTML += `跌破 S1 (${fS1})，轉為弱勢，關注 S2 支撐防守情況。`;
+                        setBadge(badge, "轉弱", "var(--ios-red)");
+                    } 
+                    // Middle zone
+                    else if (nowPrice > g_pp) {
+                        analysisHTML += `位於分界 ${fPP} 之上，偏多震盪。回調不破分界可視為買點。`;
+                        setBadge(badge, "偏多震盪", "var(--ios-blue)");
                     } else {
                         analysisHTML += `位於分界 ${fPP} 之下，短期承壓。反彈若不過分界，趨勢偏空。`;
                         setBadge(badge, "偏空震盪", "var(--ios-orange)");
@@ -947,6 +940,7 @@
                     analysisHTML += `</div>`;
                 }
 
+                // 2. Trend Filter
                 analysisHTML += `<strong>【趨勢濾網】</strong>`;
                 if (trend === "bull") analysisHTML += `3日均線向上，建議逢低做多。`;
                 else if (trend === "bear") analysisHTML += `3日均線向下，建議逢高做空。`;
@@ -1065,9 +1059,9 @@
                 else priceEl.style.color = "var(--ios-text-primary)";
                 prevPriceTick = price;
                 
-                // Value format (Force 2 decimals for BTC & ETH)
+                // Value format
                 let displayPrice;
-                if (currentCoin === 'BTC' || currentCoin === 'ETH') {
+                if (currentCoin === 'BTC') {
                      displayPrice = price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 } else if (price < 10) {
                     displayPrice = price.toFixed(4);
@@ -1084,7 +1078,7 @@
                 if (change >= 0) changeEl.className = 'price-change bg-green';
                 else changeEl.className = 'price-change bg-red';
 
-                // Update 24h stats (WebSocket)
+                // Update 24h stats
                 document.getElementById('ticker-high').innerText = parseFloat(data.h).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 document.getElementById('ticker-low').innerText = parseFloat(data.l).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 const vol = parseFloat(data.q);
