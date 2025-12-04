@@ -92,7 +92,7 @@
 
         /* 頂部導航列 */
         header {
-            height: 48px;
+            height: 40px;
             padding: 0 16px;
             background-color: var(--ios-nav-bg);
             border-bottom: 0.5px solid rgba(255,255,255,0.1);
@@ -103,38 +103,11 @@
             z-index: 1000;
         }
 
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            width: 100%; 
-            overflow-x: auto; 
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-            padding-right: 10px;
-        }
+        .header-left { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
         .header-left::-webkit-scrollbar { display: none; } 
 
-        /* 導航分組樣式 */
-        .nav-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding-right: 12px;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            margin-right: 12px;
-        }
-        .nav-group:last-child {
-            border-right: none;
-            margin-right: 0;
-            padding-right: 0;
-        }
-        .nav-group-label {
-            font-size: 10px;
-            color: var(--ios-text-tertiary);
-            font-weight: 600;
-            white-space: nowrap;
-        }
+        h1 { font-size: 15px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
+        @media (min-width: 1024px) { h1 { display: block; } }
 
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--ios-green); display: inline-block; flex-shrink: 0; }
         
@@ -213,16 +186,64 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
+        /* 即時行情佈局重構：左右分佈 */
+        .market-overview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 4px;
+        }
 
-        .price-display { display: flex; flex-direction: column; gap: 1px; }
-        .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
-        .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; }
-        .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
+        /* 左側：價格與漲跌 (現在是並排) */
+        .price-left-col { 
+            display: flex; 
+            flex-direction: row; /* 改為橫向 */
+            align-items: baseline; /* 基線對齊 */
+            gap: 8px; 
+            padding-top: 10px; /* 稍微置中 */
+        }
         
-        .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .stat-item { display: flex; flex-direction: column; gap: 2px; }
-        .stat-label { font-size: 10px; color: var(--ios-text-tertiary); font-weight: 500; text-transform: uppercase; }
-        .stat-val { font-size: 12px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
+        .current-price { 
+            font-size: 32px; /* 再放大一點 */
+            font-weight: 700; 
+            color: var(--ios-text-primary); 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; 
+            letter-spacing: -0.5px; 
+            transition: color 0.3s ease; 
+            line-height: 1;
+        }
+
+        .price-change { 
+            font-size: 16px; /* 字體放大 */
+            font-weight: 600; 
+            padding: 3px 8px; 
+            border-radius: 6px; 
+            width: fit-content; 
+        }
+        
+        /* 右側：24H 統計 (三列靠右) */
+        .stats-right-col { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-end; 
+            gap: 4px; 
+            min-width: 100px;
+        }
+        .stat-row { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        .stat-label { color: var(--ios-text-tertiary); font-weight: 500; font-size: 11px; }
+        .stat-val { color: var(--ios-text-secondary); font-family: "SF Mono", monospace; font-weight: 600; font-size: 13px; }
+
+        /* 短線動能網格 (2x2) */
+        .momentum-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px 12px; 
+            margin-top: 8px; 
+            padding-top: 8px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+        }
         
         .mom-item { display: flex; flex-direction: column; gap: 1px; }
         .mom-label { font-size: 11px; color: var(--ios-text-tertiary); text-transform: uppercase; font-weight: 600; }
@@ -425,15 +446,6 @@
                 <div class="section-title">盤面解析</div>
                 <div class="section-right">
                     <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
-                    <div class="timer-container">
-                        <div class="timer-badge" id="analysis-timer">
-                            <span>⏳</span> --:--
-                        </div>
-                        <button class="refresh-btn" onclick="manualRefresh()">
-                            🔄 立即刷新
-                        </button>
-                    </div>
-                    <div class="refresh-hint">數據每 5 分鐘更新</div>
                 </div>
             </div>
             
@@ -516,7 +528,7 @@
                         <div class="pivot-toggle-group">
                             <button class="pivot-toggle-btn active" onclick="switchPivotTimeframe('1d', this)">1日</button>
                             <button class="pivot-toggle-btn" onclick="switchPivotTimeframe('3d', this)">3日</button>
-                            <button class="pivot-toggle-btn" onclick="switchPivotTimeframe('7d', this)">7日</button>
+                            <button class="pivot-toggle-btn" onclick="switchPivotTimeframe('30d', this)">30日</button>
                         </div>
                         <div class="last-updated" id="pivot-update-time">--:--</div>
                         <button class="card-refresh-btn" onclick="fetchPivotPoints()" title="手動刷新">↻</button>
@@ -632,7 +644,7 @@
             <div class="global-hint">
                 ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
             </div>
-            <div class="version-footer">Ver. 3.5 - 2025.12.05 | Data: Binance</div>
+            <div class="version-footer">Ver. 3.8 - 2025.12.05 | Data: Binance</div>
 
         </div>
     </div>
@@ -651,7 +663,7 @@
         };
 
         let currentCoin = 'BTC'; 
-        let currentPivotTimeframe = '1d'; // Default 1D
+        let currentPivotTimeframe = '1d'; 
         let ws = null; 
         let topTickerWs = null;
         let candleTimerInterval; 
@@ -687,13 +699,9 @@
         // Pivot Timeframe Switcher
         function switchPivotTimeframe(tf, btn) {
             currentPivotTimeframe = tf;
-            
-            // Update active class
             const btns = document.querySelectorAll('.pivot-toggle-btn');
             btns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // Force update
             fetchPivotPoints();
         }
 
@@ -746,7 +754,7 @@
 
             aiInterval = setInterval(() => fetchAIStrategy(), 300000);
             patternInterval = setInterval(() => fetchPatternData(), 300000);
-            pivotInterval = setInterval(() => fetchPivotPoints(), 3600000);
+            pivotInterval = setInterval(() => fetchPivotPoints(), 900000);
             
             setInterval(fetchShortTermStats, 30000);
         }
@@ -776,11 +784,15 @@
         
         async function fetchFundingRate() {
             const symbol = COINS[currentCoin].dapi; 
+            if (!symbol) {
+                 document.getElementById('funding-rate').innerText = "N/A";
+                 document.getElementById('funding-rate').style.color = "var(--ios-text-tertiary)";
+                 return;
+            }
             try {
                 const res = await fetch(`https://dapi.binance.com/dapi/v1/premiumIndex?symbol=${symbol}`);
                 const data = await res.json();
                 const info = Array.isArray(data) ? data[0] : data;
-                
                 if(info) {
                     const rate = parseFloat(info.lastFundingRate);
                     const nextTime = parseInt(info.nextFundingTime);
@@ -1013,24 +1025,17 @@
         async function fetchPivotPoints() {
             const symbol = COINS[currentCoin].binance;
             try {
-                // Get limit=8 to calculate up to 7D high/low
-                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=8`);
+                // Use 1d interval for Pivot calculation base (limit=35 to ensure data for 30d calculation)
+                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=35`);
                 const data = await res.json();
                 
-                // Data index: 
-                // data[data.length-1] is current incomplete candle (Today)
-                // data[data.length-2] is Yesterday (Pivot base Close)
-                
                 const yesterdayIndex = data.length - 2;
-                const c = parseFloat(data[yesterdayIndex][4]); // Yesterday Close
+                const c = parseFloat(data[yesterdayIndex][4]); 
                 
-                // Determine lookback based on selected timeframe
                 let lookback = 1;
                 if(currentPivotTimeframe === '3d') lookback = 3;
-                if(currentPivotTimeframe === '7d') lookback = 7;
+                if(currentPivotTimeframe === '30d') lookback = 30;
                 
-                // Calculate High/Low over lookback period ending yesterday
-                // Slice from (yesterdayIndex - lookback + 1) to (yesterdayIndex + 1)
                 const startIndex = yesterdayIndex - lookback + 1;
                 const slice = data.slice(startIndex, yesterdayIndex + 1);
                 
