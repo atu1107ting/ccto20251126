@@ -92,7 +92,7 @@
 
         /* 頂部導航列 */
         header {
-            height: 40px;
+            height: 48px;
             padding: 0 16px;
             background-color: var(--ios-nav-bg);
             border-bottom: 0.5px solid rgba(255,255,255,0.1);
@@ -103,11 +103,38 @@
             z-index: 1000;
         }
 
-        .header-left { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+        .header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            width: 100%; 
+            overflow-x: auto; 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+            padding-right: 10px;
+        }
         .header-left::-webkit-scrollbar { display: none; } 
 
-        h1 { font-size: 15px; font-weight: 600; margin: 0; color: var(--ios-text-primary); letter-spacing: -0.5px; display: none; }
-        @media (min-width: 1024px) { h1 { display: block; } }
+        /* 導航分組樣式 */
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-right: 12px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            margin-right: 12px;
+        }
+        .nav-group:last-child {
+            border-right: none;
+            margin-right: 0;
+            padding-right: 0;
+        }
+        .nav-group-label {
+            font-size: 10px;
+            color: var(--ios-text-tertiary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
 
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--ios-green); display: inline-block; flex-shrink: 0; }
         
@@ -161,31 +188,45 @@
         .card-refresh-btn:hover { background-color: rgba(10, 132, 255, 0.2); transform: rotate(15deg); }
         .card-refresh-btn:active { transform: rotate(180deg); transition: transform 0.3s; }
 
+        /* Pivot 切換按鈕樣式 */
+        .pivot-toggle-group {
+            display: flex;
+            background-color: rgba(118, 118, 128, 0.24);
+            border-radius: 4px;
+            padding: 1px;
+            margin-right: 4px;
+        }
+        .pivot-toggle-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--ios-text-tertiary);
+            padding: 1px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .pivot-toggle-btn.active {
+            background-color: rgba(99, 99, 102, 0.8);
+            color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+
         .price-display { display: flex; flex-direction: column; gap: 1px; }
         .price-value-row { display: flex; align-items: baseline; justify-content: space-between; }
         .current-price { font-size: 22px; font-weight: 700; color: var(--ios-text-primary); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; letter-spacing: -0.5px; transition: color 0.3s ease; }
         .price-change { font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 12px; min-width: 50px; text-align: center; }
         
-        /* 行情統計網格 (3列布局) */
         .ticker-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
-        
-        /* 短線動能網格 (2列布局) */
-        .momentum-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 8px 12px; 
-            margin-top: 8px; 
-            padding-top: 8px; 
-            border-top: 1px solid rgba(255,255,255,0.05); 
-        }
+        .stat-item { display: flex; flex-direction: column; gap: 2px; }
+        .stat-label { font-size: 10px; color: var(--ios-text-tertiary); font-weight: 500; text-transform: uppercase; }
+        .stat-val { font-size: 12px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
         
         .mom-item { display: flex; flex-direction: column; gap: 1px; }
         .mom-label { font-size: 11px; color: var(--ios-text-tertiary); text-transform: uppercase; font-weight: 600; }
         .mom-val { font-size: 16px; font-weight: 800; font-family: "SF Mono", monospace; }
-        
-        .stat-item { display: flex; flex-direction: column; gap: 2px; }
-        .stat-label { font-size: 10px; color: var(--ios-text-tertiary); font-weight: 500; text-transform: uppercase; }
-        .stat-val { font-size: 12px; font-weight: 600; font-family: "SF Mono", monospace; color: var(--ios-text-secondary); }
 
         .bg-green { background-color: rgba(48, 209, 88, 0.15); color: var(--ios-green); }
         .bg-red { background-color: rgba(255, 69, 58, 0.15); color: var(--ios-red); }
@@ -263,7 +304,7 @@
             padding: 20px 16px 30px 16px; 
             opacity: 0.8; 
             font-weight: 500; 
-            margin-top: auto; 
+            margin-top: auto; /* 置底 */
         }
         .version-footer {
             text-align: center;
@@ -340,7 +381,9 @@
 
     <header>
         <div class="header-left">
-            <div class="coin-nav">
+            <!-- 加密貨幣組 -->
+            <div class="nav-group">
+                <span class="nav-group-label">加密貨幣</span>
                 <div class="segmented-control">
                     <button class="coin-btn active" onclick="changeCoin('BTC')">BTC</button>
                     <button class="coin-btn" onclick="changeCoin('ETH')">ETH</button>
@@ -348,6 +391,15 @@
                     <button class="coin-btn" onclick="changeCoin('XRP')">XRP</button>
                     <button class="coin-btn" onclick="changeCoin('DOGE')">DOGE</button>
                     <button class="coin-btn" onclick="changeCoin('ADA')">ADA</button>
+                    <button class="coin-btn" onclick="changeCoin('BNB')">BNB</button>
+                </div>
+            </div>
+
+            <!-- 貴金屬組 -->
+            <div class="nav-group">
+                <span class="nav-group-label">貴金屬</span>
+                <div class="segmented-control">
+                    <button class="coin-btn" onclick="changeCoin('GOLD')">GOLD</button>
                 </div>
             </div>
         </div>
@@ -373,6 +425,15 @@
                 <div class="section-title">盤面解析</div>
                 <div class="section-right">
                     <div class="section-subtitle" id="ai-coin-name">BTC / USDT</div>
+                    <div class="timer-container">
+                        <div class="timer-badge" id="analysis-timer">
+                            <span>⏳</span> --:--
+                        </div>
+                        <button class="refresh-btn" onclick="manualRefresh()">
+                            🔄 立即刷新
+                        </button>
+                    </div>
+                    <div class="refresh-hint">數據每 5 分鐘更新</div>
                 </div>
             </div>
             
@@ -447,11 +508,16 @@
                 </div>
             </div>
 
-            <!-- 卡片 3: 支撐壓力位 (1小時更新 + 手動) -->
+            <!-- 卡片 3: 支撐壓力位 (1小時更新 + 手動 + 切換) -->
             <div class="ios-card" style="margin-top: 0;">
                 <div class="card-header-row">
                     <div class="card-label">關鍵點位</div>
                     <div class="card-header-actions">
+                        <div class="pivot-toggle-group">
+                            <button class="pivot-toggle-btn active" onclick="switchPivotTimeframe('1d', this)">1日</button>
+                            <button class="pivot-toggle-btn" onclick="switchPivotTimeframe('3d', this)">3日</button>
+                            <button class="pivot-toggle-btn" onclick="switchPivotTimeframe('7d', this)">7日</button>
+                        </div>
                         <div class="last-updated" id="pivot-update-time">--:--</div>
                         <button class="card-refresh-btn" onclick="fetchPivotPoints()" title="手動刷新">↻</button>
                     </div>
@@ -566,7 +632,7 @@
             <div class="global-hint">
                 ⚠️ 若數據顯示異常或延遲，請嘗試手動重新整理網頁 (F5)
             </div>
-            <div class="version-footer">Ver. 3.3 - 2025.12.02 | Data: Binance</div>
+            <div class="version-footer">Ver. 3.5 - 2025.12.05 | Data: Binance</div>
 
         </div>
     </div>
@@ -579,10 +645,13 @@
             'SOL': { tv: 'BINANCE:SOLUSDT', binance: 'SOLUSDT', ws: 'solusdt', dapi: 'SOLUSD_PERP' },
             'XRP': { tv: 'BINANCE:XRPUSDT', binance: 'XRPUSDT', ws: 'xrpusdt', dapi: 'XRPUSD_PERP' },
             'DOGE': { tv: 'BINANCE:DOGEUSDT', binance: 'DOGEUSDT', ws: 'dogeusdt', dapi: 'DOGEUSD_PERP' },
-            'ADA': { tv: 'BINANCE:ADAUSDT', binance: 'ADAUSDT', ws: 'adausdt', dapi: 'ADAUSD_PERP' }
+            'ADA': { tv: 'BINANCE:ADAUSDT', binance: 'ADAUSDT', ws: 'adausdt', dapi: 'ADAUSD_PERP' },
+            'GOLD': { tv: 'BINANCE:PAXGUSDT', binance: 'PAXGUSDT', ws: 'paxgusdt', dapi: null },
+            'BNB': { tv: 'BINANCE:BNBUSDT', binance: 'BNBUSDT', ws: 'bnbusdt', dapi: 'BNBUSD_PERP' }
         };
 
         let currentCoin = 'BTC'; 
+        let currentPivotTimeframe = '1d'; // Default 1D
         let ws = null; 
         let topTickerWs = null;
         let candleTimerInterval; 
@@ -613,6 +682,19 @@
             startAutoUpdate(); 
             initDataFetch();
             startWebSocket();
+        }
+
+        // Pivot Timeframe Switcher
+        function switchPivotTimeframe(tf, btn) {
+            currentPivotTimeframe = tf;
+            
+            // Update active class
+            const btns = document.querySelectorAll('.pivot-toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Force update
+            fetchPivotPoints();
         }
 
         function renderMainChart() {
@@ -681,6 +763,7 @@
                 const ethData = await ethRes.json();
                 const solData = await solRes.json();
                 
+                // Top ticker: No decimals
                 updateTopTicker('top-btc', parseFloat(btcData.lastPrice), parseFloat(btcData.priceChangePercent));
                 updateTopTicker('top-eth', parseFloat(ethData.lastPrice), parseFloat(ethData.priceChangePercent));
                 updateTopTicker('top-sol', parseFloat(solData.lastPrice), parseFloat(solData.priceChangePercent));
@@ -760,7 +843,7 @@
             const valEl = document.getElementById(`${prefix}-val`);
             const pctEl = document.getElementById(`${prefix}-pct`);
             
-            // Top ticker integer
+            // Top ticker always integer
             let displayPrice = "$" + Math.floor(price).toLocaleString();
             
             valEl.innerText = displayPrice;
@@ -799,8 +882,8 @@
                 currentPrice = parseFloat(tickerData.lastPrice);
                 const priceEl = document.getElementById('current-price');
                 
-                // BTC & ETH force 2 decimals
-                if (currentCoin === 'BTC' || currentCoin === 'ETH') {
+                // BTC & ETH force 2 decimals in MAIN card
+                if (currentCoin === 'BTC' || currentCoin === 'ETH' || currentCoin === 'GOLD') {
                      priceEl.innerText = currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 } else if (currentPrice < 10) {
                     priceEl.innerText = currentPrice.toFixed(4);
@@ -930,17 +1013,35 @@
         async function fetchPivotPoints() {
             const symbol = COINS[currentCoin].binance;
             try {
-                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=4`);
+                // Get limit=8 to calculate up to 7D high/low
+                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&limit=8`);
                 const data = await res.json();
                 
+                // Data index: 
+                // data[data.length-1] is current incomplete candle (Today)
+                // data[data.length-2] is Yesterday (Pivot base Close)
+                
+                const yesterdayIndex = data.length - 2;
+                const c = parseFloat(data[yesterdayIndex][4]); // Yesterday Close
+                
+                // Determine lookback based on selected timeframe
+                let lookback = 1;
+                if(currentPivotTimeframe === '3d') lookback = 3;
+                if(currentPivotTimeframe === '7d') lookback = 7;
+                
+                // Calculate High/Low over lookback period ending yesterday
+                // Slice from (yesterdayIndex - lookback + 1) to (yesterdayIndex + 1)
+                const startIndex = yesterdayIndex - lookback + 1;
+                const slice = data.slice(startIndex, yesterdayIndex + 1);
+                
                 let highs = [], lows = [];
-                for(let i=0; i<3; i++) {
-                    highs.push(parseFloat(data[i][2]));
-                    lows.push(parseFloat(data[i][3]));
-                }
+                slice.forEach(k => {
+                    highs.push(parseFloat(k[2]));
+                    lows.push(parseFloat(k[3]));
+                });
+                
                 const h = Math.max(...highs);
                 const l = Math.min(...lows);
-                const c = parseFloat(data[2][4]); 
                 
                 calculatePivotPoints(h, l, c);
                 
@@ -1030,9 +1131,9 @@
                 else priceEl.style.color = "var(--ios-text-primary)";
                 prevPriceTick = price;
                 
-                // Value format (Force 2 decimals for BTC & ETH)
+                // Value format
                 let displayPrice;
-                if (currentCoin === 'BTC' || currentCoin === 'ETH') {
+                if (currentCoin === 'BTC' || currentCoin === 'ETH' || currentCoin === 'GOLD') {
                      displayPrice = price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 } else if (price < 10) {
                     displayPrice = price.toFixed(4);
